@@ -24,7 +24,9 @@ export default function SettingsModal({
     autoScheduleEnabled,
     onAutoScheduleChange,
     aiPrompt,
-    onAiPromptChange
+    onAiPromptChange,
+    schedulingRules,
+    onSchedulingRulesChange
 }) {
     const [newCondition, setNewCondition] = useState({
         code: '',
@@ -125,6 +127,162 @@ export default function SettingsModal({
                                     <li>エラー時は詳細情報を表示</li>
                                 </ul>
                             </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* ルールベース自動配置設定 */}
+                <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
+                    <h3 className="text-lg font-bold text-green-900 mb-3 flex items-center gap-2">
+                        ⚙️ ルールベース自動配置設定
+                    </h3>
+
+                    <div className="space-y-4">
+                        {/* 基本設定 */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-sm font-medium text-green-800 mb-2">
+                                    1日の最大治療数
+                                </label>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    max="10"
+                                    value={schedulingRules.maxTreatmentsPerDay}
+                                    onChange={(e) => onSchedulingRulesChange({
+                                        ...schedulingRules,
+                                        maxTreatmentsPerDay: parseInt(e.target.value) || 1
+                                    })}
+                                    className="w-full px-3 py-2 border border-green-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-green-800 mb-2">
+                                    スケジュール間隔（日数）
+                                </label>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    max="30"
+                                    value={schedulingRules.scheduleIntervalDays}
+                                    onChange={(e) => onSchedulingRulesChange({
+                                        ...schedulingRules,
+                                        scheduleIntervalDays: parseInt(e.target.value) || 1
+                                    })}
+                                    className="w-full px-3 py-2 border border-green-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                />
+                                <p className="text-xs text-green-600 mt-1">治療日の間隔を設定します</p>
+                            </div>
+                        </div>
+
+                        {/* 急性症状設定 */}
+                        <div>
+                            <label className="block text-sm font-medium text-green-800 mb-2">
+                                急性症状として扱う病名（1日の配置数を制限）
+                            </label>
+                            <div className="flex flex-wrap gap-2 mb-2">
+                                {conditions.map(condition => (
+                                    <label
+                                        key={condition.code}
+                                        className="flex items-center gap-1 px-2 py-1 border rounded cursor-pointer hover:bg-green-100 transition-colors text-sm"
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            checked={schedulingRules.acuteCareConditions.includes(condition.code)}
+                                            onChange={(e) => {
+                                                const newConditions = e.target.checked
+                                                    ? [...schedulingRules.acuteCareConditions, condition.code]
+                                                    : schedulingRules.acuteCareConditions.filter(c => c !== condition.code);
+                                                onSchedulingRulesChange({
+                                                    ...schedulingRules,
+                                                    acuteCareConditions: newConditions
+                                                });
+                                            }}
+                                            className="mr-1"
+                                        />
+                                        {condition.symbol}
+                                    </label>
+                                ))}
+                            </div>
+                            <div className="mt-2">
+                                <label className="block text-sm font-medium text-green-800 mb-2">
+                                    急性症状の1日最大治療数
+                                </label>
+                                <input
+                                    type="number"
+                                    min="1"
+                                    max="10"
+                                    value={schedulingRules.acuteCareMaxPerDay}
+                                    onChange={(e) => onSchedulingRulesChange({
+                                        ...schedulingRules,
+                                        acuteCareMaxPerDay: parseInt(e.target.value) || 1
+                                    })}
+                                    className="w-full px-3 py-2 border border-green-300 rounded-lg text-sm focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                                />
+                            </div>
+                        </div>
+
+                        {/* 優先順位設定 */}
+                        <div>
+                            <label className="block text-sm font-medium text-green-800 mb-2">
+                                治療優先順位（上から優先度が高い）
+                            </label>
+                            <div className="space-y-2">
+                                {schedulingRules.priorityOrder.map((code, index) => {
+                                    const condition = conditions.find(c => c.code === code);
+                                    return (
+                                        <div key={code} className="flex items-center gap-2 p-2 bg-white border border-green-200 rounded">
+                                            <span className="text-sm font-medium text-gray-500 w-6">{index + 1}.</span>
+                                            <span className={`flex-1 px-3 py-1 rounded text-sm ${condition?.color || 'bg-gray-100'}`}>
+                                                {condition?.symbol || code} - {condition?.name || code}
+                                            </span>
+                                            <div className="flex gap-1">
+                                                <button
+                                                    onClick={() => {
+                                                        if (index > 0) {
+                                                            const newOrder = [...schedulingRules.priorityOrder];
+                                                            [newOrder[index - 1], newOrder[index]] = [newOrder[index], newOrder[index - 1]];
+                                                            onSchedulingRulesChange({
+                                                                ...schedulingRules,
+                                                                priorityOrder: newOrder
+                                                            });
+                                                        }
+                                                    }}
+                                                    disabled={index === 0}
+                                                    className={`px-2 py-1 text-xs rounded ${index === 0 ? 'bg-gray-200 text-gray-400' : 'bg-green-500 text-white hover:bg-green-600'}`}
+                                                >
+                                                    ↑
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        if (index < schedulingRules.priorityOrder.length - 1) {
+                                                            const newOrder = [...schedulingRules.priorityOrder];
+                                                            [newOrder[index], newOrder[index + 1]] = [newOrder[index + 1], newOrder[index]];
+                                                            onSchedulingRulesChange({
+                                                                ...schedulingRules,
+                                                                priorityOrder: newOrder
+                                                            });
+                                                        }
+                                                    }}
+                                                    disabled={index === schedulingRules.priorityOrder.length - 1}
+                                                    className={`px-2 py-1 text-xs rounded ${index === schedulingRules.priorityOrder.length - 1 ? 'bg-gray-200 text-gray-400' : 'bg-green-500 text-white hover:bg-green-600'}`}
+                                                >
+                                                    ↓
+                                                </button>
+                                            </div>
+                                        </div>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
+                        <div className="text-xs text-green-700 bg-green-100 p-3 rounded">
+                            <p className="font-medium mb-1">💡 ルールベース自動配置について</p>
+                            <ul className="list-disc list-inside space-y-1">
+                                <li>設定した優先順位に従って治療を自動配置します</li>
+                                <li>急性症状は1日の配置数を制限できます</li>
+                                <li>シーケンシャル治療は前のステップが配置済みの場合のみ配置されます</li>
+                            </ul>
                         </div>
                     </div>
                 </div>

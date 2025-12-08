@@ -26,6 +26,8 @@ function App() {
         aiPrompt,
         setAiPrompt,
         isGeneratingWorkflow,
+        schedulingRules,
+        setSchedulingRules,
         getConditionInfo,
         generateTreatmentNodes,
         executeAutoScheduling,
@@ -530,6 +532,8 @@ function App() {
                     onAutoScheduleChange={setAutoScheduleEnabled}
                     aiPrompt={aiPrompt}
                     onAiPromptChange={setAiPrompt}
+                    schedulingRules={schedulingRules}
+                    onSchedulingRulesChange={setSchedulingRules}
                 />
             </div>
         </div>
