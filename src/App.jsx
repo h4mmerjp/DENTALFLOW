@@ -21,6 +21,7 @@ function App() {
         workflow,
         treatmentSchedule,
         conditions,
+        selectedTreatmentOptions,
         treatmentRules,
         autoScheduleEnabled,
         setAutoScheduleEnabled,
@@ -53,7 +54,7 @@ function App() {
             // 病名がすべて削除された場合はワークフローをクリア
             generateTreatmentNodes(treatmentGroupingMode); // 空のワークフローが生成される
         }
-    }, [toothConditions, treatmentGroupingMode]);
+    }, [toothConditions, treatmentGroupingMode, selectedTreatmentOptions]);
 
     const handleToothClick = (toothNumber) => {
         setSelectedTooth(toothNumber);
@@ -185,10 +186,6 @@ function App() {
 
     const handleChangeTreatment = (step, newTreatmentIndex) => {
         changeTreatmentOption(step, newTreatmentIndex);
-        // 治療オプションを変更後、ワークフローを再生成
-        setTimeout(() => {
-            generateTreatmentNodes(treatmentGroupingMode);
-        }, 100);
     };
 
     const handleDragStart = (e, node) => {
