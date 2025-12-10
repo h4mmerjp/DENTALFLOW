@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Settings } from 'lucide-react';
+import { Play, Settings, ChevronDown, ChevronRight } from 'lucide-react';
 import { useTreatmentWorkflow } from './hooks/useTreatmentWorkflow';
 import ToothChart from './components/ToothChart';
 import ConditionSelector from './components/ConditionSelector';
@@ -13,6 +13,7 @@ function App() {
     const [treatmentGroupingMode, setTreatmentGroupingMode] = useState('individual');
     const [draggedNode, setDraggedNode] = useState(null);
     const [showSettings, setShowSettings] = useState(false);
+    const [isConditionsOpen, setIsConditionsOpen] = useState(false);
 
     const {
         toothConditions,
@@ -407,86 +408,100 @@ function App() {
                         {/* 設定済み病名一覧 */}
                         {Object.keys(toothConditions).length > 0 && (
                             <div className="mt-4">
-                                <h3 className="font-bold mb-2">設定済み病名</h3>
-                                <div className="space-y-2">
-                                    {Object.entries(toothConditions).map(([tooth, conditionsList]) => {
-                                        // 重複を排除してユニークな病名のみ取得
-                                        const uniqueConditions = [...new Set(conditionsList)];
-                                        const conditionInfos = uniqueConditions
-                                            .map(code => getConditionInfo(code))
-                                            .filter(Boolean);
-                                        const isBulkEntry = tooth.startsWith('bulk-');
-                                        const displayTooth = isBulkEntry ? '全般' : `歯番 ${tooth}`;
-
-                                        return (
-                                            <div key={tooth} className={`p-3 rounded border ${isBulkEntry ? 'bg-yellow-50 border-yellow-300' : 'bg-gray-50'}`}>
-                                                <div className="flex justify-between items-start">
-                                                    <span className="font-medium">
-                                                        {displayTooth}
-                                                        {isBulkEntry && (
-                                                            <span className="ml-2 text-xs bg-yellow-200 text-yellow-800 px-2 py-1 rounded-full">
-                                                                歯番号なし
+                                <button
+                                    onClick={() => setIsConditionsOpen(!isConditionsOpen)}
+                                    className="flex items-center gap-2 font-bold mb-2 hover:bg-gray-100 p-1 rounded transition-colors w-full text-left"
+                                >
+                                    {isConditionsOpen ? <ChevronDown className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
+                                    <span>設定済み病名</span>
+                                    <span className="text-xs font-normal text-gray-500 ml-2">
+                                        ({Object.keys(toothConditions).length}件)
+                                    </span>
+                                </button>
+                                
+                                {isConditionsOpen && (
+                                    <>
+                                        <div className="space-y-2">
+                                            {Object.entries(toothConditions).map(([tooth, conditionsList]) => {
+                                                // 重複を排除してユニークな病名のみ取得
+                                                const uniqueConditions = [...new Set(conditionsList)];
+                                                const conditionInfos = uniqueConditions
+                                                    .map(code => getConditionInfo(code))
+                                                    .filter(Boolean);
+                                                const isBulkEntry = tooth.startsWith('bulk-');
+                                                const displayTooth = isBulkEntry ? '全般' : `歯番 ${tooth}`;
+        
+                                                return (
+                                                    <div key={tooth} className={`p-3 rounded border ${isBulkEntry ? 'bg-yellow-50 border-yellow-300' : 'bg-gray-50'}`}>
+                                                        <div className="flex justify-between items-start">
+                                                            <span className="font-medium">
+                                                                {displayTooth}
+                                                                {isBulkEntry && (
+                                                                    <span className="ml-2 text-xs bg-yellow-200 text-yellow-800 px-2 py-1 rounded-full">
+                                                                        歯番号なし
+                                                                    </span>
+                                                                )}
                                                             </span>
-                                                        )}
-                                                    </span>
-                                                    <div className="flex gap-2">
-                                                        {!isBulkEntry && (
-                                                            <button
-                                                                onClick={() => setSelectedTooth(tooth)}
-                                                                className="text-xs text-blue-600 hover:text-blue-800"
-                                                            >
-                                                                編集
-                                                            </button>
-                                                        )}
-                                                        <button
-                                                            onClick={() => {
-                                                                const newConditions = { ...toothConditions };
-                                                                delete newConditions[tooth];
-                                                                setToothConditions(newConditions);
-                                                            }}
-                                                            className="text-xs text-red-600 hover:text-red-800"
-                                                        >
-                                                            削除
-                                                        </button>
+                                                            <div className="flex gap-2">
+                                                                {!isBulkEntry && (
+                                                                    <button
+                                                                        onClick={() => setSelectedTooth(tooth)}
+                                                                        className="text-xs text-blue-600 hover:text-blue-800"
+                                                                    >
+                                                                        編集
+                                                                    </button>
+                                                                )}
+                                                                <button
+                                                                    onClick={() => {
+                                                                        const newConditions = { ...toothConditions };
+                                                                        delete newConditions[tooth];
+                                                                        setToothConditions(newConditions);
+                                                                    }}
+                                                                    className="text-xs text-red-600 hover:text-red-800"
+                                                                >
+                                                                    削除
+                                                                </button>
+                                                            </div>
+                                                        </div>
+                                                        <div className="mt-1 flex flex-wrap gap-1">
+                                                            {conditionInfos.map((info) => (
+                                                                <span
+                                                                    key={info.code}
+                                                                    className={`text-xs px-2 py-1 rounded-full ${info.color}`}
+                                                                >
+                                                                    {info.name}
+                                                                </span>
+                                                            ))}
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div className="mt-1 flex flex-wrap gap-1">
-                                                    {conditionInfos.map((info) => (
-                                                        <span
-                                                            key={info.code}
-                                                            className={`text-xs px-2 py-1 rounded-full ${info.color}`}
-                                                        >
-                                                            {info.name}
-                                                        </span>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        );
-                                    })}
-                                </div>
-
-                                <div className="mt-3 flex gap-2">
-                                    <button
-                                        onClick={() => setBulkConditionMode(true)}
-                                        className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded text-xs hover:bg-yellow-200 transition-colors"
-                                    >
-                                        + 歯番号なしで病名追加
-                                    </button>
-                                    <button
-                                        onClick={() => {
-                                            const confirmed = window.confirm('設定済みの病名をすべて削除しますか？\nこの操作は取り消せません。');
-                                            if (confirmed) {
-                                                clearAllConditions();
-                                                setSelectedTooth(null);
-                                                setBulkConditionMode(false);
-                                                resetConditionFirstMode();
-                                            }
-                                        }}
-                                        className="px-3 py-1 bg-red-100 text-red-800 rounded text-xs hover:bg-red-200 transition-colors"
-                                    >
-                                        🗑️ すべてクリア
-                                    </button>
-                                </div>
+                                                );
+                                            })}
+                                        </div>
+        
+                                        <div className="mt-3 flex gap-2">
+                                            <button
+                                                onClick={() => setBulkConditionMode(true)}
+                                                className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded text-xs hover:bg-yellow-200 transition-colors"
+                                            >
+                                                + 歯番号なしで病名追加
+                                            </button>
+                                            <button
+                                                onClick={() => {
+                                                    const confirmed = window.confirm('設定済みの病名をすべて削除しますか？\nこの操作は取り消せません。');
+                                                    if (confirmed) {
+                                                        clearAllConditions();
+                                                        setSelectedTooth(null);
+                                                        setBulkConditionMode(false);
+                                                        resetConditionFirstMode();
+                                                    }
+                                                }}
+                                                className="px-3 py-1 bg-red-100 text-red-800 rounded text-xs hover:bg-red-200 transition-colors"
+                                            >
+                                                🗑️ すべてクリア
+                                            </button>
+                                        </div>
+                                    </>
+                                )}
                             </div>
                         )}
                     </div>
