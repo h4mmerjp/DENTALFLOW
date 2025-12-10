@@ -70,6 +70,17 @@ export function useTreatmentWorkflow() {
     };
 
     const generateTreatmentNodes = (groupingMode = 'individual') => {
+        // 1. 現在のスケジュール配置をバックアップ
+        // key: `${baseId}-${cardNumber}` -> value: dateString
+        const scheduledNodesMap = new Map();
+        if (treatmentSchedule.length > 0) {
+            treatmentSchedule.forEach(day => {
+                day.treatments.forEach(node => {
+                    scheduledNodesMap.set(`${node.baseId}-${node.cardNumber}`, day.date);
+                });
+            });
+        }
+
         const workflowSteps = [];
         const priority = ['per', 'pul', 'C4', 'C3', 'P2', 'C2', 'P1', 'C1'];
 
@@ -123,18 +134,18 @@ export function useTreatmentWorkflow() {
                             const stepName = selectedTreatment.steps?.[i] || `${selectedTreatment.name}(${i + 1})`;
                             workflowSteps.push({
                                 id: cardId,
-                                baseId: `${condition}-${selectedTreatment.name}`,
-                                condition,
-                                treatment: selectedTreatment.name,
-                                stepName,
-                                teeth: affectedTeeth,
-                                cardNumber: i + 1,
-                                totalCards: selectedTreatment.duration,
-                                isSequential: selectedTreatment.duration > 1,
-                                treatmentKey,
-                                availableTreatments: treatments,
-                                selectedTreatmentIndex,
-                                hasMultipleTreatments: treatments.length > 1
+                                    baseId: `${condition}-${selectedTreatment.name}`,
+                                    condition,
+                                    treatment: selectedTreatment.name,
+                                    stepName,
+                                    teeth: affectedTeeth,
+                                    cardNumber: i + 1,
+                                    totalCards: selectedTreatment.duration,
+                                    isSequential: selectedTreatment.duration > 1,
+                                    treatmentKey,
+                                    availableTreatments: treatments,
+                                    selectedTreatmentIndex,
+                                    hasMultipleTreatments: treatments.length > 1
                             });
                         }
                     }
@@ -145,18 +156,43 @@ export function useTreatmentWorkflow() {
         setWorkflow(workflowSteps);
 
         const today = new Date();
-        const initialSchedule = [];
-        for (let i = 0; i < Math.max(8, Math.ceil(workflowSteps.length / 2)); i++) {
-            const date = new Date(today);
-            date.setDate(today.getDate() + (i * schedulingRules.scheduleIntervalDays));
-            initialSchedule.push({
-                date: date.toISOString().split('T')[0],
-                treatments: []
-            });
-        }
-        setTreatmentSchedule(initialSchedule);
+        let newSchedule = [];
 
-        return { workflowSteps, initialSchedule };
+        // 2. スケジュール枠の準備
+        if (treatmentSchedule.length > 0) {
+            // 既存の日付枠を維持して、treatmentsだけ空にする
+            newSchedule = treatmentSchedule.map(day => ({
+                date: day.date,
+                treatments: []
+            }));
+        } else {
+            // 新規作成
+            for (let i = 0; i < Math.max(8, Math.ceil(workflowSteps.length / 2)); i++) {
+                const date = new Date(today);
+                date.setDate(today.getDate() + (i * schedulingRules.scheduleIntervalDays));
+                newSchedule.push({
+                    date: date.toISOString().split('T')[0],
+                    treatments: []
+                });
+            }
+        }
+
+        // 3. 配置の復元
+        workflowSteps.forEach(node => {
+            const mapKey = `${node.baseId}-${node.cardNumber}`;
+            const targetDate = scheduledNodesMap.get(mapKey);
+
+            if (targetDate) {
+                const targetDay = newSchedule.find(day => day.date === targetDate);
+                if (targetDay) {
+                    targetDay.treatments.push(node);
+                }
+            }
+        });
+
+        setTreatmentSchedule(newSchedule);
+
+        return { workflowSteps, initialSchedule: newSchedule };
     };
 
     const executeAutoScheduling = () => {
