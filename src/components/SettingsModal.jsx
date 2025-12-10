@@ -96,6 +96,7 @@ export default function SettingsModal({
                 <div className="mb-6 p-4 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg">
                     <h3 className="text-lg font-bold text-purple-900 mb-3 flex items-center gap-2">
                         🤖 AI治療スケジューリング
+                        <span className="text-sm font-normal text-red-500 ml-2">(未実装)</span>
                     </h3>
                     <div className="space-y-3">
                         <div>

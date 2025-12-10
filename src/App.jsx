@@ -511,6 +511,7 @@ function App() {
                             canDrag={isCardAvailableForDrag}
                             onDragStart={handleDragStart}
                             onChangeTreatment={handleChangeTreatment}
+                            getConditionInfo={getConditionInfo}
                         />
                     )}
 
@@ -525,6 +526,7 @@ function App() {
                             onDragStart={handleDragStart}
                             onChangeTreatment={handleChangeTreatment}
                             autoScheduleEnabled={autoScheduleEnabled}
+                            getConditionInfo={getConditionInfo}
                         />
                     )}
                 </div>
