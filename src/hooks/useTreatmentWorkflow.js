@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { defaultConditions } from '../data/conditions';
 import { defaultTreatmentRules } from '../data/treatments';
+import { defaultSteps } from '../data/steps';
 import { useLocalStorage } from './useLocalStorage';
 
 export function useTreatmentWorkflow() {
@@ -10,6 +11,7 @@ export function useTreatmentWorkflow() {
     const [selectedTreatmentOptions, setSelectedTreatmentOptions] = useState({});
     const [conditions, setConditions] = useState(defaultConditions);
     const [treatmentRules, setTreatmentRules] = useState(defaultTreatmentRules);
+    const [stepMaster, setStepMaster] = useLocalStorage('stepMaster', defaultSteps);
     const [autoScheduleEnabled, setAutoScheduleEnabled] = useLocalStorage('autoScheduleEnabled', true);
     const [aiPrompt, setAiPrompt] = useLocalStorage('aiPrompt', '患者の痛みを最優先に、急性症状から治療してください。根管治療は週1回ペース、補綴物は2週間隔で進めてください。');
     const [isGeneratingWorkflow, setIsGeneratingWorkflow] = useState(false);
@@ -119,6 +121,34 @@ export function useTreatmentWorkflow() {
         });
     };
 
+    // ステップマスター管理関数
+    const addStep = (step) => {
+        setStepMaster(prev => [...prev, step]);
+    };
+
+    const updateStep = (stepId, updatedStep) => {
+        setStepMaster(prev => prev.map(step =>
+            step.id === stepId ? updatedStep : step
+        ));
+    };
+
+    const deleteStep = (stepId) => {
+        setStepMaster(prev => prev.filter(step => step.id !== stepId));
+    };
+
+    // ステップIDからステップ名を取得
+    const getStepName = (stepId) => {
+        const step = stepMaster.find(s => s.id === stepId);
+        return step ? step.name : stepId; // 見つからない場合はIDをそのまま返す
+    };
+
+    // 指定した病名で使用可能なステップを取得
+    const getAvailableSteps = (conditionCode) => {
+        return stepMaster.filter(step =>
+            step.conditionCodes.includes(conditionCode)
+        );
+    };
+
     const changeTreatmentOption = (step, newTreatmentIndex) => {
         setSelectedTreatmentOptions(prev => ({
             ...prev,
@@ -161,7 +191,16 @@ export function useTreatmentWorkflow() {
                         if (selectedTreatment) {
                             for (let i = 0; i < selectedTreatment.duration; i++) {
                                 const cardId = crypto.randomUUID();
-                                const stepName = selectedTreatment.steps?.[i] || `${selectedTreatment.name}(${i + 1})`;
+                                // stepIdsがある場合はステップマスターから名前を取得、なければstepsから取得（後方互換性）
+                                let stepName;
+                                if (selectedTreatment.stepIds && selectedTreatment.stepIds[i]) {
+                                    stepName = getStepName(selectedTreatment.stepIds[i]);
+                                } else if (selectedTreatment.steps && selectedTreatment.steps[i]) {
+                                    stepName = selectedTreatment.steps[i];
+                                } else {
+                                    stepName = `${selectedTreatment.name}(${i + 1})`;
+                                }
+
                                 workflowSteps.push({
                                     id: cardId,
                                     baseId: `${condition}-${selectedTreatment.name}-${tooth}`,
@@ -188,7 +227,16 @@ export function useTreatmentWorkflow() {
                     if (selectedTreatment) {
                         for (let i = 0; i < selectedTreatment.duration; i++) {
                             const cardId = crypto.randomUUID();
-                            const stepName = selectedTreatment.steps?.[i] || `${selectedTreatment.name}(${i + 1})`;
+                            // stepIdsがある場合はステップマスターから名前を取得、なければstepsから取得（後方互換性）
+                            let stepName;
+                            if (selectedTreatment.stepIds && selectedTreatment.stepIds[i]) {
+                                stepName = getStepName(selectedTreatment.stepIds[i]);
+                            } else if (selectedTreatment.steps && selectedTreatment.steps[i]) {
+                                stepName = selectedTreatment.steps[i];
+                            } else {
+                                stepName = `${selectedTreatment.name}(${i + 1})`;
+                            }
+
                             workflowSteps.push({
                                 id: cardId,
                                     baseId: `${condition}-${selectedTreatment.name}`,
@@ -498,6 +546,7 @@ export function useTreatmentWorkflow() {
         setSelectedTreatmentOptions,
         conditions,
         treatmentRules,
+        stepMaster,
         autoScheduleEnabled,
         setAutoScheduleEnabled,
         aiPrompt,
@@ -523,8 +572,12 @@ export function useTreatmentWorkflow() {
         updateTreatment,
         deleteTreatment,
         moveTreatment,
-        moveTreatment,
         changeTreatmentOption,
+        addStep,
+        updateStep,
+        deleteStep,
+        getStepName,
+        getAvailableSteps,
         clearAllConditions,
         clearAllSchedules
     };

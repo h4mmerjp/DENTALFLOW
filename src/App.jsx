@@ -23,6 +23,7 @@ function App() {
         conditions,
         selectedTreatmentOptions,
         treatmentRules,
+        stepMaster,
         autoScheduleEnabled,
         setAutoScheduleEnabled,
         aiPrompt,
@@ -47,6 +48,9 @@ function App() {
         updateTreatment,
         deleteTreatment,
         moveTreatment,
+        addStep,
+        updateStep,
+        deleteStep,
         changeTreatmentOption,
         clearAllConditions,
         clearAllSchedules
@@ -585,6 +589,7 @@ function App() {
                     onClose={() => setShowSettings(false)}
                     conditions={conditions}
                     treatmentRules={treatmentRules}
+                    stepMaster={stepMaster}
                     onAddCondition={addCondition}
                     onUpdateCondition={updateCondition}
                     onDeleteCondition={deleteCondition}
@@ -592,6 +597,9 @@ function App() {
                     onUpdateTreatment={updateTreatment}
                     onDeleteTreatment={deleteTreatment}
                     onMoveTreatment={moveTreatment}
+                    onAddStep={addStep}
+                    onUpdateStep={updateStep}
+                    onDeleteStep={deleteStep}
                     autoScheduleEnabled={autoScheduleEnabled}
                     onAutoScheduleChange={setAutoScheduleEnabled}
                     aiPrompt={aiPrompt}
