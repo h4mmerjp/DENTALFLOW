@@ -6,7 +6,8 @@ export default function WorkflowBoard({
     treatmentSchedule,
     canDrag,
     onDragStart,
-    onChangeTreatment
+    onChangeTreatment,
+    getConditionInfo
 }) {
     const assignedIds = new Set();
     treatmentSchedule.forEach(day => {
@@ -57,6 +58,7 @@ export default function WorkflowBoard({
                         canDrag={canDrag(activeCard)}
                         onDragStart={onDragStart}
                         onChangeTreatment={onChangeTreatment}
+                        getConditionInfo={getConditionInfo}
                     />
                 </div>
 

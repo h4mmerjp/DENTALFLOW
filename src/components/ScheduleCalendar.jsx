@@ -10,7 +10,8 @@ export default function ScheduleCalendar({
     onAddDay,
     onDragStart,
     onChangeTreatment,
-    autoScheduleEnabled
+    autoScheduleEnabled,
+    getConditionInfo
 }) {
     return (
         <div className="bg-white rounded-lg shadow-md p-6">
@@ -64,6 +65,7 @@ export default function ScheduleCalendar({
                                             canDrag={true}
                                             onDragStart={onDragStart}
                                             onChangeTreatment={onChangeTreatment}
+                                            getConditionInfo={getConditionInfo}
                                         />
                                     )}
                                 </div>
