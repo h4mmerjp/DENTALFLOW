@@ -25,8 +25,8 @@ export function useTreatmentWorkflow() {
 
     // 排他的病名ルール（同じ歯に同時につけられない病名の組み合わせ）
     const [exclusiveRules, setExclusiveRules] = useLocalStorage('exclusiveRules', [
-        ['C1', 'C2'],  // C1とC2は同時につけられない
-        ['P1', 'P2']   // P1とP2は同時につけられない
+        ['C1', 'C2', 'C3', 'C4'],  // C1〜C4は同時につけられない（う蝕の進行度）
+        ['P1', 'P2']                // P1とP2は同時につけられない（歯周病の重症度）
     ]);
 
     const getConditionInfo = (code) => {

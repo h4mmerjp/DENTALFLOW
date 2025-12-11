@@ -41,6 +41,7 @@ export default function SettingsModal({
         name: '',
         steps: ['']
     });
+    const [selectedExclusiveConditions, setSelectedExclusiveConditions] = useState([]);
 
     if (!isOpen) return null;
 
@@ -327,7 +328,8 @@ export default function SettingsModal({
                         🚫 排他的病名ルール設定
                     </h3>
                     <p className="text-sm text-orange-700 mb-4">
-                        同じ歯に同時につけられない病名の組み合わせを設定します（例：C1とC2、P1とP2）
+                        同じ歯に同時につけられない病名の組み合わせを設定します<br />
+                        <span className="text-xs">例：C1⇄C2⇄C3⇄C4（複数）、欠損⇄C1、P1（1対複数）</span>
                     </p>
 
                     <div className="space-y-3">
@@ -361,56 +363,90 @@ export default function SettingsModal({
 
                         {/* 新規ルール追加 */}
                         <div className="p-3 bg-white border-2 border-dashed border-orange-300 rounded">
-                            <div className="text-sm font-medium text-orange-800 mb-2">新しいルールを追加</div>
+                            <div className="text-sm font-medium text-orange-800 mb-2">新しいルールを追加（複数選択可）</div>
+
+                            {/* 選択中の病名表示 */}
+                            {selectedExclusiveConditions.length > 0 && (
+                                <div className="mb-3 p-2 bg-orange-50 rounded">
+                                    <div className="text-xs text-orange-700 mb-1">選択中の病名:</div>
+                                    <div className="flex flex-wrap gap-1">
+                                        {selectedExclusiveConditions.map(code => {
+                                            const condition = conditions.find(c => c.code === code);
+                                            return (
+                                                <span key={code} className={`px-2 py-1 rounded text-xs ${condition?.color || 'bg-gray-100'} flex items-center gap-1`}>
+                                                    {condition?.symbol || code}
+                                                    <button
+                                                        onClick={() => setSelectedExclusiveConditions(prev => prev.filter(c => c !== code))}
+                                                        className="text-red-600 hover:text-red-800 ml-1"
+                                                    >
+                                                        ×
+                                                    </button>
+                                                </span>
+                                            );
+                                        })}
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* 病名選択チェックボックス */}
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3 max-h-48 overflow-y-auto p-2 border border-orange-200 rounded">
+                                {conditions.map(condition => (
+                                    <label
+                                        key={condition.code}
+                                        className={`flex items-center gap-2 p-2 rounded cursor-pointer transition-colors ${
+                                            selectedExclusiveConditions.includes(condition.code)
+                                                ? `${condition.color} ring-2 ring-orange-500`
+                                                : 'hover:bg-orange-50'
+                                        }`}
+                                    >
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedExclusiveConditions.includes(condition.code)}
+                                            onChange={(e) => {
+                                                if (e.target.checked) {
+                                                    setSelectedExclusiveConditions(prev => [...prev, condition.code]);
+                                                } else {
+                                                    setSelectedExclusiveConditions(prev => prev.filter(c => c !== condition.code));
+                                                }
+                                            }}
+                                            className="rounded"
+                                        />
+                                        <span className="text-xs">{condition.symbol}</span>
+                                    </label>
+                                ))}
+                            </div>
+
                             <div className="flex gap-2">
-                                <select
-                                    id="exclusive-condition1"
-                                    className="flex-1 px-3 py-2 border border-orange-300 rounded text-sm"
-                                    defaultValue=""
-                                >
-                                    <option value="">病名1を選択</option>
-                                    {conditions.map(c => (
-                                        <option key={c.code} value={c.code}>{c.symbol} - {c.name}</option>
-                                    ))}
-                                </select>
-                                <span className="flex items-center text-orange-600">⇄</span>
-                                <select
-                                    id="exclusive-condition2"
-                                    className="flex-1 px-3 py-2 border border-orange-300 rounded text-sm"
-                                    defaultValue=""
-                                >
-                                    <option value="">病名2を選択</option>
-                                    {conditions.map(c => (
-                                        <option key={c.code} value={c.code}>{c.symbol} - {c.name}</option>
-                                    ))}
-                                </select>
                                 <button
                                     onClick={() => {
-                                        const select1 = document.getElementById('exclusive-condition1');
-                                        const select2 = document.getElementById('exclusive-condition2');
-                                        const code1 = select1.value;
-                                        const code2 = select2.value;
+                                        if (selectedExclusiveConditions.length < 2) {
+                                            alert('2つ以上の病名を選択してください。');
+                                            return;
+                                        }
 
-                                        if (code1 && code2 && code1 !== code2) {
-                                            // 既に同じルールがないかチェック
-                                            const isDuplicate = exclusiveRules.some(rule =>
-                                                (rule.includes(code1) && rule.includes(code2))
-                                            );
+                                        // 既に同じルールがないかチェック
+                                        const isDuplicate = exclusiveRules.some(rule => {
+                                            // 同じ病名の組み合わせかチェック
+                                            if (rule.length !== selectedExclusiveConditions.length) return false;
+                                            return selectedExclusiveConditions.every(code => rule.includes(code));
+                                        });
 
-                                            if (!isDuplicate) {
-                                                onExclusiveRulesChange([...exclusiveRules, [code1, code2]]);
-                                                select1.value = '';
-                                                select2.value = '';
-                                            } else {
-                                                alert('このルールは既に設定されています。');
-                                            }
+                                        if (!isDuplicate) {
+                                            onExclusiveRulesChange([...exclusiveRules, [...selectedExclusiveConditions]]);
+                                            setSelectedExclusiveConditions([]);
                                         } else {
-                                            alert('異なる2つの病名を選択してください。');
+                                            alert('このルールは既に設定されています。');
                                         }
                                     }}
-                                    className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 text-sm"
+                                    className="flex-1 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 text-sm font-medium"
                                 >
-                                    追加
+                                    ルールを追加 ({selectedExclusiveConditions.length}個選択中)
+                                </button>
+                                <button
+                                    onClick={() => setSelectedExclusiveConditions([])}
+                                    className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm"
+                                >
+                                    クリア
                                 </button>
                             </div>
                         </div>
@@ -419,7 +455,8 @@ export default function SettingsModal({
                     <div className="mt-3 text-xs text-orange-700 bg-orange-100 p-3 rounded">
                         <p className="font-medium mb-1">💡 排他的病名ルールについて</p>
                         <ul className="list-disc list-inside space-y-1">
-                            <li>設定したルールにより、同じ歯に矛盾する病名を同時につけられなくなります</li>
+                            <li>複数の病名を選択して、それらが互いに排他的であることを設定できます</li>
+                            <li>2つ以上の病名を選択してルールを追加してください（制限なし）</li>
                             <li>排他的な病名を追加しようとすると、確認ダイアログが表示されます</li>
                             <li>既存の病名を削除して新しい病名を設定するか選択できます</li>
                         </ul>
