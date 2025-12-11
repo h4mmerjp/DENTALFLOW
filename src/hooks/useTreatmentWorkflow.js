@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { defaultConditions } from '../data/conditions';
 import { defaultTreatmentRules } from '../data/treatments';
+import { useLocalStorage } from './useLocalStorage';
 
 export function useTreatmentWorkflow() {
     const [toothConditions, setToothConditions] = useState({});
@@ -9,12 +10,12 @@ export function useTreatmentWorkflow() {
     const [selectedTreatmentOptions, setSelectedTreatmentOptions] = useState({});
     const [conditions, setConditions] = useState(defaultConditions);
     const [treatmentRules, setTreatmentRules] = useState(defaultTreatmentRules);
-    const [autoScheduleEnabled, setAutoScheduleEnabled] = useState(true);
-    const [aiPrompt, setAiPrompt] = useState('患者の痛みを最優先に、急性症状から治療してください。根管治療は週1回ペース、補綴物は2週間隔で進めてください。');
+    const [autoScheduleEnabled, setAutoScheduleEnabled] = useLocalStorage('autoScheduleEnabled', true);
+    const [aiPrompt, setAiPrompt] = useLocalStorage('aiPrompt', '患者の痛みを最優先に、急性症状から治療してください。根管治療は週1回ペース、補綴物は2週間隔で進めてください。');
     const [isGeneratingWorkflow, setIsGeneratingWorkflow] = useState(false);
 
     // ルールベース自動配置の設定
-    const [schedulingRules, setSchedulingRules] = useState({
+    const [schedulingRules, setSchedulingRules] = useLocalStorage('schedulingRules', {
         priorityOrder: ['per', 'pul', 'C4', 'C3', 'C2', 'P2', 'P1', 'C1'], // 優先順位
         maxTreatmentsPerDay: 3, // 1日の最大治療数
         acuteCareConditions: ['per', 'pul', 'C4'], // 急性症状として扱う病名
@@ -22,8 +23,33 @@ export function useTreatmentWorkflow() {
         scheduleIntervalDays: 7 // スケジュール間隔（日数）
     });
 
+    // 排他的病名ルール（同じ歯に同時につけられない病名の組み合わせ）
+    const [exclusiveRules, setExclusiveRules] = useLocalStorage('exclusiveRules', [
+        ['C1', 'C2'],  // C1とC2は同時につけられない
+        ['P1', 'P2']   // P1とP2は同時につけられない
+    ]);
+
     const getConditionInfo = (code) => {
         return conditions.find(c => c.code === code) || null;
+    };
+
+    // 排他的病名ルールをチェック
+    const checkExclusiveRules = (conditionCode, currentConditions) => {
+        // 追加しようとしている病名と排他関係にある病名を見つける
+        const conflictingConditions = [];
+
+        exclusiveRules.forEach(rule => {
+            if (rule.includes(conditionCode)) {
+                // このルールに該当する場合、他の病名をチェック
+                rule.forEach(ruleCode => {
+                    if (ruleCode !== conditionCode && currentConditions.includes(ruleCode)) {
+                        conflictingConditions.push(ruleCode);
+                    }
+                });
+            }
+        });
+
+        return conflictingConditions;
     };
 
     const addCondition = (newCondition) => {
@@ -422,6 +448,15 @@ export function useTreatmentWorkflow() {
         }]);
     };
 
+    // スケジュールを一括リセット（スケジュール枠は残す）
+    const clearAllSchedules = () => {
+        const clearedSchedule = treatmentSchedule.map(day => ({
+            date: day.date,
+            treatments: []
+        }));
+        setTreatmentSchedule(clearedSchedule);
+    };
+
     return {
         toothConditions,
         setToothConditions,
@@ -439,7 +474,10 @@ export function useTreatmentWorkflow() {
         isGeneratingWorkflow,
         schedulingRules,
         setSchedulingRules,
+        exclusiveRules,
+        setExclusiveRules,
         getConditionInfo,
+        checkExclusiveRules,
         generateTreatmentNodes,
         executeAutoScheduling,
         canDropCard,
@@ -454,6 +492,7 @@ export function useTreatmentWorkflow() {
         moveTreatment,
         moveTreatment,
         changeTreatmentOption,
-        clearAllConditions
+        clearAllConditions,
+        clearAllSchedules
     };
 }

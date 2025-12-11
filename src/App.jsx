@@ -30,7 +30,10 @@ function App() {
         isGeneratingWorkflow,
         schedulingRules,
         setSchedulingRules,
+        exclusiveRules,
+        setExclusiveRules,
         getConditionInfo,
+        checkExclusiveRules,
         generateTreatmentNodes,
         executeAutoScheduling,
         isCardAvailableForDrag,
@@ -43,7 +46,8 @@ function App() {
         deleteTreatment,
         moveTreatment,
         changeTreatmentOption,
-        clearAllConditions
+        clearAllConditions,
+        clearAllSchedules
     } = useTreatmentWorkflow();
 
     // 病名が変更されたら自動的に治療ノードを生成
@@ -79,11 +83,31 @@ function App() {
         } else if (selectedTooth) {
             setToothConditions(prev => {
                 const currentConditions = prev[selectedTooth] || [];
+
+                // 排他ルールのチェック
+                const conflictingConditions = checkExclusiveRules(conditionCode, currentConditions);
+
                 let newConditions;
                 if (currentConditions.includes(conditionCode)) {
+                    // 既に選択されている場合は削除
                     newConditions = currentConditions.filter(c => c !== conditionCode);
                 } else {
-                    newConditions = [...currentConditions, conditionCode];
+                    // 排他的な病名がある場合は警告
+                    if (conflictingConditions.length > 0) {
+                        const conflictNames = conflictingConditions.map(code => getConditionInfo(code)?.name || code).join('、');
+                        const confirmMessage = `この歯には既に「${conflictNames}」が設定されています。\n排他的な病名のため、既存の病名を削除して「${getConditionInfo(conditionCode)?.name}」を設定しますか？`;
+
+                        if (!window.confirm(confirmMessage)) {
+                            return prev; // キャンセルされた場合は変更なし
+                        }
+
+                        // 既存の排他的病名を削除して新しい病名を追加
+                        newConditions = currentConditions.filter(c => !conflictingConditions.includes(c));
+                        newConditions.push(conditionCode);
+                    } else {
+                        // 競合がない場合は通常通り追加
+                        newConditions = [...currentConditions, conditionCode];
+                    }
                 }
 
                 if (newConditions.length === 0) {
@@ -103,6 +127,51 @@ function App() {
     // 病名優先モードで歯をクリックしたときの処理
     const handleToothClickForCondition = (toothNumber) => {
         if (conditionFirstMode && selectedCondition) {
+            // 歯をクリックした瞬間に病名を適用/削除（トグル）
+            setToothConditions(prev => {
+                const currentConditions = prev[toothNumber] || [];
+
+                // 排他ルールのチェック
+                const conflictingConditions = checkExclusiveRules(selectedCondition, currentConditions);
+
+                let newConditions;
+
+                if (currentConditions.includes(selectedCondition)) {
+                    // 既に同じ病名がある場合は削除
+                    newConditions = currentConditions.filter(c => c !== selectedCondition);
+                } else {
+                    // 排他的な病名がある場合は警告
+                    if (conflictingConditions.length > 0) {
+                        const conflictNames = conflictingConditions.map(code => getConditionInfo(code)?.name || code).join('、');
+                        const confirmMessage = `歯番${toothNumber}には既に「${conflictNames}」が設定されています。\n排他的な病名のため、既存の病名を削除して「${getConditionInfo(selectedCondition)?.name}」を設定しますか？`;
+
+                        if (!window.confirm(confirmMessage)) {
+                            return prev; // キャンセルされた場合は変更なし
+                        }
+
+                        // 既存の排他的病名を削除して新しい病名を追加
+                        newConditions = currentConditions.filter(c => !conflictingConditions.includes(c));
+                        newConditions.push(selectedCondition);
+                    } else {
+                        // 競合がない場合は通常通り追加
+                        newConditions = [...currentConditions, selectedCondition];
+                    }
+                }
+
+                if (newConditions.length === 0) {
+                    // 病名がなくなった場合は歯ごと削除
+                    const newState = { ...prev };
+                    delete newState[toothNumber];
+                    return newState;
+                }
+
+                return {
+                    ...prev,
+                    [toothNumber]: newConditions
+                };
+            });
+
+            // ハイライト表示用に選択状態を更新（視覚的フィードバック）
             setSelectedTeethForCondition(prev => {
                 if (prev.includes(toothNumber)) {
                     return prev.filter(t => t !== toothNumber);
@@ -112,23 +181,6 @@ function App() {
             });
         } else {
             handleToothClick(toothNumber);
-        }
-    };
-
-    // 病名優先モードで選択した歯に一括適用
-    const applyConditionToSelectedTeeth = () => {
-        if (selectedCondition && selectedTeethForCondition.length > 0) {
-            setToothConditions(prev => {
-                const newState = { ...prev };
-                selectedTeethForCondition.forEach(tooth => {
-                    const currentConditions = newState[tooth] || [];
-                    if (!currentConditions.includes(selectedCondition)) {
-                        newState[tooth] = [...currentConditions, selectedCondition];
-                    }
-                });
-                return newState;
-            });
-            setSelectedTeethForCondition([]);
         }
     };
 
@@ -319,9 +371,43 @@ function App() {
                             </div>
                         </div>
 
+                        {/* 歯式図 */}
+                        <ToothChart
+                            toothConditions={toothConditions}
+                            selectedTooth={conditionFirstMode ? null : selectedTooth}
+                            onToothClick={handleToothClickForCondition}
+                            getConditionInfo={getConditionInfo}
+                            highlightedTeeth={conditionFirstMode ? selectedTeethForCondition : []}
+                        />
+
+                        {/* すべてクリアボタン（常に表示） */}
+                        <div className="mt-4 mb-4">
+                            <button
+                                onClick={() => {
+                                    if (Object.keys(toothConditions).length === 0) return;
+                                    const confirmed = window.confirm('設定済みの病名をすべて削除しますか？\nこの操作は取り消せません。');
+                                    if (confirmed) {
+                                        clearAllConditions();
+                                        setSelectedTooth(null);
+                                        setBulkConditionMode(false);
+                                        resetConditionFirstMode();
+                                    }
+                                }}
+                                disabled={Object.keys(toothConditions).length === 0}
+                                className={`w-full px-4 py-2 rounded-lg transition-colors font-medium flex items-center justify-center gap-2 ${
+                                    Object.keys(toothConditions).length === 0
+                                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                        : 'bg-red-500 text-white hover:bg-red-600'
+                                }`}
+                            >
+                                🗑️ すべての病名をクリア
+                                {Object.keys(toothConditions).length > 0 && `（${Object.keys(toothConditions).length}件）`}
+                            </button>
+                        </div>
+
                         {/* 病名優先モードのUI */}
                         {conditionFirstMode && (
-                            <div className="mb-4 p-4 bg-green-50 border-2 border-green-300 rounded-lg">
+                            <div className="mt-4 mb-4 p-4 bg-green-50 border-2 border-green-300 rounded-lg">
                                 <h3 className="font-bold text-green-900 mb-3">
                                     病名優先モード - {selectedCondition
                                         ? `「${getConditionInfo(selectedCondition)?.name}」を選択中`
@@ -347,24 +433,22 @@ function App() {
                                 {selectedCondition && (
                                     <>
                                         <div className="text-sm text-green-700 mb-2">
-                                            下の歯式図で適用したい歯をクリックしてください（複数選択可）
+                                            💡 上の歯式図で歯をクリックすると即座に病名が適用されます
+                                        </div>
+                                        <div className="text-xs text-green-600 mb-2">
+                                            • もう一度クリックすると病名が削除されます<br />
+                                            • 別の病名を選んで、そのまま歯をクリックできます
                                         </div>
                                         {selectedTeethForCondition.length > 0 && (
-                                            <div className="flex items-center gap-2 mb-3">
-                                                <span className="text-sm font-medium">
-                                                    選択中の歯: {selectedTeethForCondition.sort((a, b) => a - b).join(', ')}
+                                            <div className="flex items-center gap-2 mb-3 p-2 bg-green-100 rounded">
+                                                <span className="text-sm font-medium text-green-800">
+                                                    ✓ 適用済みの歯: {selectedTeethForCondition.sort((a, b) => a - b).join(', ')}
                                                 </span>
                                                 <button
-                                                    onClick={applyConditionToSelectedTeeth}
-                                                    className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors text-sm font-bold"
-                                                >
-                                                    ✓ 一括適用
-                                                </button>
-                                                <button
                                                     onClick={() => setSelectedTeethForCondition([])}
-                                                    className="px-3 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 transition-colors text-sm"
+                                                    className="px-3 py-1 bg-white text-gray-700 rounded hover:bg-gray-100 transition-colors text-xs border border-green-300"
                                                 >
-                                                    選択クリア
+                                                    表示クリア
                                                 </button>
                                             </div>
                                         )}
@@ -379,15 +463,6 @@ function App() {
                                 </button>
                             </div>
                         )}
-
-                        {/* 歯式図 */}
-                        <ToothChart
-                            toothConditions={toothConditions}
-                            selectedTooth={conditionFirstMode ? null : selectedTooth}
-                            onToothClick={handleToothClickForCondition}
-                            getConditionInfo={getConditionInfo}
-                            highlightedTeeth={conditionFirstMode ? selectedTeethForCondition : []}
-                        />
 
                         {/* 病名選択 */}
                         {!conditionFirstMode && (selectedTooth || bulkConditionMode) && (
@@ -474,27 +549,13 @@ function App() {
                                                 );
                                             })}
                                         </div>
-        
-                                        <div className="mt-3 flex gap-2">
+
+                                        <div className="mt-3">
                                             <button
                                                 onClick={() => setBulkConditionMode(true)}
                                                 className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded text-xs hover:bg-yellow-200 transition-colors"
                                             >
                                                 + 歯番号なしで病名追加
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    const confirmed = window.confirm('設定済みの病名をすべて削除しますか？\nこの操作は取り消せません。');
-                                                    if (confirmed) {
-                                                        clearAllConditions();
-                                                        setSelectedTooth(null);
-                                                        setBulkConditionMode(false);
-                                                        resetConditionFirstMode();
-                                                    }
-                                                }}
-                                                className="px-3 py-1 bg-red-100 text-red-800 rounded text-xs hover:bg-red-200 transition-colors"
-                                            >
-                                                🗑️ すべてクリア
                                             </button>
                                         </div>
                                     </>
@@ -527,6 +588,7 @@ function App() {
                             onChangeTreatment={handleChangeTreatment}
                             autoScheduleEnabled={autoScheduleEnabled}
                             getConditionInfo={getConditionInfo}
+                            onClearAllSchedules={clearAllSchedules}
                         />
                     )}
                 </div>
@@ -548,6 +610,8 @@ function App() {
                     onAiPromptChange={setAiPrompt}
                     schedulingRules={schedulingRules}
                     onSchedulingRulesChange={setSchedulingRules}
+                    exclusiveRules={exclusiveRules}
+                    onExclusiveRulesChange={setExclusiveRules}
                 />
             </div>
         </div>

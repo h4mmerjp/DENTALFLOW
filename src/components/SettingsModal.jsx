@@ -26,7 +26,9 @@ export default function SettingsModal({
     aiPrompt,
     onAiPromptChange,
     schedulingRules,
-    onSchedulingRulesChange
+    onSchedulingRulesChange,
+    exclusiveRules,
+    onExclusiveRulesChange
 }) {
     const [newCondition, setNewCondition] = useState({
         code: '',
@@ -317,6 +319,111 @@ export default function SettingsModal({
                             💡 例：インレーの「印象採得」を第1回目に配置すると、「セット」が自動的に第2回目に配置されます
                         </div>
                     )}
+                </div>
+
+                {/* 排他的病名ルール設定 */}
+                <div className="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
+                    <h3 className="text-lg font-bold text-orange-900 mb-3 flex items-center gap-2">
+                        🚫 排他的病名ルール設定
+                    </h3>
+                    <p className="text-sm text-orange-700 mb-4">
+                        同じ歯に同時につけられない病名の組み合わせを設定します（例：C1とC2、P1とP2）
+                    </p>
+
+                    <div className="space-y-3">
+                        {exclusiveRules.map((rule, index) => (
+                            <div key={index} className="flex items-center gap-2 p-3 bg-white border border-orange-200 rounded">
+                                <span className="text-sm font-medium text-gray-500 w-6">{index + 1}.</span>
+                                <div className="flex-1 flex items-center gap-2">
+                                    {rule.map((code, codeIndex) => {
+                                        const condition = conditions.find(c => c.code === code);
+                                        return (
+                                            <React.Fragment key={code}>
+                                                {codeIndex > 0 && <span className="text-gray-400">⇄</span>}
+                                                <span className={`px-3 py-1 rounded text-sm ${condition?.color || 'bg-gray-100'}`}>
+                                                    {condition?.symbol || code}
+                                                </span>
+                                            </React.Fragment>
+                                        );
+                                    })}
+                                </div>
+                                <button
+                                    onClick={() => {
+                                        const newRules = exclusiveRules.filter((_, i) => i !== index);
+                                        onExclusiveRulesChange(newRules);
+                                    }}
+                                    className="px-2 py-1 text-xs text-red-600 hover:text-red-800"
+                                >
+                                    削除
+                                </button>
+                            </div>
+                        ))}
+
+                        {/* 新規ルール追加 */}
+                        <div className="p-3 bg-white border-2 border-dashed border-orange-300 rounded">
+                            <div className="text-sm font-medium text-orange-800 mb-2">新しいルールを追加</div>
+                            <div className="flex gap-2">
+                                <select
+                                    id="exclusive-condition1"
+                                    className="flex-1 px-3 py-2 border border-orange-300 rounded text-sm"
+                                    defaultValue=""
+                                >
+                                    <option value="">病名1を選択</option>
+                                    {conditions.map(c => (
+                                        <option key={c.code} value={c.code}>{c.symbol} - {c.name}</option>
+                                    ))}
+                                </select>
+                                <span className="flex items-center text-orange-600">⇄</span>
+                                <select
+                                    id="exclusive-condition2"
+                                    className="flex-1 px-3 py-2 border border-orange-300 rounded text-sm"
+                                    defaultValue=""
+                                >
+                                    <option value="">病名2を選択</option>
+                                    {conditions.map(c => (
+                                        <option key={c.code} value={c.code}>{c.symbol} - {c.name}</option>
+                                    ))}
+                                </select>
+                                <button
+                                    onClick={() => {
+                                        const select1 = document.getElementById('exclusive-condition1');
+                                        const select2 = document.getElementById('exclusive-condition2');
+                                        const code1 = select1.value;
+                                        const code2 = select2.value;
+
+                                        if (code1 && code2 && code1 !== code2) {
+                                            // 既に同じルールがないかチェック
+                                            const isDuplicate = exclusiveRules.some(rule =>
+                                                (rule.includes(code1) && rule.includes(code2))
+                                            );
+
+                                            if (!isDuplicate) {
+                                                onExclusiveRulesChange([...exclusiveRules, [code1, code2]]);
+                                                select1.value = '';
+                                                select2.value = '';
+                                            } else {
+                                                alert('このルールは既に設定されています。');
+                                            }
+                                        } else {
+                                            alert('異なる2つの病名を選択してください。');
+                                        }
+                                    }}
+                                    className="px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 text-sm"
+                                >
+                                    追加
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-3 text-xs text-orange-700 bg-orange-100 p-3 rounded">
+                        <p className="font-medium mb-1">💡 排他的病名ルールについて</p>
+                        <ul className="list-disc list-inside space-y-1">
+                            <li>設定したルールにより、同じ歯に矛盾する病名を同時につけられなくなります</li>
+                            <li>排他的な病名を追加しようとすると、確認ダイアログが表示されます</li>
+                            <li>既存の病名を削除して新しい病名を設定するか選択できます</li>
+                        </ul>
+                    </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
