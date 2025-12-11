@@ -339,6 +339,31 @@ function App() {
                             highlightedTeeth={conditionFirstMode ? selectedTeethForCondition : []}
                         />
 
+                        {/* すべてクリアボタン（常に表示） */}
+                        <div className="mt-4 mb-4">
+                            <button
+                                onClick={() => {
+                                    if (Object.keys(toothConditions).length === 0) return;
+                                    const confirmed = window.confirm('設定済みの病名をすべて削除しますか？\nこの操作は取り消せません。');
+                                    if (confirmed) {
+                                        clearAllConditions();
+                                        setSelectedTooth(null);
+                                        setBulkConditionMode(false);
+                                        resetConditionFirstMode();
+                                    }
+                                }}
+                                disabled={Object.keys(toothConditions).length === 0}
+                                className={`w-full px-4 py-2 rounded-lg transition-colors font-medium flex items-center justify-center gap-2 ${
+                                    Object.keys(toothConditions).length === 0
+                                        ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                                        : 'bg-red-500 text-white hover:bg-red-600'
+                                }`}
+                            >
+                                🗑️ すべての病名をクリア
+                                {Object.keys(toothConditions).length > 0 && `（${Object.keys(toothConditions).length}件）`}
+                            </button>
+                        </div>
+
                         {/* 病名優先モードのUI */}
                         {conditionFirstMode && (
                             <div className="mt-4 mb-4 p-4 bg-green-50 border-2 border-green-300 rounded-lg">
@@ -394,26 +419,6 @@ function App() {
                                     className="text-sm text-green-700 underline hover:text-green-900"
                                 >
                                     病名優先モードを終了
-                                </button>
-                            </div>
-                        )}
-
-                        {/* すべてクリアボタン */}
-                        {Object.keys(toothConditions).length > 0 && (
-                            <div className="mb-4">
-                                <button
-                                    onClick={() => {
-                                        const confirmed = window.confirm('設定済みの病名をすべて削除しますか？\nこの操作は取り消せません。');
-                                        if (confirmed) {
-                                            clearAllConditions();
-                                            setSelectedTooth(null);
-                                            setBulkConditionMode(false);
-                                            resetConditionFirstMode();
-                                        }
-                                    }}
-                                    className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium flex items-center justify-center gap-2"
-                                >
-                                    🗑️ すべての病名をクリア（{Object.keys(toothConditions).length}件）
                                 </button>
                             </div>
                         )}
