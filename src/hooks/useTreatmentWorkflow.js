@@ -23,8 +23,33 @@ export function useTreatmentWorkflow() {
         scheduleIntervalDays: 7 // スケジュール間隔（日数）
     });
 
+    // 排他的病名ルール（同じ歯に同時につけられない病名の組み合わせ）
+    const [exclusiveRules, setExclusiveRules] = useLocalStorage('exclusiveRules', [
+        ['C1', 'C2'],  // C1とC2は同時につけられない
+        ['P1', 'P2']   // P1とP2は同時につけられない
+    ]);
+
     const getConditionInfo = (code) => {
         return conditions.find(c => c.code === code) || null;
+    };
+
+    // 排他的病名ルールをチェック
+    const checkExclusiveRules = (conditionCode, currentConditions) => {
+        // 追加しようとしている病名と排他関係にある病名を見つける
+        const conflictingConditions = [];
+
+        exclusiveRules.forEach(rule => {
+            if (rule.includes(conditionCode)) {
+                // このルールに該当する場合、他の病名をチェック
+                rule.forEach(ruleCode => {
+                    if (ruleCode !== conditionCode && currentConditions.includes(ruleCode)) {
+                        conflictingConditions.push(ruleCode);
+                    }
+                });
+            }
+        });
+
+        return conflictingConditions;
     };
 
     const addCondition = (newCondition) => {
@@ -449,7 +474,10 @@ export function useTreatmentWorkflow() {
         isGeneratingWorkflow,
         schedulingRules,
         setSchedulingRules,
+        exclusiveRules,
+        setExclusiveRules,
         getConditionInfo,
+        checkExclusiveRules,
         generateTreatmentNodes,
         executeAutoScheduling,
         canDropCard,

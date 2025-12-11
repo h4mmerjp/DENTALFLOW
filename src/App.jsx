@@ -30,7 +30,10 @@ function App() {
         isGeneratingWorkflow,
         schedulingRules,
         setSchedulingRules,
+        exclusiveRules,
+        setExclusiveRules,
         getConditionInfo,
+        checkExclusiveRules,
         generateTreatmentNodes,
         executeAutoScheduling,
         isCardAvailableForDrag,
@@ -80,11 +83,31 @@ function App() {
         } else if (selectedTooth) {
             setToothConditions(prev => {
                 const currentConditions = prev[selectedTooth] || [];
+
+                // 排他ルールのチェック
+                const conflictingConditions = checkExclusiveRules(conditionCode, currentConditions);
+
                 let newConditions;
                 if (currentConditions.includes(conditionCode)) {
+                    // 既に選択されている場合は削除
                     newConditions = currentConditions.filter(c => c !== conditionCode);
                 } else {
-                    newConditions = [...currentConditions, conditionCode];
+                    // 排他的な病名がある場合は警告
+                    if (conflictingConditions.length > 0) {
+                        const conflictNames = conflictingConditions.map(code => getConditionInfo(code)?.name || code).join('、');
+                        const confirmMessage = `この歯には既に「${conflictNames}」が設定されています。\n排他的な病名のため、既存の病名を削除して「${getConditionInfo(conditionCode)?.name}」を設定しますか？`;
+
+                        if (!window.confirm(confirmMessage)) {
+                            return prev; // キャンセルされた場合は変更なし
+                        }
+
+                        // 既存の排他的病名を削除して新しい病名を追加
+                        newConditions = currentConditions.filter(c => !conflictingConditions.includes(c));
+                        newConditions.push(conditionCode);
+                    } else {
+                        // 競合がない場合は通常通り追加
+                        newConditions = [...currentConditions, conditionCode];
+                    }
                 }
 
                 if (newConditions.length === 0) {
@@ -107,14 +130,32 @@ function App() {
             // 歯をクリックした瞬間に病名を適用/削除（トグル）
             setToothConditions(prev => {
                 const currentConditions = prev[toothNumber] || [];
+
+                // 排他ルールのチェック
+                const conflictingConditions = checkExclusiveRules(selectedCondition, currentConditions);
+
                 let newConditions;
 
                 if (currentConditions.includes(selectedCondition)) {
                     // 既に同じ病名がある場合は削除
                     newConditions = currentConditions.filter(c => c !== selectedCondition);
                 } else {
-                    // 病名を追加
-                    newConditions = [...currentConditions, selectedCondition];
+                    // 排他的な病名がある場合は警告
+                    if (conflictingConditions.length > 0) {
+                        const conflictNames = conflictingConditions.map(code => getConditionInfo(code)?.name || code).join('、');
+                        const confirmMessage = `歯番${toothNumber}には既に「${conflictNames}」が設定されています。\n排他的な病名のため、既存の病名を削除して「${getConditionInfo(selectedCondition)?.name}」を設定しますか？`;
+
+                        if (!window.confirm(confirmMessage)) {
+                            return prev; // キャンセルされた場合は変更なし
+                        }
+
+                        // 既存の排他的病名を削除して新しい病名を追加
+                        newConditions = currentConditions.filter(c => !conflictingConditions.includes(c));
+                        newConditions.push(selectedCondition);
+                    } else {
+                        // 競合がない場合は通常通り追加
+                        newConditions = [...currentConditions, selectedCondition];
+                    }
                 }
 
                 if (newConditions.length === 0) {
@@ -569,6 +610,8 @@ function App() {
                     onAiPromptChange={setAiPrompt}
                     schedulingRules={schedulingRules}
                     onSchedulingRulesChange={setSchedulingRules}
+                    exclusiveRules={exclusiveRules}
+                    onExclusiveRulesChange={setExclusiveRules}
                 />
             </div>
         </div>
