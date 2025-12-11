@@ -330,6 +330,26 @@ function App() {
                             </div>
                         </div>
 
+                        {/* すべてクリアボタン */}
+                        {Object.keys(toothConditions).length > 0 && (
+                            <div className="mb-4">
+                                <button
+                                    onClick={() => {
+                                        const confirmed = window.confirm('設定済みの病名をすべて削除しますか？\nこの操作は取り消せません。');
+                                        if (confirmed) {
+                                            clearAllConditions();
+                                            setSelectedTooth(null);
+                                            setBulkConditionMode(false);
+                                            resetConditionFirstMode();
+                                        }
+                                    }}
+                                    className="w-full px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium flex items-center justify-center gap-2"
+                                >
+                                    🗑️ すべての病名をクリア（{Object.keys(toothConditions).length}件）
+                                </button>
+                            </div>
+                        )}
+
                         {/* 病名優先モードのUI */}
                         {conditionFirstMode && (
                             <div className="mb-4 p-4 bg-green-50 border-2 border-green-300 rounded-lg">
@@ -483,27 +503,13 @@ function App() {
                                                 );
                                             })}
                                         </div>
-        
-                                        <div className="mt-3 flex gap-2">
+
+                                        <div className="mt-3">
                                             <button
                                                 onClick={() => setBulkConditionMode(true)}
                                                 className="px-3 py-1 bg-yellow-100 text-yellow-800 rounded text-xs hover:bg-yellow-200 transition-colors"
                                             >
                                                 + 歯番号なしで病名追加
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    const confirmed = window.confirm('設定済みの病名をすべて削除しますか？\nこの操作は取り消せません。');
-                                                    if (confirmed) {
-                                                        clearAllConditions();
-                                                        setSelectedTooth(null);
-                                                        setBulkConditionMode(false);
-                                                        resetConditionFirstMode();
-                                                    }
-                                                }}
-                                                className="px-3 py-1 bg-red-100 text-red-800 rounded text-xs hover:bg-red-200 transition-colors"
-                                            >
-                                                🗑️ すべてクリア
                                             </button>
                                         </div>
                                     </>
