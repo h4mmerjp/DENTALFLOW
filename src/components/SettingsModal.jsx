@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { ChevronDown, ChevronRight } from 'lucide-react';
 
 const colorOptions = [
     { value: 'bg-yellow-100 border-yellow-400 text-yellow-800', label: '黄色' },
@@ -17,8 +18,10 @@ export default function SettingsModal({
     conditions,
     treatmentRules,
     onAddCondition,
+    onUpdateCondition,
     onDeleteCondition,
     onAddTreatment,
+    onUpdateTreatment,
     onDeleteTreatment,
     onMoveTreatment,
     autoScheduleEnabled,
@@ -45,6 +48,13 @@ export default function SettingsModal({
     // 各グループは病名コードの配列
     const [selectedExclusiveGroups, setSelectedExclusiveGroups] = useState([[]]);
 
+    // 編集モードの状態
+    const [editingConditionCode, setEditingConditionCode] = useState(null);
+    const [editingTreatmentIndex, setEditingTreatmentIndex] = useState(null);
+
+    // AI設定の開閉状態
+    const [isAiSettingsOpen, setIsAiSettingsOpen] = useState(false);
+
     if (!isOpen) return null;
 
     const handleAddCondition = () => {
@@ -52,6 +62,24 @@ export default function SettingsModal({
             onAddCondition(newCondition);
             setNewCondition({ code: '', name: '', symbol: '', color: 'bg-gray-100 border-gray-400 text-gray-800' });
         }
+    };
+
+    const handleEditCondition = (condition) => {
+        setEditingConditionCode(condition.code);
+        setNewCondition({ ...condition });
+    };
+
+    const handleUpdateCondition = () => {
+        if (newCondition.code && newCondition.name && newCondition.symbol) {
+            onUpdateCondition(editingConditionCode, newCondition);
+            setNewCondition({ code: '', name: '', symbol: '', color: 'bg-gray-100 border-gray-400 text-gray-800' });
+            setEditingConditionCode(null);
+        }
+    };
+
+    const cancelEditCondition = () => {
+        setNewCondition({ code: '', name: '', symbol: '', color: 'bg-gray-100 border-gray-400 text-gray-800' });
+        setEditingConditionCode(null);
     };
 
     const handleAddTreatment = () => {
@@ -64,6 +92,33 @@ export default function SettingsModal({
             });
             setNewTreatment({ conditionCode: '', name: '', steps: [''] });
         }
+    };
+
+    const handleEditTreatment = (conditionCode, index, treatment) => {
+        setEditingTreatmentIndex({ conditionCode, index });
+        setNewTreatment({
+            conditionCode: conditionCode,
+            name: treatment.name,
+            steps: [...treatment.steps]
+        });
+    };
+
+    const handleUpdateTreatment = () => {
+        if (newTreatment.conditionCode && newTreatment.name && newTreatment.steps.some(s => s.trim())) {
+            const filteredSteps = newTreatment.steps.filter(s => s.trim());
+            onUpdateTreatment(editingTreatmentIndex.conditionCode, editingTreatmentIndex.index, {
+                name: newTreatment.name,
+                duration: filteredSteps.length,
+                steps: filteredSteps
+            });
+            setNewTreatment({ conditionCode: '', name: '', steps: [''] });
+            setEditingTreatmentIndex(null);
+        }
+    };
+
+    const cancelEditTreatment = () => {
+        setNewTreatment({ conditionCode: '', name: '', steps: [''] });
+        setEditingTreatmentIndex(null);
     };
 
     const addStep = () => {
@@ -84,8 +139,8 @@ export default function SettingsModal({
     };
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-            <div className="bg-white rounded-lg p-6 max-w-4xl w-full max-h-[80vh] overflow-y-auto">
+         <div className="fixed inset-0 bg-white overflow-hidden z-50">
+            <div className="w-full h-full p-6 overflow-y-auto">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-xl font-bold">病名・治療法設定</h2>
                     <button
@@ -99,42 +154,51 @@ export default function SettingsModal({
 
                 {/* AIワークフロー生成設定 */}
                 <div className="mb-6 p-4 bg-gradient-to-r from-purple-50 to-blue-50 border border-purple-200 rounded-lg">
-                    <h3 className="text-lg font-bold text-purple-900 mb-3 flex items-center gap-2">
-                        🤖 AI治療スケジューリング
-                        <span className="text-sm font-normal text-red-500 ml-2">(未実装)</span>
-                    </h3>
-                    <div className="space-y-3">
-                        <div>
-                            <label className="block text-sm font-medium text-purple-800 mb-2">
-                                治療方針・制約プロンプト
-                            </label>
-                            <textarea
-                                value={aiPrompt}
-                                onChange={(e) => onAiPromptChange(e.target.value)}
-                                placeholder="例：患者の痛みを最優先に、急性症状から治療してください。根管治療は週1回ペース、補綴物は2週間隔で進めてください。"
-                                className="w-full px-3 py-2 border border-purple-300 rounded-lg text-sm resize-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
-                                rows={3}
-                            />
-                        </div>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-purple-700">
+                    <button
+                        onClick={() => setIsAiSettingsOpen(!isAiSettingsOpen)}
+                        className="w-full flex items-center justify-between text-left mb-1"
+                    >
+                        <h3 className="text-lg font-bold text-purple-900 flex items-center gap-2">
+                            {isAiSettingsOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+                            🤖 AI治療スケジューリング
+                            <span className="text-sm font-normal text-red-500 ml-2">(未実装)</span>
+                        </h3>
+                    </button>
+                    
+                    {isAiSettingsOpen && (
+                        <div className="mt-3 space-y-3">
                             <div>
-                                <div className="font-medium mb-1">💡 使用例</div>
-                                <ul className="space-y-1 list-disc list-inside">
-                                    <li>「痛みのある歯を最優先で治療」</li>
-                                    <li>「右側から先に治療して左側で噛めるように」</li>
-                                    <li>「根管治療は週1回、印象は2週間間隔で」</li>
-                                </ul>
+                                <label className="block text-sm font-medium text-purple-800 mb-2">
+                                    治療方針・制約プロンプト
+                                </label>
+                                <textarea
+                                    value={aiPrompt}
+                                    onChange={(e) => onAiPromptChange(e.target.value)}
+                                    placeholder="例：患者の痛みを最優先に、急性症状から治療してください。根管治療は週1回ペース、補綴物は2週間隔で進めてください。"
+                                    className="w-full px-3 py-2 border border-purple-300 rounded-lg text-sm resize-none focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                                    rows={3}
+                                />
                             </div>
-                            <div>
-                                <div className="font-medium mb-1">🔧 動作確認</div>
-                                <ul className="space-y-1 list-disc list-inside">
-                                    <li>歯式入力完了後に生成ボタンを押す</li>
-                                    <li>ブラウザのコンソールでログ確認可能</li>
-                                    <li>エラー時は詳細情報を表示</li>
-                                </ul>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-purple-700">
+                                <div>
+                                    <div className="font-medium mb-1">💡 使用例</div>
+                                    <ul className="space-y-1 list-disc list-inside">
+                                        <li>「痛みのある歯を最優先で治療」</li>
+                                        <li>「右側から先に治療して左側で噛めるように」</li>
+                                        <li>「根管治療は週1回、印象は2週間間隔で」</li>
+                                    </ul>
+                                </div>
+                                <div>
+                                    <div className="font-medium mb-1">🔧 動作確認</div>
+                                    <ul className="space-y-1 list-disc list-inside">
+                                        <li>歯式入力完了後に生成ボタンを押す</li>
+                                        <li>ブラウザのコンソールでログ確認可能</li>
+                                        <li>エラー時は詳細情報を表示</li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    )}
                 </div>
 
                 {/* ルールベース自動配置設定 */}
@@ -541,8 +605,14 @@ export default function SettingsModal({
                         <h3 className="text-lg font-bold mb-3">病名マスター</h3>
 
                         {/* 新しい病名追加 */}
-                        <div className="border rounded-lg p-4 mb-4 bg-gray-50">
-                            <h4 className="font-medium mb-2">新しい病名を追加</h4>
+                        {/* 新しい病名追加・編集 */}
+                        <div className={`border rounded-lg p-4 mb-4 ${editingConditionCode ? 'bg-yellow-50 border-yellow-300' : 'bg-gray-50'}`}>
+                            <div className="flex justify-between items-center mb-2">
+                                <h4 className="font-medium">{editingConditionCode ? '病名を編集' : '新しい病名を追加'}</h4>
+                                {editingConditionCode && (
+                                    <button onClick={cancelEditCondition} className="text-xs text-gray-500 hover:text-gray-700">キャンセル</button>
+                                )}
+                            </div>
                             <div className="space-y-2">
                                 <input
                                     type="text"
@@ -550,6 +620,7 @@ export default function SettingsModal({
                                     value={newCondition.code}
                                     onChange={(e) => setNewCondition(prev => ({ ...prev, code: e.target.value }))}
                                     className="w-full px-3 py-2 border rounded text-sm"
+                                    disabled={!!editingConditionCode} // 編集時はコード変更不可
                                 />
                                 <input
                                     type="text"
@@ -575,10 +646,10 @@ export default function SettingsModal({
                                     ))}
                                 </select>
                                 <button
-                                    onClick={handleAddCondition}
-                                    className="w-full px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 text-sm"
+                                    onClick={editingConditionCode ? handleUpdateCondition : handleAddCondition}
+                                    className={`w-full px-3 py-2 text-white rounded text-sm ${editingConditionCode ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-blue-500 hover:bg-blue-600'}`}
                                 >
-                                    病名を追加
+                                    {editingConditionCode ? '病名を更新' : '病名を追加'}
                                 </button>
                             </div>
                         </div>
@@ -591,12 +662,22 @@ export default function SettingsModal({
                                         <div className="font-medium text-sm">{condition.name}</div>
                                         <div className="text-xs text-gray-600">コード: {condition.code} | 記号: {condition.symbol}</div>
                                     </div>
-                                    <button
-                                        onClick={() => onDeleteCondition(condition.code)}
-                                        className="text-red-500 hover:text-red-700 text-xs"
-                                    >
-                                        削除
-                                    </button>
+                                    <div className="flex items-center gap-1">
+                                        <button
+                                            onClick={() => handleEditCondition(condition)}
+                                            className="text-blue-500 hover:text-blue-700 text-xs px-2"
+                                            disabled={!!editingConditionCode}
+                                        >
+                                            編集
+                                        </button>
+                                        <button
+                                            onClick={() => onDeleteCondition(condition.code)}
+                                            className="text-red-500 hover:text-red-700 text-xs"
+                                            disabled={!!editingConditionCode}
+                                        >
+                                            削除
+                                        </button>
+                                    </div>
                                 </div>
                             ))}
                         </div>
@@ -607,13 +688,20 @@ export default function SettingsModal({
                         <h3 className="text-lg font-bold mb-3">治療法マスター</h3>
 
                         {/* 新しい治療法追加 */}
-                        <div className="border rounded-lg p-4 mb-4 bg-gray-50">
-                            <h4 className="font-medium mb-2">新しい治療法を追加</h4>
+                        {/* 新しい治療法追加・編集 */}
+                        <div className={`border rounded-lg p-4 mb-4 ${editingTreatmentIndex ? 'bg-yellow-50 border-yellow-300' : 'bg-gray-50'}`}>
+                            <div className="flex justify-between items-center mb-2">
+                                <h4 className="font-medium">{editingTreatmentIndex ? '治療法を編集' : '新しい治療法を追加'}</h4>
+                                {editingTreatmentIndex && (
+                                    <button onClick={cancelEditTreatment} className="text-xs text-gray-500 hover:text-gray-700">キャンセル</button>
+                                )}
+                            </div>
                             <div className="space-y-2">
                                 <select
                                     value={newTreatment.conditionCode}
                                     onChange={(e) => setNewTreatment(prev => ({ ...prev, conditionCode: e.target.value }))}
                                     className="w-full px-3 py-2 border rounded text-sm"
+                                    disabled={!!editingTreatmentIndex} // 編集時は病名変更不可
                                 >
                                     <option value="">対象病名を選択</option>
                                     {conditions.map(condition => (
@@ -662,10 +750,10 @@ export default function SettingsModal({
                                 </div>
 
                                 <button
-                                    onClick={handleAddTreatment}
-                                    className="w-full px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600 text-sm"
+                                    onClick={editingTreatmentIndex ? handleUpdateTreatment : handleAddTreatment}
+                                    className={`w-full px-3 py-2 text-white rounded text-sm ${editingTreatmentIndex ? 'bg-yellow-500 hover:bg-yellow-600' : 'bg-green-500 hover:bg-green-600'}`}
                                 >
-                                    治療法を追加
+                                    {editingTreatmentIndex ? '治療法を更新' : '治療法を追加'}
                                 </button>
                             </div>
                         </div>
@@ -722,12 +810,22 @@ export default function SettingsModal({
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <button
-                                                    onClick={() => onDeleteTreatment(conditionCode, index)}
-                                                    className="text-red-500 hover:text-red-700 text-xs ml-2 px-2 py-1"
-                                                >
-                                                    削除
-                                                </button>
+                                                <div className="flex">
+                                                    <button
+                                                        onClick={() => handleEditTreatment(conditionCode, index, treatment)}
+                                                        className="text-blue-500 hover:text-blue-700 text-xs ml-2 px-2 py-1"
+                                                        disabled={!!editingTreatmentIndex}
+                                                    >
+                                                        編集
+                                                    </button>
+                                                    <button
+                                                        onClick={() => onDeleteTreatment(conditionCode, index)}
+                                                        className="text-red-500 hover:text-red-700 text-xs ml-2 px-2 py-1"
+                                                        disabled={!!editingTreatmentIndex}
+                                                    >
+                                                        削除
+                                                    </button>
+                                                </div>
                                             </div>
                                         ))}
                                     </div>

@@ -7,7 +7,9 @@ export default function WorkflowBoard({
     canDrag,
     onDragStart,
     onChangeTreatment,
-    getConditionInfo
+    getConditionInfo,
+    onAutoSchedule,
+    isGenerating
 }) {
     const assignedIds = new Set();
     treatmentSchedule.forEach(day => {
@@ -85,7 +87,20 @@ export default function WorkflowBoard({
 
     return (
         <div className="bg-white rounded-lg shadow-md p-6 mb-6">
-            <h2 className="text-xl font-bold mb-4">未スケジュール治療</h2>
+            <div className="flex justify-between items-center mb-4">
+                <h2 className="text-xl font-bold">未スケジュール治療</h2>
+                <button
+                    onClick={onAutoSchedule}
+                    disabled={isGenerating || workflow.length === 0}
+                    className={`flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors ${isGenerating || workflow.length === 0
+                        ? 'bg-gray-400 cursor-not-allowed'
+                        : 'bg-purple-500 hover:bg-purple-600'
+                        }`}
+                >
+                    <span className="text-lg">🤖</span>
+                    {isGenerating ? '配置中...' : '自動配置'}
+                </button>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {Object.values(groupedTreatments).map(group => {
                     // カード番号順にソート

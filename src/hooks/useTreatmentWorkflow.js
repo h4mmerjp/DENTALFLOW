@@ -81,6 +81,21 @@ export function useTreatmentWorkflow() {
         });
     };
 
+    const updateCondition = (oldCode, updatedCondition) => {
+        setConditions(prev => prev.map(c => c.code === oldCode ? updatedCondition : c));
+    };
+
+    const updateTreatment = (conditionCode, index, updatedTreatment) => {
+        setTreatmentRules(prev => {
+            const treatments = [...(prev[conditionCode] || [])];
+            treatments[index] = updatedTreatment;
+            return {
+                ...prev,
+                [conditionCode]: treatments
+            };
+        });
+    };
+
     const addTreatment = (conditionCode, treatment) => {
         setTreatmentRules(prev => ({
             ...prev,
@@ -502,8 +517,10 @@ export function useTreatmentWorkflow() {
         removeFromSchedule,
         addTreatmentDay,
         addCondition,
+        updateCondition,
         deleteCondition,
         addTreatment,
+        updateTreatment,
         deleteTreatment,
         moveTreatment,
         moveTreatment,
