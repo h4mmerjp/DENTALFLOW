@@ -23,27 +23,43 @@ export function useTreatmentWorkflow() {
         scheduleIntervalDays: 7 // スケジュール間隔（日数）
     });
 
-    // 排他的病名ルール（同じ歯に同時につけられない病名の組み合わせ）
+    // 排他的病名ルール（グループ間で排他的な病名の組み合わせ）
+    // ルールは「グループの配列」として定義
+    // 例: [['欠損'], ['C1', 'P1']] → 欠損と(C1またはP1)は排他的だが、C1とP1は同時設定可能
     const [exclusiveRules, setExclusiveRules] = useLocalStorage('exclusiveRules', [
-        ['C1', 'C2'],  // C1とC2は同時につけられない
-        ['P1', 'P2']   // P1とP2は同時につけられない
+        [['C1'], ['C2'], ['C3'], ['C4']],  // C1⇄C2⇄C3⇄C4（すべて相互排他）
+        [['P1'], ['P2']]                    // P1⇄P2（相互排他）
     ]);
 
     const getConditionInfo = (code) => {
         return conditions.find(c => c.code === code) || null;
     };
 
-    // 排他的病名ルールをチェック
+    // 排他的病名ルールをチェック（グループベース）
     const checkExclusiveRules = (conditionCode, currentConditions) => {
         // 追加しようとしている病名と排他関係にある病名を見つける
         const conflictingConditions = [];
 
         exclusiveRules.forEach(rule => {
-            if (rule.includes(conditionCode)) {
-                // このルールに該当する場合、他の病名をチェック
-                rule.forEach(ruleCode => {
-                    if (ruleCode !== conditionCode && currentConditions.includes(ruleCode)) {
-                        conflictingConditions.push(ruleCode);
+            // このルール内で、追加しようとしている病名がどのグループに属するか探す
+            let targetGroupIndex = -1;
+            rule.forEach((group, index) => {
+                if (group.includes(conditionCode)) {
+                    targetGroupIndex = index;
+                }
+            });
+
+            // 対象の病名がこのルールに含まれている場合
+            if (targetGroupIndex !== -1) {
+                // 他のグループ（排他的なグループ）の病名をチェック
+                rule.forEach((group, index) => {
+                    if (index !== targetGroupIndex) {
+                        // 異なるグループの病名
+                        group.forEach(ruleCode => {
+                            if (currentConditions.includes(ruleCode)) {
+                                conflictingConditions.push(ruleCode);
+                            }
+                        });
                     }
                 });
             }
