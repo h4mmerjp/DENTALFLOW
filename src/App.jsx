@@ -41,8 +41,10 @@ function App() {
         removeFromSchedule,
         addTreatmentDay,
         addCondition,
+        updateCondition,
         deleteCondition,
         addTreatment,
+        updateTreatment,
         deleteTreatment,
         moveTreatment,
         changeTreatmentOption,
@@ -276,24 +278,6 @@ function App() {
                             >
                                 <Settings className="w-4 h-4" />
                                 設定
-                            </button>
-                            <button
-                                onClick={handleGenerateWorkflow}
-                                className="flex items-center gap-2 px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
-                            >
-                                <Play className="w-4 h-4" />
-                                治療ノード生成
-                            </button>
-                            <button
-                                onClick={handleAutoScheduling}
-                                disabled={isGeneratingWorkflow || workflow.length === 0}
-                                className={`flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors ${isGeneratingWorkflow || workflow.length === 0
-                                    ? 'bg-gray-400 cursor-not-allowed'
-                                    : 'bg-purple-500 hover:bg-purple-600'
-                                    }`}
-                            >
-                                <span className="text-lg">🤖</span>
-                                {isGeneratingWorkflow ? '配置中...' : '自動配置'}
                             </button>
                         </div>
                     </div>
@@ -573,6 +557,8 @@ function App() {
                             onDragStart={handleDragStart}
                             onChangeTreatment={handleChangeTreatment}
                             getConditionInfo={getConditionInfo}
+                            onAutoSchedule={handleAutoScheduling}
+                            isGenerating={isGeneratingWorkflow}
                         />
                     )}
 
@@ -600,8 +586,10 @@ function App() {
                     conditions={conditions}
                     treatmentRules={treatmentRules}
                     onAddCondition={addCondition}
+                    onUpdateCondition={updateCondition}
                     onDeleteCondition={deleteCondition}
                     onAddTreatment={addTreatment}
+                    onUpdateTreatment={updateTreatment}
                     onDeleteTreatment={deleteTreatment}
                     onMoveTreatment={moveTreatment}
                     autoScheduleEnabled={autoScheduleEnabled}
