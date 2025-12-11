@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { defaultConditions } from '../data/conditions';
 import { defaultTreatmentRules } from '../data/treatments';
+import { useLocalStorage } from './useLocalStorage';
 
 export function useTreatmentWorkflow() {
     const [toothConditions, setToothConditions] = useState({});
@@ -9,12 +10,12 @@ export function useTreatmentWorkflow() {
     const [selectedTreatmentOptions, setSelectedTreatmentOptions] = useState({});
     const [conditions, setConditions] = useState(defaultConditions);
     const [treatmentRules, setTreatmentRules] = useState(defaultTreatmentRules);
-    const [autoScheduleEnabled, setAutoScheduleEnabled] = useState(true);
-    const [aiPrompt, setAiPrompt] = useState('患者の痛みを最優先に、急性症状から治療してください。根管治療は週1回ペース、補綴物は2週間隔で進めてください。');
+    const [autoScheduleEnabled, setAutoScheduleEnabled] = useLocalStorage('autoScheduleEnabled', true);
+    const [aiPrompt, setAiPrompt] = useLocalStorage('aiPrompt', '患者の痛みを最優先に、急性症状から治療してください。根管治療は週1回ペース、補綴物は2週間隔で進めてください。');
     const [isGeneratingWorkflow, setIsGeneratingWorkflow] = useState(false);
 
     // ルールベース自動配置の設定
-    const [schedulingRules, setSchedulingRules] = useState({
+    const [schedulingRules, setSchedulingRules] = useLocalStorage('schedulingRules', {
         priorityOrder: ['per', 'pul', 'C4', 'C3', 'C2', 'P2', 'P1', 'C1'], // 優先順位
         maxTreatmentsPerDay: 3, // 1日の最大治療数
         acuteCareConditions: ['per', 'pul', 'C4'], // 急性症状として扱う病名
