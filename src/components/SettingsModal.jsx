@@ -41,7 +41,9 @@ export default function SettingsModal({
         name: '',
         steps: ['']
     });
-    const [selectedExclusiveConditions, setSelectedExclusiveConditions] = useState([]);
+    // グループベースの排他的病名ルール作成用の状態
+    // 各グループは病名コードの配列
+    const [selectedExclusiveGroups, setSelectedExclusiveGroups] = useState([[]]);
 
     if (!isOpen) return null;
 
@@ -325,33 +327,43 @@ export default function SettingsModal({
                 {/* 排他的病名ルール設定 */}
                 <div className="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
                     <h3 className="text-lg font-bold text-orange-900 mb-3 flex items-center gap-2">
-                        🚫 排他的病名ルール設定
+                        🚫 排他的病名ルール設定（グループ間排他）
                     </h3>
                     <p className="text-sm text-orange-700 mb-4">
-                        同じ歯に同時につけられない病名の組み合わせを設定します<br />
-                        <span className="text-xs">例：C1⇄C2⇄C3⇄C4（複数）、欠損⇄C1、P1（1対複数）</span>
+                        グループ間で排他的な病名を設定します。同じグループ内の病名は同時設定可能です。<br />
+                        <span className="text-xs">例：C1⇄C2⇄C3⇄C4（すべて相互排他）、欠損⇄(C1&P1)（C1とP1は同時設定可だが欠損とは排他）</span>
                     </p>
 
                     <div className="space-y-3">
-                        {exclusiveRules.map((rule, index) => (
-                            <div key={index} className="flex items-center gap-2 p-3 bg-white border border-orange-200 rounded">
-                                <span className="text-sm font-medium text-gray-500 w-6">{index + 1}.</span>
-                                <div className="flex-1 flex items-center gap-2">
-                                    {rule.map((code, codeIndex) => {
-                                        const condition = conditions.find(c => c.code === code);
-                                        return (
-                                            <React.Fragment key={code}>
-                                                {codeIndex > 0 && <span className="text-gray-400">⇄</span>}
-                                                <span className={`px-3 py-1 rounded text-sm ${condition?.color || 'bg-gray-100'}`}>
-                                                    {condition?.symbol || code}
-                                                </span>
-                                            </React.Fragment>
-                                        );
-                                    })}
+                        {/* 既存ルールの表示 */}
+                        {exclusiveRules.map((rule, ruleIndex) => (
+                            <div key={ruleIndex} className="flex items-center gap-2 p-3 bg-white border border-orange-200 rounded">
+                                <span className="text-sm font-medium text-gray-500 w-6">{ruleIndex + 1}.</span>
+                                <div className="flex-1 flex items-center gap-2 flex-wrap">
+                                    {rule.map((group, groupIndex) => (
+                                        <React.Fragment key={groupIndex}>
+                                            {groupIndex > 0 && <span className="text-gray-400 font-bold">⇄</span>}
+                                            <div className="flex items-center gap-1">
+                                                {group.length > 1 && <span className="text-xs text-gray-500">(</span>}
+                                                {group.map((code, codeIndex) => {
+                                                    const condition = conditions.find(c => c.code === code);
+                                                    return (
+                                                        <React.Fragment key={code}>
+                                                            {codeIndex > 0 && <span className="text-xs text-gray-500">&</span>}
+                                                            <span className={`px-2 py-1 rounded text-xs ${condition?.color || 'bg-gray-100'}`}>
+                                                                {condition?.symbol || code}
+                                                            </span>
+                                                        </React.Fragment>
+                                                    );
+                                                })}
+                                                {group.length > 1 && <span className="text-xs text-gray-500">)</span>}
+                                            </div>
+                                        </React.Fragment>
+                                    ))}
                                 </div>
                                 <button
                                     onClick={() => {
-                                        const newRules = exclusiveRules.filter((_, i) => i !== index);
+                                        const newRules = exclusiveRules.filter((_, i) => i !== ruleIndex);
                                         onExclusiveRulesChange(newRules);
                                     }}
                                     className="px-2 py-1 text-xs text-red-600 hover:text-red-800"
@@ -363,87 +375,146 @@ export default function SettingsModal({
 
                         {/* 新規ルール追加 */}
                         <div className="p-3 bg-white border-2 border-dashed border-orange-300 rounded">
-                            <div className="text-sm font-medium text-orange-800 mb-2">新しいルールを追加（複数選択可）</div>
+                            <div className="text-sm font-medium text-orange-800 mb-3">新しいルールを追加（グループベース）</div>
 
-                            {/* 選択中の病名表示 */}
-                            {selectedExclusiveConditions.length > 0 && (
-                                <div className="mb-3 p-2 bg-orange-50 rounded">
-                                    <div className="text-xs text-orange-700 mb-1">選択中の病名:</div>
-                                    <div className="flex flex-wrap gap-1">
-                                        {selectedExclusiveConditions.map(code => {
-                                            const condition = conditions.find(c => c.code === code);
-                                            return (
-                                                <span key={code} className={`px-2 py-1 rounded text-xs ${condition?.color || 'bg-gray-100'} flex items-center gap-1`}>
-                                                    {condition?.symbol || code}
-                                                    <button
-                                                        onClick={() => setSelectedExclusiveConditions(prev => prev.filter(c => c !== code))}
-                                                        className="text-red-600 hover:text-red-800 ml-1"
-                                                    >
-                                                        ×
-                                                    </button>
-                                                </span>
-                                            );
-                                        })}
+                            {/* グループ一覧 */}
+                            <div className="space-y-2 mb-3">
+                                {selectedExclusiveGroups.map((group, groupIndex) => (
+                                    <div key={groupIndex} className="p-3 bg-orange-50 border border-orange-200 rounded">
+                                        <div className="flex items-center justify-between mb-2">
+                                            <span className="text-sm font-medium text-orange-800">
+                                                グループ {groupIndex + 1}
+                                                {group.length > 0 && <span className="ml-2 text-xs text-orange-600">({group.length}個選択)</span>}
+                                            </span>
+                                            <button
+                                                onClick={() => {
+                                                    if (selectedExclusiveGroups.length > 1) {
+                                                        setSelectedExclusiveGroups(prev => prev.filter((_, i) => i !== groupIndex));
+                                                    }
+                                                }}
+                                                disabled={selectedExclusiveGroups.length <= 1}
+                                                className={`text-xs px-2 py-1 rounded ${
+                                                    selectedExclusiveGroups.length <= 1
+                                                        ? 'text-gray-400 cursor-not-allowed'
+                                                        : 'text-red-600 hover:text-red-800 hover:bg-red-50'
+                                                }`}
+                                            >
+                                                グループ削除
+                                            </button>
+                                        </div>
+
+                                        {/* 選択中の病名表示 */}
+                                        {group.length > 0 && (
+                                            <div className="mb-2 flex flex-wrap gap-1">
+                                                {group.map(code => {
+                                                    const condition = conditions.find(c => c.code === code);
+                                                    return (
+                                                        <span key={code} className={`px-2 py-1 rounded text-xs ${condition?.color || 'bg-gray-100'} flex items-center gap-1`}>
+                                                            {condition?.symbol || code}
+                                                            <button
+                                                                onClick={() => {
+                                                                    setSelectedExclusiveGroups(prev => {
+                                                                        const newGroups = [...prev];
+                                                                        newGroups[groupIndex] = newGroups[groupIndex].filter(c => c !== code);
+                                                                        return newGroups;
+                                                                    });
+                                                                }}
+                                                                className="text-red-600 hover:text-red-800 ml-1"
+                                                            >
+                                                                ×
+                                                            </button>
+                                                        </span>
+                                                    );
+                                                })}
+                                            </div>
+                                        )}
+
+                                        {/* 病名選択チェックボックス */}
+                                        <div className="grid grid-cols-3 md:grid-cols-5 gap-1 max-h-32 overflow-y-auto p-2 bg-white border border-orange-200 rounded">
+                                            {conditions.map(condition => (
+                                                <label
+                                                    key={condition.code}
+                                                    className={`flex items-center gap-1 p-1 rounded cursor-pointer transition-colors text-xs ${
+                                                        group.includes(condition.code)
+                                                            ? `${condition.color} ring-1 ring-orange-500`
+                                                            : 'hover:bg-orange-50'
+                                                    }`}
+                                                >
+                                                    <input
+                                                        type="checkbox"
+                                                        checked={group.includes(condition.code)}
+                                                        onChange={(e) => {
+                                                            setSelectedExclusiveGroups(prev => {
+                                                                const newGroups = [...prev];
+                                                                if (e.target.checked) {
+                                                                    // 他のグループから削除
+                                                                    newGroups.forEach((g, i) => {
+                                                                        if (i !== groupIndex) {
+                                                                            newGroups[i] = g.filter(c => c !== condition.code);
+                                                                        }
+                                                                    });
+                                                                    // このグループに追加
+                                                                    newGroups[groupIndex] = [...newGroups[groupIndex], condition.code];
+                                                                } else {
+                                                                    // このグループから削除
+                                                                    newGroups[groupIndex] = newGroups[groupIndex].filter(c => c !== condition.code);
+                                                                }
+                                                                return newGroups;
+                                                            });
+                                                        }}
+                                                        className="rounded"
+                                                    />
+                                                    <span className="text-xs">{condition.symbol}</span>
+                                                </label>
+                                            ))}
+                                        </div>
                                     </div>
-                                </div>
-                            )}
-
-                            {/* 病名選択チェックボックス */}
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-2 mb-3 max-h-48 overflow-y-auto p-2 border border-orange-200 rounded">
-                                {conditions.map(condition => (
-                                    <label
-                                        key={condition.code}
-                                        className={`flex items-center gap-2 p-2 rounded cursor-pointer transition-colors ${
-                                            selectedExclusiveConditions.includes(condition.code)
-                                                ? `${condition.color} ring-2 ring-orange-500`
-                                                : 'hover:bg-orange-50'
-                                        }`}
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedExclusiveConditions.includes(condition.code)}
-                                            onChange={(e) => {
-                                                if (e.target.checked) {
-                                                    setSelectedExclusiveConditions(prev => [...prev, condition.code]);
-                                                } else {
-                                                    setSelectedExclusiveConditions(prev => prev.filter(c => c !== condition.code));
-                                                }
-                                            }}
-                                            className="rounded"
-                                        />
-                                        <span className="text-xs">{condition.symbol}</span>
-                                    </label>
                                 ))}
                             </div>
 
+                            {/* グループ追加ボタン */}
+                            <button
+                                onClick={() => setSelectedExclusiveGroups(prev => [...prev, []])}
+                                className="w-full px-3 py-2 bg-blue-100 text-blue-700 rounded hover:bg-blue-200 text-sm font-medium mb-3"
+                            >
+                                + グループを追加
+                            </button>
+
+                            {/* ルール追加ボタン */}
                             <div className="flex gap-2">
                                 <button
                                     onClick={() => {
-                                        if (selectedExclusiveConditions.length < 2) {
-                                            alert('2つ以上の病名を選択してください。');
+                                        // バリデーション
+                                        const validGroups = selectedExclusiveGroups.filter(g => g.length > 0);
+                                        if (validGroups.length < 2) {
+                                            alert('2つ以上のグループに病名を設定してください。');
                                             return;
                                         }
 
-                                        // 既に同じルールがないかチェック
+                                        // 重複チェック
                                         const isDuplicate = exclusiveRules.some(rule => {
-                                            // 同じ病名の組み合わせかチェック
-                                            if (rule.length !== selectedExclusiveConditions.length) return false;
-                                            return selectedExclusiveConditions.every(code => rule.includes(code));
+                                            if (rule.length !== validGroups.length) return false;
+                                            return validGroups.every(group => {
+                                                return rule.some(ruleGroup => {
+                                                    if (ruleGroup.length !== group.length) return false;
+                                                    return group.every(code => ruleGroup.includes(code));
+                                                });
+                                            });
                                         });
 
                                         if (!isDuplicate) {
-                                            onExclusiveRulesChange([...exclusiveRules, [...selectedExclusiveConditions]]);
-                                            setSelectedExclusiveConditions([]);
+                                            onExclusiveRulesChange([...exclusiveRules, validGroups]);
+                                            setSelectedExclusiveGroups([[]]);
                                         } else {
                                             alert('このルールは既に設定されています。');
                                         }
                                     }}
                                     className="flex-1 px-4 py-2 bg-orange-500 text-white rounded hover:bg-orange-600 text-sm font-medium"
                                 >
-                                    ルールを追加 ({selectedExclusiveConditions.length}個選択中)
+                                    ルールを追加
                                 </button>
                                 <button
-                                    onClick={() => setSelectedExclusiveConditions([])}
+                                    onClick={() => setSelectedExclusiveGroups([[]])}
                                     className="px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 text-sm"
                                 >
                                     クリア
@@ -453,12 +524,13 @@ export default function SettingsModal({
                     </div>
 
                     <div className="mt-3 text-xs text-orange-700 bg-orange-100 p-3 rounded">
-                        <p className="font-medium mb-1">💡 排他的病名ルールについて</p>
+                        <p className="font-medium mb-1">💡 グループベース排他的病名ルールについて</p>
                         <ul className="list-disc list-inside space-y-1">
-                            <li>複数の病名を選択して、それらが互いに排他的であることを設定できます</li>
-                            <li>2つ以上の病名を選択してルールを追加してください（制限なし）</li>
-                            <li>排他的な病名を追加しようとすると、確認ダイアログが表示されます</li>
-                            <li>既存の病名を削除して新しい病名を設定するか選択できます</li>
+                            <li>グループを作成し、各グループに病名を設定します</li>
+                            <li>同じグループ内の病名は同時に設定できます（例：C1&P1）</li>
+                            <li>異なるグループの病名は排他的です（例：欠損⇄(C1&P1)）</li>
+                            <li>最低2つのグループが必要です</li>
+                            <li>各病名は1つのグループにのみ設定できます</li>
                         </ul>
                     </div>
                 </div>
