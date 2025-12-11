@@ -43,7 +43,8 @@ function App() {
         deleteTreatment,
         moveTreatment,
         changeTreatmentOption,
-        clearAllConditions
+        clearAllConditions,
+        clearAllSchedules
     } = useTreatmentWorkflow();
 
     // 病名が変更されたら自動的に治療ノードを生成
@@ -527,6 +528,7 @@ function App() {
                             onChangeTreatment={handleChangeTreatment}
                             autoScheduleEnabled={autoScheduleEnabled}
                             getConditionInfo={getConditionInfo}
+                            onClearAllSchedules={clearAllSchedules}
                         />
                     )}
                 </div>

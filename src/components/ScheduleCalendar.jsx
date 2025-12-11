@@ -1,5 +1,5 @@
 import React from 'react';
-import { Calendar, Plus } from 'lucide-react';
+import { Calendar, Plus, RotateCcw } from 'lucide-react';
 import DraggableCard from './DraggableCard';
 
 export default function ScheduleCalendar({
@@ -11,19 +11,47 @@ export default function ScheduleCalendar({
     onDragStart,
     onChangeTreatment,
     autoScheduleEnabled,
-    getConditionInfo
+    getConditionInfo,
+    onClearAllSchedules
 }) {
+    // スケジュール内の治療数をカウント
+    const scheduledCount = treatmentSchedule.reduce((total, day) => total + day.treatments.length, 0);
+
+    const handleClearAll = () => {
+        if (scheduledCount === 0) {
+            return;
+        }
+        if (window.confirm('スケジュールに配置されたすべての治療を未スケジュール状態に戻しますか？\nスケジュール枠（日付）は残ります。')) {
+            onClearAllSchedules();
+        }
+    };
+
     return (
         <div className="bg-white rounded-lg shadow-md p-6">
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold">治療スケジュール</h2>
-                <button
-                    onClick={onAddDay}
-                    className="flex items-center gap-2 px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors text-sm"
-                >
-                    <Plus className="w-4 h-4" />
-                    治療日追加
-                </button>
+                <div className="flex gap-2">
+                    <button
+                        onClick={handleClearAll}
+                        disabled={scheduledCount === 0}
+                        className={`flex items-center gap-2 px-3 py-1 rounded transition-colors text-sm ${
+                            scheduledCount === 0
+                                ? 'bg-gray-300 text-gray-500 cursor-not-allowed'
+                                : 'bg-red-500 text-white hover:bg-red-600'
+                        }`}
+                        title="スケジュールをすべてリセット"
+                    >
+                        <RotateCcw className="w-4 h-4" />
+                        一括リセット
+                    </button>
+                    <button
+                        onClick={onAddDay}
+                        className="flex items-center gap-2 px-3 py-1 bg-green-500 text-white rounded hover:bg-green-600 transition-colors text-sm"
+                    >
+                        <Plus className="w-4 h-4" />
+                        治療日追加
+                    </button>
+                </div>
             </div>
 
             <div className="space-y-4">

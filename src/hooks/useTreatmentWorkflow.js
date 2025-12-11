@@ -422,6 +422,15 @@ export function useTreatmentWorkflow() {
         }]);
     };
 
+    // スケジュールを一括リセット（スケジュール枠は残す）
+    const clearAllSchedules = () => {
+        const clearedSchedule = treatmentSchedule.map(day => ({
+            date: day.date,
+            treatments: []
+        }));
+        setTreatmentSchedule(clearedSchedule);
+    };
+
     return {
         toothConditions,
         setToothConditions,
@@ -454,6 +463,7 @@ export function useTreatmentWorkflow() {
         moveTreatment,
         moveTreatment,
         changeTreatmentOption,
-        clearAllConditions
+        clearAllConditions,
+        clearAllSchedules
     };
 }
