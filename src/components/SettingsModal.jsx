@@ -802,12 +802,14 @@ export default function SettingsModal({
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* 病名設定 */}
-                    <div>
-                        <h3 className="text-lg font-bold mb-3">病名マスター</h3>
+                    <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <h3 className="text-lg font-bold mb-3 text-blue-900 flex items-center gap-2">
+                            🏥 病名マスター
+                        </h3>
 
                         {/* 新しい病名追加 */}
                         {/* 新しい病名追加・編集 */}
-                        <div className={`border rounded-lg p-4 mb-4 ${editingConditionCode ? 'bg-yellow-50 border-yellow-300' : 'bg-gray-50'}`}>
+                        <div className={`border rounded-lg p-4 mb-4 ${editingConditionCode ? 'bg-yellow-50 border-yellow-300' : 'bg-white border-blue-200'}`}>
                             <div className="flex justify-between items-center mb-2">
                                 <h4 className="font-medium">{editingConditionCode ? '病名を編集' : '新しい病名を追加'}</h4>
                                 {editingConditionCode && (
@@ -885,12 +887,14 @@ export default function SettingsModal({
                     </div>
 
                     {/* 治療法設定 */}
-                    <div>
-                        <h3 className="text-lg font-bold mb-3">治療法マスター</h3>
+                    <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <h3 className="text-lg font-bold mb-3 text-green-900 flex items-center gap-2">
+                            💊 治療法マスター
+                        </h3>
 
                         {/* 新しい治療法追加 */}
                         {/* 新しい治療法追加・編集 */}
-                        <div className={`border rounded-lg p-4 mb-4 ${editingTreatmentIndex ? 'bg-yellow-50 border-yellow-300' : 'bg-gray-50'}`}>
+                        <div className={`border rounded-lg p-4 mb-4 ${editingTreatmentIndex ? 'bg-yellow-50 border-yellow-300' : 'bg-white border-green-200'}`}>
                             <div className="flex justify-between items-center mb-2">
                                 <h4 className="font-medium">{editingTreatmentIndex ? '治療法を編集' : '新しい治療法を追加'}</h4>
                                 {editingTreatmentIndex && (
