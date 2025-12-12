@@ -1,6 +1,13 @@
 // ステップマスター - 治療ステップの定義
 // 各ステップは複数の病名（conditionCodes）に紐付けることができる
 export const defaultSteps = [
+  // 空のステップ（削除されたステップの代替として使用）
+  {
+    id: 'step00',
+    name: '',
+    conditionCodes: [],
+    description: '削除されたステップの代わりに表示される空のステップ'
+  },
   // う蝕関連ステップ
   {
     id: 'step001',

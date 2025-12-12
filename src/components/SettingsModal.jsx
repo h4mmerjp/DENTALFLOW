@@ -979,7 +979,9 @@ export default function SettingsModal({
                                                             <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded">
                                                                 {index + 1}
                                                             </span>
-                                                            <span className="flex-1 text-sm">{step?.name || stepId}</span>
+                                                            <span className="flex-1 text-sm">
+                                                                {step ? step.name : (stepMaster?.find(s => s.id === 'step00')?.name || '')}
+                                                            </span>
                                                             <button
                                                                 onClick={() => removeTreatmentStep(index)}
                                                                 className="text-red-500 hover:text-red-700 text-sm px-2"
@@ -1054,7 +1056,12 @@ export default function SettingsModal({
                                                             {treatment.stepIds
                                                                 ? treatment.stepIds.map(stepId => {
                                                                     const step = stepMaster?.find(s => s.id === stepId);
-                                                                    return step?.name || stepId;
+                                                                    // ステップが見つからない場合はstep00（空のステップ）を使用
+                                                                    if (!step) {
+                                                                        const emptyStep = stepMaster?.find(s => s.id === 'step00');
+                                                                        return emptyStep?.name || '';
+                                                                    }
+                                                                    return step.name;
                                                                 }).join(' → ')
                                                                 : (treatment.steps || []).join(' → ')
                                                             } ({treatment.duration}回)

@@ -139,7 +139,12 @@ export function useTreatmentWorkflow() {
     // ステップIDからステップ名を取得
     const getStepName = (stepId) => {
         const step = stepMaster.find(s => s.id === stepId);
-        return step ? step.name : stepId; // 見つからない場合はIDをそのまま返す
+        if (step) {
+            return step.name;
+        }
+        // 見つからない場合はstep00（空のステップ）を使用
+        const emptyStep = stepMaster.find(s => s.id === 'step00');
+        return emptyStep ? emptyStep.name : '';
     };
 
     // 指定した病名で使用可能なステップを取得
