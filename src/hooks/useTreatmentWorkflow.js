@@ -591,7 +591,19 @@ export function useTreatmentWorkflow() {
         const newGroupId = crypto.randomUUID();
 
         // 同じgroupIdを持つすべてのカードを取得（連続治療の全ステップ）
-        const sameGroupNodes = workflow.filter(node => node.groupId === sourceNode.groupId);
+        // workflowとスケジュールの両方から検索
+        let sameGroupNodes = workflow.filter(node => node.groupId === sourceNode.groupId);
+
+        // スケジュール内のノードも含める
+        if (isInSchedule || sameGroupNodes.length === 0) {
+            treatmentSchedule.forEach(day => {
+                day.treatments.forEach(t => {
+                    if (t.groupId === sourceNode.groupId && !sameGroupNodes.find(n => n.id === t.id)) {
+                        sameGroupNodes.push(t);
+                    }
+                });
+            });
+        }
 
         // 新しいノードセットを作成（分離した歯式用）
         const newNodes = sameGroupNodes.map(node => ({
@@ -608,9 +620,12 @@ export function useTreatmentWorkflow() {
             teeth: remainingTeeth
         }));
 
-        // workflowを更新
+        // workflowを更新（workflow内のノードのみ）
+        const updatedWorkflowNodes = updatedNodes.filter(node =>
+            workflow.find(wn => wn.id === node.id)
+        );
         let newWorkflow = workflow.filter(node => node.groupId !== sourceNode.groupId)
-            .concat(updatedNodes);
+            .concat(updatedWorkflowNodes);
 
         // targetDateが指定されている場合は、そのスケジュールに分離
         // 指定されていない場合は、元の場所（スケジュールまたは未スケジュール）に分離
