@@ -17,6 +17,7 @@ export default function SettingsModal({
     onClose,
     conditions,
     treatmentRules,
+    stepMaster,
     onAddCondition,
     onUpdateCondition,
     onDeleteCondition,
@@ -24,6 +25,9 @@ export default function SettingsModal({
     onUpdateTreatment,
     onDeleteTreatment,
     onMoveTreatment,
+    onAddStep,
+    onUpdateStep,
+    onDeleteStep,
     autoScheduleEnabled,
     onAutoScheduleChange,
     aiPrompt,
@@ -42,7 +46,12 @@ export default function SettingsModal({
     const [newTreatment, setNewTreatment] = useState({
         conditionCode: '',
         name: '',
-        steps: ['']
+        stepIds: []
+    });
+    const [newStep, setNewStep] = useState({
+        name: '',
+        conditionCodes: [],
+        description: ''
     });
     // グループベースの排他的病名ルール作成用の状態
     // 各グループは病名コードの配列
@@ -51,6 +60,7 @@ export default function SettingsModal({
     // 編集モードの状態
     const [editingConditionCode, setEditingConditionCode] = useState(null);
     const [editingTreatmentIndex, setEditingTreatmentIndex] = useState(null);
+    const [editingStepId, setEditingStepId] = useState(null);
 
     // AI設定の開閉状態
     const [isAiSettingsOpen, setIsAiSettingsOpen] = useState(false);
@@ -83,14 +93,13 @@ export default function SettingsModal({
     };
 
     const handleAddTreatment = () => {
-        if (newTreatment.conditionCode && newTreatment.name && newTreatment.steps.some(s => s.trim())) {
-            const filteredSteps = newTreatment.steps.filter(s => s.trim());
+        if (newTreatment.conditionCode && newTreatment.name && newTreatment.stepIds.length > 0) {
             onAddTreatment(newTreatment.conditionCode, {
                 name: newTreatment.name,
-                duration: filteredSteps.length,
-                steps: filteredSteps
+                duration: newTreatment.stepIds.length,
+                stepIds: newTreatment.stepIds
             });
-            setNewTreatment({ conditionCode: '', name: '', steps: [''] });
+            setNewTreatment({ conditionCode: '', name: '', stepIds: [] });
         }
     };
 
@@ -99,43 +108,98 @@ export default function SettingsModal({
         setNewTreatment({
             conditionCode: conditionCode,
             name: treatment.name,
-            steps: [...treatment.steps]
+            stepIds: [...(treatment.stepIds || [])]
         });
     };
 
     const handleUpdateTreatment = () => {
-        if (newTreatment.conditionCode && newTreatment.name && newTreatment.steps.some(s => s.trim())) {
-            const filteredSteps = newTreatment.steps.filter(s => s.trim());
+        if (newTreatment.conditionCode && newTreatment.name && newTreatment.stepIds.length > 0) {
             onUpdateTreatment(editingTreatmentIndex.conditionCode, editingTreatmentIndex.index, {
                 name: newTreatment.name,
-                duration: filteredSteps.length,
-                steps: filteredSteps
+                duration: newTreatment.stepIds.length,
+                stepIds: newTreatment.stepIds
             });
-            setNewTreatment({ conditionCode: '', name: '', steps: [''] });
+            setNewTreatment({ conditionCode: '', name: '', stepIds: [] });
             setEditingTreatmentIndex(null);
         }
     };
 
     const cancelEditTreatment = () => {
-        setNewTreatment({ conditionCode: '', name: '', steps: [''] });
+        setNewTreatment({ conditionCode: '', name: '', stepIds: [] });
         setEditingTreatmentIndex(null);
     };
 
-    const addStep = () => {
-        setNewTreatment(prev => ({ ...prev, steps: [...prev.steps, ''] }));
+    const addTreatmentStep = (stepId) => {
+        if (!newTreatment.stepIds.includes(stepId)) {
+            setNewTreatment(prev => ({ ...prev, stepIds: [...prev.stepIds, stepId] }));
+        }
     };
 
-    const removeStep = (index) => {
+    const removeTreatmentStep = (index) => {
         setNewTreatment(prev => ({
             ...prev,
-            steps: prev.steps.filter((_, i) => i !== index)
+            stepIds: prev.stepIds.filter((_, i) => i !== index)
         }));
     };
 
-    const updateStep = (index, value) => {
-        const newSteps = [...newTreatment.steps];
-        newSteps[index] = value;
-        setNewTreatment(prev => ({ ...prev, steps: newSteps }));
+    const moveTreatmentStep = (fromIndex, toIndex) => {
+        setNewTreatment(prev => {
+            const newStepIds = [...prev.stepIds];
+            const [moved] = newStepIds.splice(fromIndex, 1);
+            newStepIds.splice(toIndex, 0, moved);
+            return { ...prev, stepIds: newStepIds };
+        });
+    };
+
+    // ステップマスター管理用のハンドラー
+    const handleAddStep = () => {
+        if (newStep.name && newStep.conditionCodes.length > 0) {
+            const step = {
+                id: `step${String(Date.now()).slice(-3)}${String(Math.random()).slice(2, 5)}`,
+                name: newStep.name,
+                conditionCodes: newStep.conditionCodes,
+                description: newStep.description
+            };
+            onAddStep(step);
+            setNewStep({ name: '', conditionCodes: [], description: '' });
+        }
+    };
+
+    const handleEditStep = (step) => {
+        setEditingStepId(step.id);
+        setNewStep({
+            name: step.name,
+            conditionCodes: [...step.conditionCodes],
+            description: step.description || ''
+        });
+    };
+
+    const handleUpdateStep = () => {
+        if (newStep.name && newStep.conditionCodes.length > 0) {
+            const updatedStep = {
+                id: editingStepId,
+                name: newStep.name,
+                conditionCodes: newStep.conditionCodes,
+                description: newStep.description
+            };
+            onUpdateStep(editingStepId, updatedStep);
+            setNewStep({ name: '', conditionCodes: [], description: '' });
+            setEditingStepId(null);
+        }
+    };
+
+    const cancelEditStep = () => {
+        setNewStep({ name: '', conditionCodes: [], description: '' });
+        setEditingStepId(null);
+    };
+
+    const toggleStepCondition = (conditionCode) => {
+        setNewStep(prev => ({
+            ...prev,
+            conditionCodes: prev.conditionCodes.includes(conditionCode)
+                ? prev.conditionCodes.filter(c => c !== conditionCode)
+                : [...prev.conditionCodes, conditionCode]
+        }));
     };
 
     return (
@@ -599,14 +663,153 @@ export default function SettingsModal({
                     </div>
                 </div>
 
+                {/* ステップマスター設定 */}
+                <div className="mb-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
+                    <h3 className="text-lg font-bold text-purple-900 mb-3 flex items-center gap-2">
+                        📋 ステップマスター
+                    </h3>
+                    <p className="text-sm text-purple-700 mb-4">
+                        治療で使用するステップを登録し、対象病名を選択します。ステップは治療法マスターから参照できます。
+                    </p>
+
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                        {/* ステップ追加・編集フォーム */}
+                        <div className={`border rounded-lg p-4 ${editingStepId ? 'bg-yellow-50 border-yellow-300' : 'bg-white border-purple-200'}`}>
+                            <div className="flex justify-between items-center mb-3">
+                                <h4 className="font-medium text-purple-900">{editingStepId ? 'ステップを編集' : '新しいステップを追加'}</h4>
+                                {editingStepId && (
+                                    <button onClick={cancelEditStep} className="text-xs text-gray-500 hover:text-gray-700">キャンセル</button>
+                                )}
+                            </div>
+
+                            <div className="space-y-3">
+                                <div>
+                                    <label className="block text-sm font-medium text-purple-800 mb-1">ステップ名</label>
+                                    <input
+                                        type="text"
+                                        placeholder="例：フッ素塗布、印象採得"
+                                        value={newStep.name}
+                                        onChange={(e) => setNewStep(prev => ({ ...prev, name: e.target.value }))}
+                                        className="w-full px-3 py-2 border border-purple-300 rounded text-sm focus:ring-2 focus:ring-purple-500 focus:border-purple-500"
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-purple-800 mb-2">
+                                        対象病名（複数選択可）
+                                        {newStep.conditionCodes.length > 0 && (
+                                            <span className="ml-2 text-xs text-purple-600">
+                                                {newStep.conditionCodes.length}個選択中
+                                            </span>
+                                        )}
+                                    </label>
+                                    <div className="grid grid-cols-2 gap-1 p-2 bg-white border border-purple-200 rounded max-h-40 overflow-y-auto">
+                                        {conditions.map(condition => (
+                                            <label
+                                                key={condition.code}
+                                                className={`flex items-center gap-2 p-2 rounded cursor-pointer transition-colors text-sm ${
+                                                    newStep.conditionCodes.includes(condition.code)
+                                                        ? `${condition.color} ring-1 ring-purple-500`
+                                                        : 'hover:bg-purple-50'
+                                                }`}
+                                            >
+                                                <input
+                                                    type="checkbox"
+                                                    checked={newStep.conditionCodes.includes(condition.code)}
+                                                    onChange={() => toggleStepCondition(condition.code)}
+                                                    className="rounded"
+                                                />
+                                                <span className="text-xs">{condition.symbol}</span>
+                                            </label>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                <button
+                                    onClick={editingStepId ? handleUpdateStep : handleAddStep}
+                                    className={`w-full px-3 py-2 text-white rounded text-sm ${
+                                        editingStepId
+                                            ? 'bg-yellow-500 hover:bg-yellow-600'
+                                            : 'bg-purple-500 hover:bg-purple-600'
+                                    }`}
+                                >
+                                    {editingStepId ? 'ステップを更新' : 'ステップを追加'}
+                                </button>
+                            </div>
+                        </div>
+
+                        {/* ステップ一覧 */}
+                        <div>
+                            <h4 className="font-medium text-purple-900 mb-3">登録済みステップ一覧</h4>
+                            <div className="space-y-2 max-h-96 overflow-y-auto">
+                                {stepMaster && stepMaster.length > 0 ? (
+                                    stepMaster.map(step => (
+                                        <div key={step.id} className="bg-white p-3 rounded border border-purple-200 hover:border-purple-400 transition-colors">
+                                            <div className="flex justify-between items-start mb-2">
+                                                <div className="flex-1">
+                                                    <div className="font-medium text-sm text-purple-900">{step.name}</div>
+                                                    <div className="flex flex-wrap gap-1 mt-2">
+                                                        {step.conditionCodes.map(code => {
+                                                            const condition = conditions.find(c => c.code === code);
+                                                            return (
+                                                                <span
+                                                                    key={code}
+                                                                    className={`px-2 py-1 rounded text-xs ${condition?.color || 'bg-gray-100'}`}
+                                                                >
+                                                                    {condition?.symbol || code}
+                                                                </span>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                                <div className="flex gap-1 ml-2">
+                                                    <button
+                                                        onClick={() => handleEditStep(step)}
+                                                        className="text-blue-500 hover:text-blue-700 text-xs px-2 py-1"
+                                                        disabled={!!editingStepId}
+                                                    >
+                                                        編集
+                                                    </button>
+                                                    <button
+                                                        onClick={() => onDeleteStep(step.id)}
+                                                        className="text-red-500 hover:text-red-700 text-xs px-2 py-1"
+                                                        disabled={!!editingStepId}
+                                                    >
+                                                        削除
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))
+                                ) : (
+                                    <div className="text-sm text-gray-500 text-center py-4">
+                                        ステップがまだ登録されていません
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className="mt-3 text-xs text-purple-700 bg-purple-100 p-3 rounded">
+                        <p className="font-medium mb-1">💡 ステップマスターについて</p>
+                        <ul className="list-disc list-inside space-y-1">
+                            <li>治療で使用するステップを一元管理できます</li>
+                            <li>各ステップは複数の病名に対して使用可能です</li>
+                            <li>治療法マスターで病名を選ぶと、対応するステップのみ選択できます</li>
+                        </ul>
+                    </div>
+                </div>
+
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* 病名設定 */}
-                    <div>
-                        <h3 className="text-lg font-bold mb-3">病名マスター</h3>
+                    <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
+                        <h3 className="text-lg font-bold mb-3 text-blue-900 flex items-center gap-2">
+                            🏥 病名マスター
+                        </h3>
 
                         {/* 新しい病名追加 */}
                         {/* 新しい病名追加・編集 */}
-                        <div className={`border rounded-lg p-4 mb-4 ${editingConditionCode ? 'bg-yellow-50 border-yellow-300' : 'bg-gray-50'}`}>
+                        <div className={`border rounded-lg p-4 mb-4 ${editingConditionCode ? 'bg-yellow-50 border-yellow-300' : 'bg-white border-blue-200'}`}>
                             <div className="flex justify-between items-center mb-2">
                                 <h4 className="font-medium">{editingConditionCode ? '病名を編集' : '新しい病名を追加'}</h4>
                                 {editingConditionCode && (
@@ -684,12 +887,14 @@ export default function SettingsModal({
                     </div>
 
                     {/* 治療法設定 */}
-                    <div>
-                        <h3 className="text-lg font-bold mb-3">治療法マスター</h3>
+                    <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
+                        <h3 className="text-lg font-bold mb-3 text-green-900 flex items-center gap-2">
+                            💊 治療法マスター
+                        </h3>
 
                         {/* 新しい治療法追加 */}
                         {/* 新しい治療法追加・編集 */}
-                        <div className={`border rounded-lg p-4 mb-4 ${editingTreatmentIndex ? 'bg-yellow-50 border-yellow-300' : 'bg-gray-50'}`}>
+                        <div className={`border rounded-lg p-4 mb-4 ${editingTreatmentIndex ? 'bg-yellow-50 border-yellow-300' : 'bg-white border-green-200'}`}>
                             <div className="flex justify-between items-center mb-2">
                                 <h4 className="font-medium">{editingTreatmentIndex ? '治療法を編集' : '新しい治療法を追加'}</h4>
                                 {editingTreatmentIndex && (
@@ -719,34 +924,74 @@ export default function SettingsModal({
                                 />
 
                                 <div>
-                                    <div className="flex justify-between items-center mb-2">
-                                        <label className="text-sm font-medium">治療ステップ</label>
-                                        <button
-                                            onClick={addStep}
-                                            className="text-blue-500 hover:text-blue-700 text-sm"
-                                        >
-                                            + ステップ追加
-                                        </button>
+                                    <div className="mb-2">
+                                        <label className="text-sm font-medium block mb-1">治療ステップを選択</label>
+                                        {newTreatment.conditionCode ? (
+                                            <select
+                                                onChange={(e) => {
+                                                    if (e.target.value) {
+                                                        addTreatmentStep(e.target.value);
+                                                        e.target.value = '';
+                                                    }
+                                                }}
+                                                className="w-full px-3 py-2 border rounded text-sm"
+                                            >
+                                                <option value="">ステップを選択してください</option>
+                                                {stepMaster
+                                                    ?.filter(step => step.conditionCodes.includes(newTreatment.conditionCode))
+                                                    .map(step => (
+                                                        <option key={step.id} value={step.id}>
+                                                            {step.name}
+                                                        </option>
+                                                    ))}
+                                            </select>
+                                        ) : (
+                                            <div className="text-sm text-gray-500 p-2 bg-gray-50 border rounded">
+                                                まず対象病名を選択してください
+                                            </div>
+                                        )}
                                     </div>
-                                    {newTreatment.steps.map((step, index) => (
-                                        <div key={index} className="flex gap-2 mb-2">
-                                            <input
-                                                type="text"
-                                                placeholder={`ステップ ${index + 1}`}
-                                                value={step}
-                                                onChange={(e) => updateStep(index, e.target.value)}
-                                                className="flex-1 px-3 py-2 border rounded text-sm"
-                                            />
-                                            {newTreatment.steps.length > 1 && (
-                                                <button
-                                                    onClick={() => removeStep(index)}
-                                                    className="text-red-500 hover:text-red-700 text-sm px-2"
-                                                >
-                                                    削除
-                                                </button>
-                                            )}
+
+                                    {newTreatment.stepIds.length > 0 && (
+                                        <div className="mt-2">
+                                            <label className="text-sm font-medium block mb-2">選択済みステップ（順序変更可）</label>
+                                            <div className="space-y-1">
+                                                {newTreatment.stepIds.map((stepId, index) => {
+                                                    const step = stepMaster?.find(s => s.id === stepId);
+                                                    return (
+                                                        <div key={index} className="flex items-center gap-2 p-2 bg-white border rounded">
+                                                            <div className="flex flex-col gap-1">
+                                                                <button
+                                                                    onClick={() => index > 0 && moveTreatmentStep(index, index - 1)}
+                                                                    disabled={index === 0}
+                                                                    className={`text-xs px-1 ${index === 0 ? 'text-gray-300' : 'text-blue-600 hover:text-blue-800'}`}
+                                                                >
+                                                                    ↑
+                                                                </button>
+                                                                <button
+                                                                    onClick={() => index < newTreatment.stepIds.length - 1 && moveTreatmentStep(index, index + 1)}
+                                                                    disabled={index === newTreatment.stepIds.length - 1}
+                                                                    className={`text-xs px-1 ${index === newTreatment.stepIds.length - 1 ? 'text-gray-300' : 'text-blue-600 hover:text-blue-800'}`}
+                                                                >
+                                                                    ↓
+                                                                </button>
+                                                            </div>
+                                                            <span className="text-xs bg-gray-200 text-gray-700 px-2 py-1 rounded">
+                                                                {index + 1}
+                                                            </span>
+                                                            <span className="flex-1 text-sm">{step?.name || stepId}</span>
+                                                            <button
+                                                                onClick={() => removeTreatmentStep(index)}
+                                                                className="text-red-500 hover:text-red-700 text-sm px-2"
+                                                            >
+                                                                削除
+                                                            </button>
+                                                        </div>
+                                                    );
+                                                })}
+                                            </div>
                                         </div>
-                                    ))}
+                                    )}
                                 </div>
 
                                 <button
@@ -806,7 +1051,13 @@ export default function SettingsModal({
                                                             )}
                                                         </div>
                                                         <div className="text-xs text-gray-600 mt-1">
-                                                            {treatment.steps.join(' → ')} ({treatment.duration}回)
+                                                            {treatment.stepIds
+                                                                ? treatment.stepIds.map(stepId => {
+                                                                    const step = stepMaster?.find(s => s.id === stepId);
+                                                                    return step?.name || stepId;
+                                                                }).join(' → ')
+                                                                : (treatment.steps || []).join(' → ')
+                                                            } ({treatment.duration}回)
                                                         </div>
                                                     </div>
                                                 </div>
