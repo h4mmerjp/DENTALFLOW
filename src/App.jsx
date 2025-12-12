@@ -289,6 +289,19 @@ function App() {
         }
     };
 
+    // 歯式チップを空欄にドロップして分離
+    const handleToothChipDropToEmpty = (dragData) => {
+        const result = splitToothFromNode(dragData.nodeId, [dragData.tooth]);
+
+        if (result.success) {
+            // 成功時は通知（オプション）
+            // alert(result.message);
+        } else {
+            // エラー時は通知
+            alert(result.message);
+        }
+    };
+
     return (
         <div className="min-h-screen bg-gray-50 p-4">
             <div className="max-w-6xl mx-auto">
@@ -586,6 +599,7 @@ function App() {
                             isGenerating={isGeneratingWorkflow}
                             onToothChipDragStart={handleToothChipDragStart}
                             onToothChipDrop={handleToothChipDrop}
+                            onToothChipDropToEmpty={handleToothChipDropToEmpty}
                         />
                     )}
 
@@ -604,6 +618,7 @@ function App() {
                             onClearAllSchedules={clearAllSchedules}
                             onToothChipDragStart={handleToothChipDragStart}
                             onToothChipDrop={handleToothChipDrop}
+                            onToothChipDropToEmpty={handleToothChipDropToEmpty}
                         />
                     )}
                 </div>

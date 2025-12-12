@@ -176,7 +176,7 @@ export default function DraggableCard({
                                 nodeId={step.id}
                                 groupId={step.groupId}
                                 onDragStart={handleToothChipDragStart}
-                                disabled={isInSchedule}
+                                disabled={false}
                                 size="small"
                             />
                         ))

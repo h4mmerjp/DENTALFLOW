@@ -547,20 +547,24 @@ export function useTreatmentWorkflow() {
      * @returns {Object} { success: boolean, message: string }
      */
     const splitToothFromNode = (sourceNodeId, teethToSplit) => {
-        // スケジュールに配置済みのノードは分離不可
-        const isInSchedule = treatmentSchedule.some(day =>
-            day.treatments.some(t => t.id === sourceNodeId)
-        );
+        // ソースノードを検索（workflowまたはスケジュールから）
+        let sourceNode = workflow.find(node => node.id === sourceNodeId);
+        let isInSchedule = false;
+        let sourceScheduleDate = null;
 
-        if (isInSchedule) {
-            return {
-                success: false,
-                message: '配置済みのノードは分離できません。未配置エリアから操作してください。'
-            };
+        if (!sourceNode) {
+            // スケジュール内を検索
+            for (const day of treatmentSchedule) {
+                const found = day.treatments.find(t => t.id === sourceNodeId);
+                if (found) {
+                    sourceNode = found;
+                    isInSchedule = true;
+                    sourceScheduleDate = day.date;
+                    break;
+                }
+            }
         }
 
-        // ソースノードを検索
-        const sourceNode = workflow.find(node => node.id === sourceNodeId);
         if (!sourceNode) {
             return { success: false, message: 'ソースノードが見つかりません。' };
         }
@@ -604,9 +608,32 @@ export function useTreatmentWorkflow() {
         }));
 
         // workflowを更新
-        const newWorkflow = workflow.filter(node => node.groupId !== sourceNode.groupId)
-            .concat(updatedNodes)
-            .concat(newNodes);
+        let newWorkflow = workflow.filter(node => node.groupId !== sourceNode.groupId)
+            .concat(updatedNodes);
+
+        // スケジュール内のノードから分離した場合
+        if (isInSchedule) {
+            // 新しいノードは未配置としてworkflowに追加
+            newWorkflow = newWorkflow.concat(newNodes);
+
+            // スケジュールを更新（元のノードの歯式を更新）
+            const newSchedule = treatmentSchedule.map(day => {
+                if (day.date === sourceScheduleDate) {
+                    return {
+                        ...day,
+                        treatments: day.treatments.map(t => {
+                            const updatedNode = updatedNodes.find(n => n.id === t.id);
+                            return updatedNode || t;
+                        })
+                    };
+                }
+                return day;
+            });
+            setTreatmentSchedule(newSchedule);
+        } else {
+            // 未配置ノードから分離した場合は新しいノードもworkflowに追加
+            newWorkflow = newWorkflow.concat(newNodes);
+        }
 
         setWorkflow(newWorkflow);
 
@@ -625,23 +652,32 @@ export function useTreatmentWorkflow() {
     const mergeToothToNode = (dragData, targetNode) => {
         const { tooth, nodeId: sourceNodeId, groupId: sourceGroupId } = dragData;
 
-        // スケジュールに配置済みのノードは操作不可
-        const sourceInSchedule = treatmentSchedule.some(day =>
-            day.treatments.some(t => t.groupId === sourceGroupId)
-        );
-        const targetInSchedule = treatmentSchedule.some(day =>
-            day.treatments.some(t => t.groupId === targetNode.groupId)
-        );
+        // ソースノードとターゲットノードがスケジュール内にあるかチェック
+        let sourceScheduleDate = null;
+        let targetScheduleDate = null;
 
-        if (sourceInSchedule || targetInSchedule) {
-            return {
-                success: false,
-                message: '配置済みのノードは合体できません。'
-            };
+        for (const day of treatmentSchedule) {
+            if (day.treatments.some(t => t.groupId === sourceGroupId)) {
+                sourceScheduleDate = day.date;
+            }
+            if (day.treatments.some(t => t.groupId === targetNode.groupId)) {
+                targetScheduleDate = day.date;
+            }
         }
 
-        // ソースノードを検索
-        const sourceNode = workflow.find(node => node.id === sourceNodeId);
+        // ソースノードを検索（workflowまたはスケジュールから）
+        let sourceNode = workflow.find(node => node.id === sourceNodeId);
+        if (!sourceNode) {
+            // スケジュール内を検索
+            for (const day of treatmentSchedule) {
+                const found = day.treatments.find(t => t.id === sourceNodeId);
+                if (found) {
+                    sourceNode = found;
+                    break;
+                }
+            }
+        }
+
         if (!sourceNode) {
             return { success: false, message: 'ソースノードが見つかりません。' };
         }
@@ -672,44 +708,102 @@ export function useTreatmentWorkflow() {
             };
         }
 
-        // 同じgroupIdを持つすべてのカードを取得
-        const sourceGroupNodes = workflow.filter(node => node.groupId === sourceGroupId);
-        const targetGroupNodes = workflow.filter(node => node.groupId === targetNode.groupId);
+        // 同じgroupIdを持つすべてのカードを取得（workflowとスケジュールから）
+        let sourceGroupNodes = workflow.filter(node => node.groupId === sourceGroupId);
+        let targetGroupNodes = workflow.filter(node => node.groupId === targetNode.groupId);
+
+        // スケジュール内も検索
+        if (sourceScheduleDate) {
+            treatmentSchedule.forEach(day => {
+                day.treatments.forEach(t => {
+                    if (t.groupId === sourceGroupId && !sourceGroupNodes.find(n => n.id === t.id)) {
+                        sourceGroupNodes.push(t);
+                    }
+                });
+            });
+        }
+        if (targetScheduleDate) {
+            treatmentSchedule.forEach(day => {
+                day.treatments.forEach(t => {
+                    if (t.groupId === targetNode.groupId && !targetGroupNodes.find(n => n.id === t.id)) {
+                        targetGroupNodes.push(t);
+                    }
+                });
+            });
+        }
 
         // ソースノードから歯式を削除
         const remainingTeeth = sourceNode.teeth.filter(t => t !== tooth);
 
-        let newWorkflow;
+        // 更新されたノードを作成
+        const updatedSourceNodes = sourceGroupNodes.map(node => ({
+            ...node,
+            teeth: remainingTeeth
+        }));
 
-        if (remainingTeeth.length === 0) {
-            // ソースノードの歯式がなくなった場合は削除
-            newWorkflow = workflow.filter(node => node.groupId !== sourceGroupId);
-        } else {
-            // ソースノードを更新（残りの歯式）
-            const updatedSourceNodes = sourceGroupNodes.map(node => ({
-                ...node,
-                teeth: remainingTeeth
-            }));
-            newWorkflow = workflow.map(node =>
-                node.groupId === sourceGroupId
-                    ? updatedSourceNodes.find(n => n.id === node.id)
-                    : node
-            );
-        }
-
-        // ターゲットノードに歯式を追加
         const updatedTargetNodes = targetGroupNodes.map(node => ({
             ...node,
             teeth: [...node.teeth, tooth].sort()
         }));
 
+        // workflowを更新
+        let newWorkflow;
+        if (remainingTeeth.length === 0) {
+            // ソースノードの歯式がなくなった場合は削除
+            newWorkflow = workflow.filter(node => node.groupId !== sourceGroupId);
+        } else {
+            // ソースノードを更新
+            newWorkflow = workflow.map(node =>
+                node.groupId === sourceGroupId
+                    ? updatedSourceNodes.find(n => n.id === node.id) || node
+                    : node
+            );
+        }
+
+        // ターゲットノードを更新
         newWorkflow = newWorkflow.map(node =>
             node.groupId === targetNode.groupId
-                ? updatedTargetNodes.find(n => n.id === node.id)
+                ? updatedTargetNodes.find(n => n.id === node.id) || node
                 : node
         );
 
         setWorkflow(newWorkflow);
+
+        // スケジュールを更新
+        let newSchedule = treatmentSchedule.map(day => {
+            let updatedTreatments = day.treatments;
+
+            // ソースノードがこの日付にある場合
+            if (day.date === sourceScheduleDate) {
+                if (remainingTeeth.length === 0) {
+                    // 歯式がなくなった場合は削除
+                    updatedTreatments = updatedTreatments.filter(t => t.groupId !== sourceGroupId);
+                } else {
+                    // 歯式を更新
+                    updatedTreatments = updatedTreatments.map(t =>
+                        t.groupId === sourceGroupId
+                            ? updatedSourceNodes.find(n => n.id === t.id) || t
+                            : t
+                    );
+                }
+            }
+
+            // ターゲットノードがこの日付にある場合
+            if (day.date === targetScheduleDate) {
+                updatedTreatments = updatedTreatments.map(t =>
+                    t.groupId === targetNode.groupId
+                        ? updatedTargetNodes.find(n => n.id === t.id) || t
+                        : t
+                );
+            }
+
+            return {
+                ...day,
+                treatments: updatedTreatments
+            };
+        });
+
+        setTreatmentSchedule(newSchedule);
 
         return {
             success: true,

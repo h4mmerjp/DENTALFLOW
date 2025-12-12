@@ -14,8 +14,11 @@ export default function ScheduleCalendar({
     getConditionInfo,
     onClearAllSchedules,
     onToothChipDragStart,
-    onToothChipDrop
+    onToothChipDrop,
+    onToothChipDropToEmpty
 }) {
+    const [isDragOverEmpty, setIsDragOverEmpty] = React.useState(false);
+
     // スケジュール内の治療数をカウント
     const scheduledCount = treatmentSchedule.reduce((total, day) => total + day.treatments.length, 0);
 
@@ -25,6 +28,39 @@ export default function ScheduleCalendar({
         }
         if (window.confirm('スケジュールに配置されたすべての治療を未スケジュール状態に戻しますか？\nスケジュール枠（日付）は残ります。')) {
             onClearAllSchedules();
+        }
+    };
+
+    // 空欄へのドロップハンドラ
+    const handleEmptyAreaDragOver = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const hasJsonType = e.dataTransfer.types.includes('application/json');
+        if (hasJsonType) {
+            setIsDragOverEmpty(true);
+        }
+    };
+
+    const handleEmptyAreaDragLeave = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragOverEmpty(false);
+    };
+
+    const handleEmptyAreaDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragOverEmpty(false);
+
+        try {
+            const dragData = JSON.parse(e.dataTransfer.getData('application/json') || '{}');
+
+            if (dragData.type === 'tooth-chip' && onToothChipDropToEmpty) {
+                onToothChipDropToEmpty(dragData);
+            }
+        } catch (err) {
+            console.error('空欄ドロップ処理エラー:', err);
         }
     };
 
@@ -109,6 +145,28 @@ export default function ScheduleCalendar({
                         </div>
                     </div>
                 ))}
+            </div>
+
+            {/* 空欄ドロップゾーン */}
+            <div
+                className={`mt-4 p-6 border-2 border-dashed rounded-lg transition-all ${
+                    isDragOverEmpty
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-300 bg-gray-50'
+                }`}
+                onDragOver={handleEmptyAreaDragOver}
+                onDragLeave={handleEmptyAreaDragLeave}
+                onDrop={handleEmptyAreaDrop}
+            >
+                <div className="text-center text-gray-500">
+                    <div className="text-2xl mb-2">📋</div>
+                    <div className="text-sm font-medium">
+                        歯式チップをここにドロップして分離
+                    </div>
+                    <div className="text-xs mt-1 text-gray-400">
+                        配置済みのノードからも分離できます
+                    </div>
+                </div>
             </div>
 
             <div className="mt-4 text-sm text-gray-600">

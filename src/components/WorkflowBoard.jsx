@@ -11,8 +11,11 @@ export default function WorkflowBoard({
     onAutoSchedule,
     isGenerating,
     onToothChipDragStart,
-    onToothChipDrop
+    onToothChipDrop,
+    onToothChipDropToEmpty
 }) {
+    const [isDragOverEmpty, setIsDragOverEmpty] = React.useState(false);
+
     const assignedIds = new Set();
     treatmentSchedule.forEach(day => {
         day.treatments.forEach(treatment => assignedIds.add(treatment.id));
@@ -32,6 +35,39 @@ export default function WorkflowBoard({
         }
         groupedTreatments[groupKey].push(step);
     });
+
+    // 空欄へのドロップハンドラ
+    const handleEmptyAreaDragOver = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        const hasJsonType = e.dataTransfer.types.includes('application/json');
+        if (hasJsonType) {
+            setIsDragOverEmpty(true);
+        }
+    };
+
+    const handleEmptyAreaDragLeave = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragOverEmpty(false);
+    };
+
+    const handleEmptyAreaDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragOverEmpty(false);
+
+        try {
+            const dragData = JSON.parse(e.dataTransfer.getData('application/json') || '{}');
+
+            if (dragData.type === 'tooth-chip' && onToothChipDropToEmpty) {
+                onToothChipDropToEmpty(dragData);
+            }
+        } catch (err) {
+            console.error('空欄ドロップ処理エラー:', err);
+        }
+    };
 
     const renderStackedTreatmentCard = (cardGroup, activeCard) => {
         const totalCards = cardGroup.length;
@@ -124,6 +160,28 @@ export default function WorkflowBoard({
                     );
                 })}
             </div>
+            {/* 空欄ドロップゾーン */}
+            <div
+                className={`mt-4 p-6 border-2 border-dashed rounded-lg transition-all ${
+                    isDragOverEmpty
+                        ? 'border-blue-500 bg-blue-50'
+                        : 'border-gray-300 bg-gray-50'
+                }`}
+                onDragOver={handleEmptyAreaDragOver}
+                onDragLeave={handleEmptyAreaDragLeave}
+                onDrop={handleEmptyAreaDrop}
+            >
+                <div className="text-center text-gray-500">
+                    <div className="text-2xl mb-2">📋</div>
+                    <div className="text-sm font-medium">
+                        歯式チップをここにドロップして分離
+                    </div>
+                    <div className="text-xs mt-1 text-gray-400">
+                        複数の歯がまとまったノードから1本ずつ分離できます
+                    </div>
+                </div>
+            </div>
+
             <div className="mt-4 space-y-2">
                 <div className="text-sm text-gray-600">
                     💡 重ねたカードは治療完了後に次のカードが表示されます
@@ -131,9 +189,9 @@ export default function WorkflowBoard({
                 <div className="text-sm text-blue-600 bg-blue-50 p-3 rounded-lg border border-blue-200">
                     🔧 <strong>歯式チップ機能：</strong>
                     <ul className="mt-1 ml-4 space-y-1 text-xs">
-                        <li>• 各歯番号チップをドラッグして分離・合体できます</li>
+                        <li>• 各歯番号チップをドラッグして他のノードにドロップで合体</li>
+                        <li>• 歯番号チップを空欄エリアにドロップで分離</li>
                         <li>• 同じ病名・治療法のノード間でのみ合体可能です</li>
-                        <li>• 配置済みのノードは操作できません</li>
                     </ul>
                 </div>
             </div>
