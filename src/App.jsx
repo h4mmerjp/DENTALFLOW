@@ -53,7 +53,9 @@ function App() {
         deleteStep,
         changeTreatmentOption,
         clearAllConditions,
-        clearAllSchedules
+        clearAllSchedules,
+        splitToothFromNode,
+        mergeToothToNode
     } = useTreatmentWorkflow();
 
     // 病名が変更されたら自動的に治療ノードを生成
@@ -266,6 +268,25 @@ function App() {
             alert(result.message);
         }
         setDraggedNode(null);
+    };
+
+    // 歯式チップのドラッグ開始ハンドラ
+    const handleToothChipDragStart = (e, data) => {
+        // 歯式チップのドラッグデータは既にToothChipコンポーネントで設定済み
+        // ここでは追加の処理があれば実行
+    };
+
+    // 歯式チップのドロップハンドラ
+    const handleToothChipDrop = (dragData, targetNode) => {
+        const result = mergeToothToNode(dragData, targetNode);
+
+        if (result.success) {
+            // 成功時は通知（オプション）
+            // alert(result.message);
+        } else {
+            // エラー時は通知
+            alert(result.message);
+        }
     };
 
     return (
@@ -563,6 +584,8 @@ function App() {
                             getConditionInfo={getConditionInfo}
                             onAutoSchedule={handleAutoScheduling}
                             isGenerating={isGeneratingWorkflow}
+                            onToothChipDragStart={handleToothChipDragStart}
+                            onToothChipDrop={handleToothChipDrop}
                         />
                     )}
 
@@ -579,6 +602,8 @@ function App() {
                             autoScheduleEnabled={autoScheduleEnabled}
                             getConditionInfo={getConditionInfo}
                             onClearAllSchedules={clearAllSchedules}
+                            onToothChipDragStart={handleToothChipDragStart}
+                            onToothChipDrop={handleToothChipDrop}
                         />
                     )}
                 </div>

@@ -9,7 +9,9 @@ export default function WorkflowBoard({
     onChangeTreatment,
     getConditionInfo,
     onAutoSchedule,
-    isGenerating
+    isGenerating,
+    onToothChipDragStart,
+    onToothChipDrop
 }) {
     const assignedIds = new Set();
     treatmentSchedule.forEach(day => {
@@ -21,12 +23,14 @@ export default function WorkflowBoard({
     if (unassigned.length === 0) return null;
 
     // 治療グループごとにまとめて表示（スタック形式）
+    // groupIdでグループ化（分離・合体に対応）
     const groupedTreatments = {};
     unassigned.forEach(step => {
-        if (!groupedTreatments[step.baseId]) {
-            groupedTreatments[step.baseId] = [];
+        const groupKey = step.groupId || step.baseId; // groupIdがない場合はbaseIdをフォールバック
+        if (!groupedTreatments[groupKey]) {
+            groupedTreatments[groupKey] = [];
         }
-        groupedTreatments[step.baseId].push(step);
+        groupedTreatments[groupKey].push(step);
     });
 
     const renderStackedTreatmentCard = (cardGroup, activeCard) => {
@@ -35,19 +39,22 @@ export default function WorkflowBoard({
 
         return (
             <div className="relative">
-                {/* 背景カードの表示（重なり効果） */}
+                {/* 背景カードの表示（重なり効果）- より明確に */}
                 {totalCards > 1 && Array.from({ length: Math.min(3, totalCards) }, (_, i) => {
-                    const offset = (Math.min(3, totalCards) - 1 - i) * 3;
+                    const offset = (Math.min(3, totalCards) - 1 - i) * 8; // 3pxから8pxに変更
+                    const opacity = 1 - (i * 0.2); // 奥のカードほど薄く
                     return (
                         <div
                             key={`bg-${i}`}
-                            className="absolute bg-gray-200 border border-gray-400 rounded-lg"
+                            className="absolute bg-gray-100 border-2 border-gray-300 rounded-lg shadow-sm"
                             style={{
                                 top: `-${offset}px`,
                                 right: `-${offset}px`,
                                 left: `${offset}px`,
                                 bottom: `${offset}px`,
-                                zIndex: i
+                                zIndex: i,
+                                opacity: opacity,
+                                transform: `scale(${0.98 - (i * 0.02)})` // わずかに縮小
                             }}
                         />
                     );
@@ -61,6 +68,8 @@ export default function WorkflowBoard({
                         onDragStart={onDragStart}
                         onChangeTreatment={onChangeTreatment}
                         getConditionInfo={getConditionInfo}
+                        onToothChipDragStart={onToothChipDragStart}
+                        onToothChipDrop={onToothChipDrop}
                     />
                 </div>
 
@@ -102,21 +111,31 @@ export default function WorkflowBoard({
                 </button>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {Object.values(groupedTreatments).map(group => {
+                {Object.entries(groupedTreatments).map(([groupKey, group]) => {
                     // カード番号順にソート
                     const sortedGroup = group.sort((a, b) => a.cardNumber - b.cardNumber);
                     // 現在表示すべきカード（ドラッグ可能な最初のカード）を取得
                     const availableCard = sortedGroup.find(card => canDrag(card)) || sortedGroup[0];
 
                     return (
-                        <div key={availableCard.baseId} className="relative">
+                        <div key={groupKey} className="relative">
                             {renderStackedTreatmentCard(sortedGroup, availableCard)}
                         </div>
                     );
                 })}
             </div>
-            <div className="mt-4 text-sm text-gray-600">
-                💡 重ねたカードは治療完了後に次のカードが表示されます
+            <div className="mt-4 space-y-2">
+                <div className="text-sm text-gray-600">
+                    💡 重ねたカードは治療完了後に次のカードが表示されます
+                </div>
+                <div className="text-sm text-blue-600 bg-blue-50 p-3 rounded-lg border border-blue-200">
+                    🔧 <strong>歯式チップ機能：</strong>
+                    <ul className="mt-1 ml-4 space-y-1 text-xs">
+                        <li>• 各歯番号チップをドラッグして分離・合体できます</li>
+                        <li>• 同じ病名・治療法のノード間でのみ合体可能です</li>
+                        <li>• 配置済みのノードは操作できません</li>
+                    </ul>
+                </div>
             </div>
         </div>
     );

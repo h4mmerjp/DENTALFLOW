@@ -189,6 +189,7 @@ export function useTreatmentWorkflow() {
                         const selectedTreatment = treatments[selectedTreatmentIndex] || treatments[0];
 
                         if (selectedTreatment) {
+                            const groupId = crypto.randomUUID(); // グループIDを生成
                             for (let i = 0; i < selectedTreatment.duration; i++) {
                                 const cardId = crypto.randomUUID();
                                 // stepIdsがある場合はステップマスターから名前を取得、なければstepsから取得（後方互換性）
@@ -204,6 +205,7 @@ export function useTreatmentWorkflow() {
                                 workflowSteps.push({
                                     id: cardId,
                                     baseId: `${condition}-${selectedTreatment.name}-${tooth}`,
+                                    groupId, // グループIDを追加
                                     condition,
                                     treatment: selectedTreatment.name,
                                     stepName,
@@ -225,6 +227,7 @@ export function useTreatmentWorkflow() {
                     const selectedTreatment = treatments[selectedTreatmentIndex] || treatments[0];
 
                     if (selectedTreatment) {
+                        const groupId = crypto.randomUUID(); // グループIDを生成
                         for (let i = 0; i < selectedTreatment.duration; i++) {
                             const cardId = crypto.randomUUID();
                             // stepIdsがある場合はステップマスターから名前を取得、なければstepsから取得（後方互換性）
@@ -240,6 +243,7 @@ export function useTreatmentWorkflow() {
                             workflowSteps.push({
                                 id: cardId,
                                     baseId: `${condition}-${selectedTreatment.name}`,
+                                    groupId, // グループIDを追加
                                     condition,
                                     treatment: selectedTreatment.name,
                                     stepName,
@@ -536,6 +540,183 @@ export function useTreatmentWorkflow() {
         setTreatmentSchedule(clearedSchedule);
     };
 
+    /**
+     * 歯式チップを分離して新しいグループを作成
+     * @param {string} sourceNodeId - 分離元のノードID
+     * @param {Array<string>} teethToSplit - 分離する歯式の配列
+     * @returns {Object} { success: boolean, message: string }
+     */
+    const splitToothFromNode = (sourceNodeId, teethToSplit) => {
+        // スケジュールに配置済みのノードは分離不可
+        const isInSchedule = treatmentSchedule.some(day =>
+            day.treatments.some(t => t.id === sourceNodeId)
+        );
+
+        if (isInSchedule) {
+            return {
+                success: false,
+                message: '配置済みのノードは分離できません。未配置エリアから操作してください。'
+            };
+        }
+
+        // ソースノードを検索
+        const sourceNode = workflow.find(node => node.id === sourceNodeId);
+        if (!sourceNode) {
+            return { success: false, message: 'ソースノードが見つかりません。' };
+        }
+
+        // 分離する歯式が実際に含まれているか確認
+        const invalidTeeth = teethToSplit.filter(tooth => !sourceNode.teeth.includes(tooth));
+        if (invalidTeeth.length > 0) {
+            return {
+                success: false,
+                message: `指定された歯式 ${invalidTeeth.join(', ')} はこのノードに含まれていません。`
+            };
+        }
+
+        // すべての歯を分離しようとした場合は不可
+        if (teethToSplit.length >= sourceNode.teeth.length) {
+            return {
+                success: false,
+                message: '少なくとも1本の歯を残す必要があります。'
+            };
+        }
+
+        // 新しいグループIDを生成
+        const newGroupId = crypto.randomUUID();
+
+        // 同じgroupIdを持つすべてのカードを取得（連続治療の全ステップ）
+        const sameGroupNodes = workflow.filter(node => node.groupId === sourceNode.groupId);
+
+        // 新しいノードセットを作成（分離した歯式用）
+        const newNodes = sameGroupNodes.map(node => ({
+            ...node,
+            id: crypto.randomUUID(), // 新しいIDを生成
+            groupId: newGroupId,
+            teeth: teethToSplit
+        }));
+
+        // 元のノードを更新（残りの歯式）
+        const remainingTeeth = sourceNode.teeth.filter(tooth => !teethToSplit.includes(tooth));
+        const updatedNodes = sameGroupNodes.map(node => ({
+            ...node,
+            teeth: remainingTeeth
+        }));
+
+        // workflowを更新
+        const newWorkflow = workflow.filter(node => node.groupId !== sourceNode.groupId)
+            .concat(updatedNodes)
+            .concat(newNodes);
+
+        setWorkflow(newWorkflow);
+
+        return {
+            success: true,
+            message: `歯式 ${teethToSplit.join(', ')} を分離しました。`
+        };
+    };
+
+    /**
+     * 歯式チップを別のノードにマージ
+     * @param {Object} dragData - { tooth, nodeId, groupId }
+     * @param {Object} targetNode - マージ先のノード
+     * @returns {Object} { success: boolean, message: string }
+     */
+    const mergeToothToNode = (dragData, targetNode) => {
+        const { tooth, nodeId: sourceNodeId, groupId: sourceGroupId } = dragData;
+
+        // スケジュールに配置済みのノードは操作不可
+        const sourceInSchedule = treatmentSchedule.some(day =>
+            day.treatments.some(t => t.groupId === sourceGroupId)
+        );
+        const targetInSchedule = treatmentSchedule.some(day =>
+            day.treatments.some(t => t.groupId === targetNode.groupId)
+        );
+
+        if (sourceInSchedule || targetInSchedule) {
+            return {
+                success: false,
+                message: '配置済みのノードは合体できません。'
+            };
+        }
+
+        // ソースノードを検索
+        const sourceNode = workflow.find(node => node.id === sourceNodeId);
+        if (!sourceNode) {
+            return { success: false, message: 'ソースノードが見つかりません。' };
+        }
+
+        // 同じノードへのドロップは不可
+        if (sourceNode.groupId === targetNode.groupId) {
+            return {
+                success: false,
+                message: '同じノードには合体できません。'
+            };
+        }
+
+        // 病名と治療法が一致しているか確認
+        if (sourceNode.condition !== targetNode.condition ||
+            sourceNode.treatment !== targetNode.treatment ||
+            sourceNode.cardNumber !== targetNode.cardNumber) {
+            return {
+                success: false,
+                message: '同じ病名・治療法・ステップ番号のノードにのみ合体できます。'
+            };
+        }
+
+        // 既にターゲットノードに含まれている歯式かチェック
+        if (targetNode.teeth.includes(tooth)) {
+            return {
+                success: false,
+                message: `歯式 ${tooth} は既にこのノードに含まれています。`
+            };
+        }
+
+        // 同じgroupIdを持つすべてのカードを取得
+        const sourceGroupNodes = workflow.filter(node => node.groupId === sourceGroupId);
+        const targetGroupNodes = workflow.filter(node => node.groupId === targetNode.groupId);
+
+        // ソースノードから歯式を削除
+        const remainingTeeth = sourceNode.teeth.filter(t => t !== tooth);
+
+        let newWorkflow;
+
+        if (remainingTeeth.length === 0) {
+            // ソースノードの歯式がなくなった場合は削除
+            newWorkflow = workflow.filter(node => node.groupId !== sourceGroupId);
+        } else {
+            // ソースノードを更新（残りの歯式）
+            const updatedSourceNodes = sourceGroupNodes.map(node => ({
+                ...node,
+                teeth: remainingTeeth
+            }));
+            newWorkflow = workflow.map(node =>
+                node.groupId === sourceGroupId
+                    ? updatedSourceNodes.find(n => n.id === node.id)
+                    : node
+            );
+        }
+
+        // ターゲットノードに歯式を追加
+        const updatedTargetNodes = targetGroupNodes.map(node => ({
+            ...node,
+            teeth: [...node.teeth, tooth].sort()
+        }));
+
+        newWorkflow = newWorkflow.map(node =>
+            node.groupId === targetNode.groupId
+                ? updatedTargetNodes.find(n => n.id === node.id)
+                : node
+        );
+
+        setWorkflow(newWorkflow);
+
+        return {
+            success: true,
+            message: `歯式 ${tooth} を合体しました。`
+        };
+    };
+
     return {
         toothConditions,
         setToothConditions,
@@ -579,6 +760,8 @@ export function useTreatmentWorkflow() {
         getStepName,
         getAvailableSteps,
         clearAllConditions,
-        clearAllSchedules
+        clearAllSchedules,
+        splitToothFromNode,
+        mergeToothToNode
     };
 }

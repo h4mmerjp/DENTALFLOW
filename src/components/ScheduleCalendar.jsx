@@ -12,7 +12,9 @@ export default function ScheduleCalendar({
     onChangeTreatment,
     autoScheduleEnabled,
     getConditionInfo,
-    onClearAllSchedules
+    onClearAllSchedules,
+    onToothChipDragStart,
+    onToothChipDrop
 }) {
     // スケジュール内の治療数をカウント
     const scheduledCount = treatmentSchedule.reduce((total, day) => total + day.treatments.length, 0);
@@ -94,6 +96,8 @@ export default function ScheduleCalendar({
                                             onDragStart={onDragStart}
                                             onChangeTreatment={onChangeTreatment}
                                             getConditionInfo={getConditionInfo}
+                                            onToothChipDragStart={onToothChipDragStart}
+                                            onToothChipDrop={onToothChipDrop}
                                         />
                                     )}
                                 </div>
