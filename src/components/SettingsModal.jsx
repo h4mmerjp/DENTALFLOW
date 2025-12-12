@@ -742,8 +742,8 @@ export default function SettingsModal({
                         <div>
                             <h4 className="font-medium text-purple-900 mb-3">登録済みステップ一覧</h4>
                             <div className="space-y-2 max-h-96 overflow-y-auto">
-                                {stepMaster && stepMaster.length > 0 ? (
-                                    stepMaster.map(step => (
+                                {stepMaster && stepMaster.filter(step => step.id !== 'step00').length > 0 ? (
+                                    stepMaster.filter(step => step.id !== 'step00').map(step => (
                                         <div key={step.id} className="bg-white p-3 rounded border border-purple-200 hover:border-purple-400 transition-colors">
                                             <div className="flex justify-between items-start mb-2">
                                                 <div className="flex-1">
