@@ -139,7 +139,12 @@ export function useTreatmentWorkflow() {
     // ステップIDからステップ名を取得
     const getStepName = (stepId) => {
         const step = stepMaster.find(s => s.id === stepId);
-        return step ? step.name : stepId; // 見つからない場合はIDをそのまま返す
+        if (step) {
+            return step.name;
+        }
+        // 見つからない場合はstep00（空のステップ）を使用
+        const emptyStep = stepMaster.find(s => s.id === 'step00');
+        return emptyStep ? emptyStep.name : '';
     };
 
     // 指定した病名で使用可能なステップを取得
@@ -189,6 +194,7 @@ export function useTreatmentWorkflow() {
                         const selectedTreatment = treatments[selectedTreatmentIndex] || treatments[0];
 
                         if (selectedTreatment) {
+                            const groupId = crypto.randomUUID(); // グループIDを生成
                             for (let i = 0; i < selectedTreatment.duration; i++) {
                                 const cardId = crypto.randomUUID();
                                 // stepIdsがある場合はステップマスターから名前を取得、なければstepsから取得（後方互換性）
@@ -204,6 +210,7 @@ export function useTreatmentWorkflow() {
                                 workflowSteps.push({
                                     id: cardId,
                                     baseId: `${condition}-${selectedTreatment.name}-${tooth}`,
+                                    groupId, // グループIDを追加
                                     condition,
                                     treatment: selectedTreatment.name,
                                     stepName,
@@ -225,6 +232,7 @@ export function useTreatmentWorkflow() {
                     const selectedTreatment = treatments[selectedTreatmentIndex] || treatments[0];
 
                     if (selectedTreatment) {
+                        const groupId = crypto.randomUUID(); // グループIDを生成
                         for (let i = 0; i < selectedTreatment.duration; i++) {
                             const cardId = crypto.randomUUID();
                             // stepIdsがある場合はステップマスターから名前を取得、なければstepsから取得（後方互換性）
@@ -240,6 +248,7 @@ export function useTreatmentWorkflow() {
                             workflowSteps.push({
                                 id: cardId,
                                     baseId: `${condition}-${selectedTreatment.name}`,
+                                    groupId, // グループIDを追加
                                     condition,
                                     treatment: selectedTreatment.name,
                                     stepName,
@@ -536,6 +545,333 @@ export function useTreatmentWorkflow() {
         setTreatmentSchedule(clearedSchedule);
     };
 
+    /**
+     * スケジュールの日付を変更し、以降の日程を連動して変更
+     * @param {number} dayIndex - 変更する日のインデックス
+     * @param {string} newDate - 新しい日付（YYYY-MM-DD形式）
+     */
+    const changeScheduleDate = (dayIndex, newDate) => {
+        const updatedSchedule = [...treatmentSchedule];
+
+        // 指定された日の日付を変更
+        updatedSchedule[dayIndex] = {
+            ...updatedSchedule[dayIndex],
+            date: newDate
+        };
+
+        // 以降の日程を連動して変更
+        const baseDate = new Date(newDate);
+        for (let i = dayIndex + 1; i < updatedSchedule.length; i++) {
+            const intervalDays = schedulingRules.scheduleIntervalDays * (i - dayIndex);
+            const nextDate = new Date(baseDate);
+            nextDate.setDate(baseDate.getDate() + intervalDays);
+
+            updatedSchedule[i] = {
+                ...updatedSchedule[i],
+                date: nextDate.toISOString().split('T')[0]
+            };
+        }
+
+        setTreatmentSchedule(updatedSchedule);
+    };
+
+    /**
+     * 歯式チップを分離して新しいグループを作成
+     * @param {string} sourceNodeId - 分離元のノードID
+     * @param {Array<string>} teethToSplit - 分離する歯式の配列
+     * @param {string|null} targetDate - 分離先の日付（nullの場合は未スケジュール）
+     * @returns {Object} { success: boolean, message: string }
+     */
+    const splitToothFromNode = (sourceNodeId, teethToSplit, targetDate = null) => {
+        // ソースノードを検索（workflowまたはスケジュールから）
+        let sourceNode = workflow.find(node => node.id === sourceNodeId);
+        let isInSchedule = false;
+        let sourceScheduleDate = null;
+
+        if (!sourceNode) {
+            // スケジュール内を検索
+            for (const day of treatmentSchedule) {
+                const found = day.treatments.find(t => t.id === sourceNodeId);
+                if (found) {
+                    sourceNode = found;
+                    isInSchedule = true;
+                    sourceScheduleDate = day.date;
+                    break;
+                }
+            }
+        }
+
+        if (!sourceNode) {
+            return { success: false, message: 'ソースノードが見つかりません。' };
+        }
+
+        // 分離する歯式が実際に含まれているか確認
+        const invalidTeeth = teethToSplit.filter(tooth => !sourceNode.teeth.includes(tooth));
+        if (invalidTeeth.length > 0) {
+            return {
+                success: false,
+                message: `指定された歯式 ${invalidTeeth.join(', ')} はこのノードに含まれていません。`
+            };
+        }
+
+        // すべての歯を分離しようとした場合は不可
+        if (teethToSplit.length >= sourceNode.teeth.length) {
+            return {
+                success: false,
+                message: '少なくとも1本の歯を残す必要があります。'
+            };
+        }
+
+        // 新しいグループIDを生成
+        const newGroupId = crypto.randomUUID();
+
+        // 同じgroupIdを持つすべてのカードを取得（連続治療の全ステップ）
+        // workflowとスケジュールの両方から検索
+        let sameGroupNodes = workflow.filter(node => node.groupId === sourceNode.groupId);
+
+        // スケジュール内のノードも含める
+        if (isInSchedule || sameGroupNodes.length === 0) {
+            treatmentSchedule.forEach(day => {
+                day.treatments.forEach(t => {
+                    if (t.groupId === sourceNode.groupId && !sameGroupNodes.find(n => n.id === t.id)) {
+                        sameGroupNodes.push(t);
+                    }
+                });
+            });
+        }
+
+        // 新しいノードセットを作成（分離した歯式用）
+        const newNodes = sameGroupNodes.map(node => ({
+            ...node,
+            id: crypto.randomUUID(), // 新しいIDを生成
+            groupId: newGroupId,
+            teeth: teethToSplit
+        }));
+
+        // 元のノードを更新（残りの歯式）
+        const remainingTeeth = sourceNode.teeth.filter(tooth => !teethToSplit.includes(tooth));
+        const updatedNodes = sameGroupNodes.map(node => ({
+            ...node,
+            teeth: remainingTeeth
+        }));
+
+        // workflowを更新（workflow内のノードのみ）
+        const updatedWorkflowNodes = updatedNodes.filter(node =>
+            workflow.find(wn => wn.id === node.id)
+        );
+        let newWorkflow = workflow.filter(node => node.groupId !== sourceNode.groupId)
+            .concat(updatedWorkflowNodes);
+
+        // targetDateが指定されている場合は、そのスケジュールに分離
+        // 指定されていない場合は、元の場所（スケジュールまたは未スケジュール）に分離
+        const finalTargetDate = targetDate !== null ? targetDate : sourceScheduleDate;
+
+        if (finalTargetDate) {
+            // スケジュールに分離
+            // workflowには元のノードのみ残す（新しいノードは追加しない）
+            setWorkflow(newWorkflow);
+
+            // スケジュールを更新
+            const newSchedule = treatmentSchedule.map(day => {
+                if (day.date === sourceScheduleDate) {
+                    // 元のノードの歯式を更新
+                    return {
+                        ...day,
+                        treatments: day.treatments.map(t => {
+                            const updatedNode = updatedNodes.find(n => n.id === t.id);
+                            return updatedNode || t;
+                        })
+                    };
+                } else if (day.date === finalTargetDate) {
+                    // 新しいノードを追加
+                    return {
+                        ...day,
+                        treatments: [...day.treatments, ...newNodes]
+                    };
+                }
+                return day;
+            });
+            setTreatmentSchedule(newSchedule);
+        } else {
+            // 未スケジュールに分離
+            newWorkflow = newWorkflow.concat(newNodes);
+            setWorkflow(newWorkflow);
+        }
+
+        return {
+            success: true,
+            message: `歯式 ${teethToSplit.join(', ')} を分離しました。`
+        };
+    };
+
+    /**
+     * 歯式チップを別のノードにマージ
+     * @param {Object} dragData - { tooth, nodeId, groupId }
+     * @param {Object} targetNode - マージ先のノード
+     * @returns {Object} { success: boolean, message: string }
+     */
+    const mergeToothToNode = (dragData, targetNode) => {
+        const { tooth, nodeId: sourceNodeId, groupId: sourceGroupId } = dragData;
+
+        // ソースノードとターゲットノードがスケジュール内にあるかチェック
+        let sourceScheduleDate = null;
+        let targetScheduleDate = null;
+
+        for (const day of treatmentSchedule) {
+            if (day.treatments.some(t => t.groupId === sourceGroupId)) {
+                sourceScheduleDate = day.date;
+            }
+            if (day.treatments.some(t => t.groupId === targetNode.groupId)) {
+                targetScheduleDate = day.date;
+            }
+        }
+
+        // ソースノードを検索（workflowまたはスケジュールから）
+        let sourceNode = workflow.find(node => node.id === sourceNodeId);
+        if (!sourceNode) {
+            // スケジュール内を検索
+            for (const day of treatmentSchedule) {
+                const found = day.treatments.find(t => t.id === sourceNodeId);
+                if (found) {
+                    sourceNode = found;
+                    break;
+                }
+            }
+        }
+
+        if (!sourceNode) {
+            return { success: false, message: 'ソースノードが見つかりません。' };
+        }
+
+        // 同じノードへのドロップは不可
+        if (sourceNode.groupId === targetNode.groupId) {
+            return {
+                success: false,
+                message: '同じノードには合体できません。'
+            };
+        }
+
+        // 病名と治療法が一致しているか確認
+        if (sourceNode.condition !== targetNode.condition ||
+            sourceNode.treatment !== targetNode.treatment ||
+            sourceNode.cardNumber !== targetNode.cardNumber) {
+            return {
+                success: false,
+                message: '同じ病名・治療法・ステップ番号のノードにのみ合体できます。'
+            };
+        }
+
+        // 既にターゲットノードに含まれている歯式かチェック
+        if (targetNode.teeth.includes(tooth)) {
+            return {
+                success: false,
+                message: `歯式 ${tooth} は既にこのノードに含まれています。`
+            };
+        }
+
+        // 同じgroupIdを持つすべてのカードを取得（workflowとスケジュールから）
+        let sourceGroupNodes = workflow.filter(node => node.groupId === sourceGroupId);
+        let targetGroupNodes = workflow.filter(node => node.groupId === targetNode.groupId);
+
+        // スケジュール内も検索
+        if (sourceScheduleDate) {
+            treatmentSchedule.forEach(day => {
+                day.treatments.forEach(t => {
+                    if (t.groupId === sourceGroupId && !sourceGroupNodes.find(n => n.id === t.id)) {
+                        sourceGroupNodes.push(t);
+                    }
+                });
+            });
+        }
+        if (targetScheduleDate) {
+            treatmentSchedule.forEach(day => {
+                day.treatments.forEach(t => {
+                    if (t.groupId === targetNode.groupId && !targetGroupNodes.find(n => n.id === t.id)) {
+                        targetGroupNodes.push(t);
+                    }
+                });
+            });
+        }
+
+        // ソースノードから歯式を削除
+        const remainingTeeth = sourceNode.teeth.filter(t => t !== tooth);
+
+        // 更新されたノードを作成
+        const updatedSourceNodes = sourceGroupNodes.map(node => ({
+            ...node,
+            teeth: remainingTeeth
+        }));
+
+        const updatedTargetNodes = targetGroupNodes.map(node => ({
+            ...node,
+            teeth: [...node.teeth, tooth].sort()
+        }));
+
+        // workflowを更新
+        let newWorkflow;
+        if (remainingTeeth.length === 0) {
+            // ソースノードの歯式がなくなった場合は削除
+            newWorkflow = workflow.filter(node => node.groupId !== sourceGroupId);
+        } else {
+            // ソースノードを更新
+            newWorkflow = workflow.map(node =>
+                node.groupId === sourceGroupId
+                    ? updatedSourceNodes.find(n => n.id === node.id) || node
+                    : node
+            );
+        }
+
+        // ターゲットノードを更新
+        newWorkflow = newWorkflow.map(node =>
+            node.groupId === targetNode.groupId
+                ? updatedTargetNodes.find(n => n.id === node.id) || node
+                : node
+        );
+
+        setWorkflow(newWorkflow);
+
+        // スケジュールを更新
+        let newSchedule = treatmentSchedule.map(day => {
+            let updatedTreatments = day.treatments;
+
+            // ソースノードがこの日付にある場合
+            if (day.date === sourceScheduleDate) {
+                if (remainingTeeth.length === 0) {
+                    // 歯式がなくなった場合は削除
+                    updatedTreatments = updatedTreatments.filter(t => t.groupId !== sourceGroupId);
+                } else {
+                    // 歯式を更新
+                    updatedTreatments = updatedTreatments.map(t =>
+                        t.groupId === sourceGroupId
+                            ? updatedSourceNodes.find(n => n.id === t.id) || t
+                            : t
+                    );
+                }
+            }
+
+            // ターゲットノードがこの日付にある場合
+            if (day.date === targetScheduleDate) {
+                updatedTreatments = updatedTreatments.map(t =>
+                    t.groupId === targetNode.groupId
+                        ? updatedTargetNodes.find(n => n.id === t.id) || t
+                        : t
+                );
+            }
+
+            return {
+                ...day,
+                treatments: updatedTreatments
+            };
+        });
+
+        setTreatmentSchedule(newSchedule);
+
+        return {
+            success: true,
+            message: `歯式 ${tooth} を合体しました。`
+        };
+    };
+
     return {
         toothConditions,
         setToothConditions,
@@ -579,6 +915,9 @@ export function useTreatmentWorkflow() {
         getStepName,
         getAvailableSteps,
         clearAllConditions,
-        clearAllSchedules
+        clearAllSchedules,
+        changeScheduleDate,
+        splitToothFromNode,
+        mergeToothToNode
     };
 }

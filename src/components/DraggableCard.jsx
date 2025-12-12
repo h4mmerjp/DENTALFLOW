@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { GripVertical } from 'lucide-react';
+import ToothChip from './ToothChip';
 
 export default function DraggableCard({
     step,
@@ -8,9 +9,13 @@ export default function DraggableCard({
     canDrag = true,
     onDragStart,
     onChangeTreatment = null,
-    getConditionInfo = null
+    getConditionInfo = null,
+    onToothChipDragStart = null,
+    onToothChipDrop = null
 }) {
     const isDisabled = !canDrag && !isInSchedule;
+    const [isDragOver, setIsDragOver] = useState(false);
+    const [canAcceptDrop, setCanAcceptDrop] = useState(false);
     
     // 病名情報を取得して色を決定
     const conditionInfo = getConditionInfo ? getConditionInfo(step.condition) : null;
@@ -34,14 +39,69 @@ export default function DraggableCard({
         onChangeTreatment(step, newIndex);
     };
 
+    // 歯式チップのドラッグハンドラ
+    const handleToothChipDragStart = (e, data) => {
+        if (onToothChipDragStart) {
+            onToothChipDragStart(e, data);
+        }
+    };
+
+    // ドロップゾーンとしてのハンドラ
+    const handleDragOver = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+
+        // dataTransfer.typesで歯式チップのドラッグかチェック
+        // dragoverイベント時はgetData()が使えないため、typesで判定
+        const hasJsonType = e.dataTransfer.types.includes('application/json');
+
+        if (hasJsonType) {
+            // 歯式チップの可能性があるため、ドロップ可能状態にする
+            setCanAcceptDrop(true);
+            setIsDragOver(true);
+        } else {
+            setCanAcceptDrop(false);
+            setIsDragOver(false);
+        }
+    };
+
+    const handleDragLeave = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragOver(false);
+        setCanAcceptDrop(false);
+    };
+
+    const handleDrop = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsDragOver(false);
+        setCanAcceptDrop(false);
+
+        try {
+            const dragData = JSON.parse(e.dataTransfer.getData('application/json') || '{}');
+
+            if (dragData.type === 'tooth-chip' && onToothChipDrop) {
+                onToothChipDrop(dragData, step);
+            }
+        } catch (err) {
+            console.error('ドロップ処理エラー:', err);
+        }
+    };
+
     return (
         <div
             draggable={canDrag}
             onDragStart={(e) => canDrag && onDragStart(e, step)}
-            className={`bg-white border-2 rounded-lg shadow-sm transition-all select-none relative flex flex-col ${isDisabled
+            onDragOver={handleDragOver}
+            onDragLeave={handleDragLeave}
+            onDrop={handleDrop}
+            className={`draggable-card bg-white border-2 rounded-lg shadow-sm transition-all select-none relative flex flex-col ${isDisabled
                     ? 'border-gray-200 bg-gray-50 cursor-not-allowed opacity-60'
                     : 'border-gray-300 cursor-move hover:shadow-md'
-                } ${step.isBranched ? 'border-orange-300' : ''}`}
+                } ${step.isBranched ? 'border-orange-300' : ''}
+                ${isDragOver && canAcceptDrop ? 'border-green-500 bg-green-50 ring-2 ring-green-300' : ''}
+                ${isDragOver && !canAcceptDrop ? 'border-red-500 bg-red-50' : ''}`}
             style={{ userSelect: 'none', minHeight: '140px' }}
         >
             {/* 上部：治療法選択または治療名表示 */}
@@ -94,17 +154,42 @@ export default function DraggableCard({
             </div>
 
             {/* 下部：情報エリア（病名・対象歯・ページネーション） */}
-            <div className="p-2 border-t border-gray-100 flex items-center justify-between text-xs">
-                <div className={`px-2 py-0.5 rounded border ${conditionColorClass}`}>
-                    {step.condition}
-                </div>
-                
-                <div className="text-gray-500 font-medium">
-                    {step.teeth.join(', ')}番
+            <div className="p-2 border-t border-gray-100">
+                {/* 病名とページネーション */}
+                <div className="flex items-center justify-between text-xs mb-2">
+                    <div className={`px-2 py-0.5 rounded border ${conditionColorClass}`}>
+                        {step.condition}
+                    </div>
+
+                    <div className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
+                        {step.cardNumber}/{step.totalCards}
+                    </div>
                 </div>
 
-                <div className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
-                    {step.cardNumber}/{step.totalCards}
+                {/* 歯式チップエリア */}
+                <div className="flex flex-wrap gap-1.5">
+                    {step.teeth && step.teeth.length > 0 ? (
+                        step.teeth.map((tooth) => (
+                            <ToothChip
+                                key={`${step.id}-${tooth}`}
+                                tooth={tooth}
+                                nodeId={step.id}
+                                groupId={step.groupId}
+                                onDragStart={handleToothChipDragStart}
+                                disabled={false}
+                                size="small"
+                            />
+                        ))
+                    ) : (
+                        <div className="text-gray-400 text-xs italic">対象歯なし</div>
+                    )}
+
+                    {/* 歯数バッジ */}
+                    {step.teeth && step.teeth.length > 1 && (
+                        <div className="ml-auto bg-blue-500 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                            {step.teeth.length}本
+                        </div>
+                    )}
                 </div>
             </div>
 
