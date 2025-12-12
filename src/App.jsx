@@ -54,6 +54,7 @@ function App() {
         changeTreatmentOption,
         clearAllConditions,
         clearAllSchedules,
+        changeScheduleDate,
         splitToothFromNode,
         mergeToothToNode
     } = useTreatmentWorkflow();
@@ -616,6 +617,7 @@ function App() {
                             autoScheduleEnabled={autoScheduleEnabled}
                             getConditionInfo={getConditionInfo}
                             onClearAllSchedules={clearAllSchedules}
+                            onChangeScheduleDate={changeScheduleDate}
                             onToothChipDragStart={handleToothChipDragStart}
                             onToothChipDrop={handleToothChipDrop}
                             onToothChipDropToEmpty={handleToothChipDropToEmpty}

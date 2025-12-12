@@ -546,6 +546,36 @@ export function useTreatmentWorkflow() {
     };
 
     /**
+     * スケジュールの日付を変更し、以降の日程を連動して変更
+     * @param {number} dayIndex - 変更する日のインデックス
+     * @param {string} newDate - 新しい日付（YYYY-MM-DD形式）
+     */
+    const changeScheduleDate = (dayIndex, newDate) => {
+        const updatedSchedule = [...treatmentSchedule];
+
+        // 指定された日の日付を変更
+        updatedSchedule[dayIndex] = {
+            ...updatedSchedule[dayIndex],
+            date: newDate
+        };
+
+        // 以降の日程を連動して変更
+        const baseDate = new Date(newDate);
+        for (let i = dayIndex + 1; i < updatedSchedule.length; i++) {
+            const intervalDays = schedulingRules.scheduleIntervalDays * (i - dayIndex);
+            const nextDate = new Date(baseDate);
+            nextDate.setDate(baseDate.getDate() + intervalDays);
+
+            updatedSchedule[i] = {
+                ...updatedSchedule[i],
+                date: nextDate.toISOString().split('T')[0]
+            };
+        }
+
+        setTreatmentSchedule(updatedSchedule);
+    };
+
+    /**
      * 歯式チップを分離して新しいグループを作成
      * @param {string} sourceNodeId - 分離元のノードID
      * @param {Array<string>} teethToSplit - 分離する歯式の配列
@@ -886,6 +916,7 @@ export function useTreatmentWorkflow() {
         getAvailableSteps,
         clearAllConditions,
         clearAllSchedules,
+        changeScheduleDate,
         splitToothFromNode,
         mergeToothToNode
     };
