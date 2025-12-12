@@ -96,7 +96,7 @@ export default function DraggableCard({
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
-            className={`bg-white border-2 rounded-lg shadow-sm transition-all select-none relative flex flex-col ${isDisabled
+            className={`draggable-card bg-white border-2 rounded-lg shadow-sm transition-all select-none relative flex flex-col ${isDisabled
                     ? 'border-gray-200 bg-gray-50 cursor-not-allowed opacity-60'
                     : 'border-gray-300 cursor-move hover:shadow-md'
                 } ${step.isBranched ? 'border-orange-300' : ''}

@@ -17,7 +17,7 @@ export default function ScheduleCalendar({
     onToothChipDrop,
     onToothChipDropToEmpty
 }) {
-    const [isDragOverEmpty, setIsDragOverEmpty] = React.useState(false);
+    const [dragOverDate, setDragOverDate] = React.useState(null);
 
     // スケジュール内の治療数をカウント
     const scheduledCount = treatmentSchedule.reduce((total, day) => total + day.treatments.length, 0);
@@ -31,36 +31,47 @@ export default function ScheduleCalendar({
         }
     };
 
-    // 空欄へのドロップハンドラ
-    const handleEmptyAreaDragOver = (e) => {
+    // 日付エリアのドロップハンドラ
+    const handleDateAreaDragOver = (e, date) => {
+        // DraggableCardのドロップゾーンでない場合のみ処理
+        if (e.target.closest('.draggable-card')) {
+            return;
+        }
+
         e.preventDefault();
         e.stopPropagation();
 
         const hasJsonType = e.dataTransfer.types.includes('application/json');
         if (hasJsonType) {
-            setIsDragOverEmpty(true);
+            setDragOverDate(date);
         }
     };
 
-    const handleEmptyAreaDragLeave = (e) => {
+    const handleDateAreaDragLeave = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        setIsDragOverEmpty(false);
+        setDragOverDate(null);
     };
 
-    const handleEmptyAreaDrop = (e) => {
+    const handleDateAreaDrop = (e, date) => {
+        // DraggableCardのドロップゾーンでない場合のみ処理
+        if (e.target.closest('.draggable-card')) {
+            return;
+        }
+
         e.preventDefault();
         e.stopPropagation();
-        setIsDragOverEmpty(false);
+        setDragOverDate(null);
 
         try {
             const dragData = JSON.parse(e.dataTransfer.getData('application/json') || '{}');
 
             if (dragData.type === 'tooth-chip' && onToothChipDropToEmpty) {
-                onToothChipDropToEmpty(dragData);
+                // この日付エリアにドロップ = この日付に分離
+                onToothChipDropToEmpty(dragData, date);
             }
         } catch (err) {
-            console.error('空欄ドロップ処理エラー:', err);
+            console.error('日付エリアドロップ処理エラー:', err);
         }
     };
 
@@ -96,7 +107,14 @@ export default function ScheduleCalendar({
                 {treatmentSchedule.map((day, index) => (
                     <div
                         key={day.date}
-                        className="border rounded-lg p-4 bg-gray-50"
+                        className={`border rounded-lg p-4 transition-all ${
+                            dragOverDate === day.date
+                                ? 'bg-blue-50 border-blue-400 ring-2 ring-blue-300'
+                                : 'bg-gray-50'
+                        }`}
+                        onDragOver={(e) => handleDateAreaDragOver(e, day.date)}
+                        onDragLeave={handleDateAreaDragLeave}
+                        onDrop={(e) => handleDateAreaDrop(e, day.date)}
                     >
                         <div className="flex items-center gap-2 mb-3">
                             <Calendar className="w-4 h-4 text-blue-500" />
@@ -145,28 +163,6 @@ export default function ScheduleCalendar({
                         </div>
                     </div>
                 ))}
-            </div>
-
-            {/* 空欄ドロップゾーン */}
-            <div
-                className={`mt-4 p-6 border-2 border-dashed rounded-lg transition-all ${
-                    isDragOverEmpty
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-300 bg-gray-50'
-                }`}
-                onDragOver={handleEmptyAreaDragOver}
-                onDragLeave={handleEmptyAreaDragLeave}
-                onDrop={handleEmptyAreaDrop}
-            >
-                <div className="text-center text-gray-500">
-                    <div className="text-2xl mb-2">📋</div>
-                    <div className="text-sm font-medium">
-                        歯式チップをここにドロップして分離
-                    </div>
-                    <div className="text-xs mt-1 text-gray-400">
-                        配置済みのノードからも分離できます
-                    </div>
-                </div>
             </div>
 
             <div className="mt-4 text-sm text-gray-600">

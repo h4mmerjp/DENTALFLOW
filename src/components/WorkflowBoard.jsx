@@ -14,7 +14,7 @@ export default function WorkflowBoard({
     onToothChipDrop,
     onToothChipDropToEmpty
 }) {
-    const [isDragOverEmpty, setIsDragOverEmpty] = React.useState(false);
+    const [isDragOverArea, setIsDragOverArea] = React.useState(false);
 
     const assignedIds = new Set();
     treatmentSchedule.forEach(day => {
@@ -36,36 +36,47 @@ export default function WorkflowBoard({
         groupedTreatments[groupKey].push(step);
     });
 
-    // 空欄へのドロップハンドラ
-    const handleEmptyAreaDragOver = (e) => {
+    // エリア全体のドロップハンドラ（ノード外へのドロップ）
+    const handleAreaDragOver = (e) => {
+        // DraggableCardのドロップゾーンでない場合のみ処理
+        if (e.target.closest('.draggable-card')) {
+            return;
+        }
+
         e.preventDefault();
         e.stopPropagation();
 
         const hasJsonType = e.dataTransfer.types.includes('application/json');
         if (hasJsonType) {
-            setIsDragOverEmpty(true);
+            setIsDragOverArea(true);
         }
     };
 
-    const handleEmptyAreaDragLeave = (e) => {
+    const handleAreaDragLeave = (e) => {
         e.preventDefault();
         e.stopPropagation();
-        setIsDragOverEmpty(false);
+        setIsDragOverArea(false);
     };
 
-    const handleEmptyAreaDrop = (e) => {
+    const handleAreaDrop = (e) => {
+        // DraggableCardのドロップゾーンでない場合のみ処理
+        if (e.target.closest('.draggable-card')) {
+            return;
+        }
+
         e.preventDefault();
         e.stopPropagation();
-        setIsDragOverEmpty(false);
+        setIsDragOverArea(false);
 
         try {
             const dragData = JSON.parse(e.dataTransfer.getData('application/json') || '{}');
 
             if (dragData.type === 'tooth-chip' && onToothChipDropToEmpty) {
-                onToothChipDropToEmpty(dragData);
+                // 未スケジュールエリアにドロップ = 未スケジュールとして分離
+                onToothChipDropToEmpty(dragData, null);
             }
         } catch (err) {
-            console.error('空欄ドロップ処理エラー:', err);
+            console.error('エリアドロップ処理エラー:', err);
         }
     };
 
@@ -131,7 +142,14 @@ export default function WorkflowBoard({
     };
 
     return (
-        <div className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <div
+            className={`bg-white rounded-lg shadow-md p-6 mb-6 transition-all ${
+                isDragOverArea ? 'ring-2 ring-blue-400 bg-blue-50' : ''
+            }`}
+            onDragOver={handleAreaDragOver}
+            onDragLeave={handleAreaDragLeave}
+            onDrop={handleAreaDrop}
+        >
             <div className="flex justify-between items-center mb-4">
                 <h2 className="text-xl font-bold">未スケジュール治療</h2>
                 <button
@@ -160,27 +178,6 @@ export default function WorkflowBoard({
                     );
                 })}
             </div>
-            {/* 空欄ドロップゾーン */}
-            <div
-                className={`mt-4 p-6 border-2 border-dashed rounded-lg transition-all ${
-                    isDragOverEmpty
-                        ? 'border-blue-500 bg-blue-50'
-                        : 'border-gray-300 bg-gray-50'
-                }`}
-                onDragOver={handleEmptyAreaDragOver}
-                onDragLeave={handleEmptyAreaDragLeave}
-                onDrop={handleEmptyAreaDrop}
-            >
-                <div className="text-center text-gray-500">
-                    <div className="text-2xl mb-2">📋</div>
-                    <div className="text-sm font-medium">
-                        歯式チップをここにドロップして分離
-                    </div>
-                    <div className="text-xs mt-1 text-gray-400">
-                        複数の歯がまとまったノードから1本ずつ分離できます
-                    </div>
-                </div>
-            </div>
 
             <div className="mt-4 space-y-2">
                 <div className="text-sm text-gray-600">
@@ -189,9 +186,9 @@ export default function WorkflowBoard({
                 <div className="text-sm text-blue-600 bg-blue-50 p-3 rounded-lg border border-blue-200">
                     🔧 <strong>歯式チップ機能：</strong>
                     <ul className="mt-1 ml-4 space-y-1 text-xs">
-                        <li>• 各歯番号チップをドラッグして他のノードにドロップで合体</li>
-                        <li>• 歯番号チップを空欄エリアにドロップで分離</li>
-                        <li>• 同じ病名・治療法のノード間でのみ合体可能です</li>
+                        <li>• 歯番号チップを他のノードにドロップで合体</li>
+                        <li>• 歯番号チップをノード外にドロップで同じエリアに分離</li>
+                        <li>• 同じ病名・治療法・ステップ番号のノード間でのみ合体可能</li>
                     </ul>
                 </div>
             </div>

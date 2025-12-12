@@ -289,9 +289,9 @@ function App() {
         }
     };
 
-    // 歯式チップを空欄にドロップして分離
-    const handleToothChipDropToEmpty = (dragData) => {
-        const result = splitToothFromNode(dragData.nodeId, [dragData.tooth]);
+    // 歯式チップをノード外にドロップして分離
+    const handleToothChipDropToEmpty = (dragData, targetDate) => {
+        const result = splitToothFromNode(dragData.nodeId, [dragData.tooth], targetDate);
 
         if (result.success) {
             // 成功時は通知（オプション）

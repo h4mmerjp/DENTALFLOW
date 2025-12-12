@@ -544,9 +544,10 @@ export function useTreatmentWorkflow() {
      * 歯式チップを分離して新しいグループを作成
      * @param {string} sourceNodeId - 分離元のノードID
      * @param {Array<string>} teethToSplit - 分離する歯式の配列
+     * @param {string|null} targetDate - 分離先の日付（nullの場合は未スケジュール）
      * @returns {Object} { success: boolean, message: string }
      */
-    const splitToothFromNode = (sourceNodeId, teethToSplit) => {
+    const splitToothFromNode = (sourceNodeId, teethToSplit, targetDate = null) => {
         // ソースノードを検索（workflowまたはスケジュールから）
         let sourceNode = workflow.find(node => node.id === sourceNodeId);
         let isInSchedule = false;
@@ -611,14 +612,19 @@ export function useTreatmentWorkflow() {
         let newWorkflow = workflow.filter(node => node.groupId !== sourceNode.groupId)
             .concat(updatedNodes);
 
-        // スケジュール内のノードから分離した場合
-        if (isInSchedule) {
-            // 新しいノードは未配置としてworkflowに追加
-            newWorkflow = newWorkflow.concat(newNodes);
+        // targetDateが指定されている場合は、そのスケジュールに分離
+        // 指定されていない場合は、元の場所（スケジュールまたは未スケジュール）に分離
+        const finalTargetDate = targetDate !== null ? targetDate : sourceScheduleDate;
 
-            // スケジュールを更新（元のノードの歯式を更新）
+        if (finalTargetDate) {
+            // スケジュールに分離
+            // workflowには元のノードのみ残す（新しいノードは追加しない）
+            setWorkflow(newWorkflow);
+
+            // スケジュールを更新
             const newSchedule = treatmentSchedule.map(day => {
                 if (day.date === sourceScheduleDate) {
+                    // 元のノードの歯式を更新
                     return {
                         ...day,
                         treatments: day.treatments.map(t => {
@@ -626,16 +632,21 @@ export function useTreatmentWorkflow() {
                             return updatedNode || t;
                         })
                     };
+                } else if (day.date === finalTargetDate) {
+                    // 新しいノードを追加
+                    return {
+                        ...day,
+                        treatments: [...day.treatments, ...newNodes]
+                    };
                 }
                 return day;
             });
             setTreatmentSchedule(newSchedule);
         } else {
-            // 未配置ノードから分離した場合は新しいノードもworkflowに追加
+            // 未スケジュールに分離
             newWorkflow = newWorkflow.concat(newNodes);
+            setWorkflow(newWorkflow);
         }
-
-        setWorkflow(newWorkflow);
 
         return {
             success: true,
