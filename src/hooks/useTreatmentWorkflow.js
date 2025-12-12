@@ -329,10 +329,10 @@ export function useTreatmentWorkflow() {
             return 0;
         });
 
-        let currentDayIndex = 0;
         let totalAssigned = 0;
 
         sortedTreatments.forEach(treatment => {
+            let currentDayIndex = 0; // 各治療ごとに最初からチェック
             while (currentDayIndex < newSchedule.length) {
                 const currentDay = newSchedule[currentDayIndex];
 
