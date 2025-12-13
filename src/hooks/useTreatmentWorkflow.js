@@ -672,24 +672,26 @@ export function useTreatmentWorkflow() {
             setWorkflow(newWorkflow);
 
             // スケジュールを更新
+            // スケジュールを更新
             const newSchedule = treatmentSchedule.map(day => {
-                if (day.date === sourceScheduleDate) {
-                    // 元のノードの歯式を更新
-                    return {
-                        ...day,
-                        treatments: day.treatments.map(t => {
-                            const updatedNode = updatedNodes.find(n => n.id === t.id);
-                            return updatedNode || t;
-                        })
-                    };
-                } else if (day.date === finalTargetDate) {
-                    // 新しいノードを追加
-                    return {
-                        ...day,
-                        treatments: [...day.treatments, ...newNodes]
-                    };
+                let currentDayTreatments = day.treatments;
+
+                // 1. 既存ノードの更新（すべての日に適用）
+                // day.treatmentsの中にupdatedNodesに含まれるIDがあれば更新
+                currentDayTreatments = currentDayTreatments.map(t => {
+                    const updatedNode = updatedNodes.find(n => n.id === t.id);
+                    return updatedNode || t;
+                });
+
+                // 2. 新しいノードの追加（ターゲット日のみ）
+                if (day.date === finalTargetDate) {
+                    currentDayTreatments = [...currentDayTreatments, ...newNodes];
                 }
-                return day;
+
+                return {
+                    ...day,
+                    treatments: currentDayTreatments
+                };
             });
             setTreatmentSchedule(newSchedule);
         } else {
@@ -834,29 +836,25 @@ export function useTreatmentWorkflow() {
         let newSchedule = treatmentSchedule.map(day => {
             let updatedTreatments = day.treatments;
 
-            // ソースノードがこの日付にある場合
-            if (day.date === sourceScheduleDate) {
-                if (remainingTeeth.length === 0) {
-                    // 歯式がなくなった場合は削除
-                    updatedTreatments = updatedTreatments.filter(t => t.groupId !== sourceGroupId);
-                } else {
-                    // 歯式を更新
-                    updatedTreatments = updatedTreatments.map(t =>
-                        t.groupId === sourceGroupId
-                            ? updatedSourceNodes.find(n => n.id === t.id) || t
-                            : t
-                    );
-                }
-            }
-
-            // ターゲットノードがこの日付にある場合
-            if (day.date === targetScheduleDate) {
+            // ソースノード更新（歯式削除またはノード削除）
+            if (remainingTeeth.length === 0) {
+                // 歯式がなくなった場合は削除
+                updatedTreatments = updatedTreatments.filter(t => t.groupId !== sourceGroupId);
+            } else {
+                // 歯式を更新
                 updatedTreatments = updatedTreatments.map(t =>
-                    t.groupId === targetNode.groupId
-                        ? updatedTargetNodes.find(n => n.id === t.id) || t
+                    t.groupId === sourceGroupId
+                        ? updatedSourceNodes.find(n => n.id === t.id) || t
                         : t
                 );
             }
+
+            // ターゲットノード更新
+            updatedTreatments = updatedTreatments.map(t =>
+                t.groupId === targetNode.groupId
+                    ? updatedTargetNodes.find(n => n.id === t.id) || t
+                    : t
+            );
 
             return {
                 ...day,
@@ -980,17 +978,16 @@ export function useTreatmentWorkflow() {
             let updatedTreatments = day.treatments;
 
             // ソースノードを削除
-            if (day.date === sourceScheduleDate) {
-                updatedTreatments = updatedTreatments.filter(t => t.groupId !== sourceGroupId);
-            }
+            updatedTreatments = updatedTreatments.filter(t => t.groupId !== sourceGroupId);
 
             // ターゲットノードを更新
-            if (day.date === targetScheduleDate) {
-                updatedTreatments = updatedTreatments.map(t => {
+            updatedTreatments = updatedTreatments.map(t => {
+                if (t.groupId === targetNode.groupId) {
                     const updatedNode = updatedTargetNodes.find(n => n.id === t.id);
                     return updatedNode || t;
-                });
-            }
+                }
+                return t;
+            });
 
             return {
                 ...day,
