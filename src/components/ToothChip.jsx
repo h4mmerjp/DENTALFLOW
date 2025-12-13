@@ -65,6 +65,7 @@ const ToothChip = ({
         ${disabled && 'opacity-50 cursor-not-allowed'}
         ${isDragging && 'opacity-30 scale-90 rotate-2'}
       `}
+      style={{ touchAction: 'none' }}
       title={disabled ? '操作できません' : `${tooth}番をドラッグして分離・合体`}
     >
       {/* ドラッグハンドル */}

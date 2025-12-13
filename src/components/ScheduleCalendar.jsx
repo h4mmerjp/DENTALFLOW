@@ -16,7 +16,8 @@ export default function ScheduleCalendar({
     onChangeScheduleDate,
     onToothChipDragStart,
     onToothChipDrop,
-    onToothChipDropToEmpty
+    onToothChipDropToEmpty,
+    onNodeDrop
 }) {
     const [dragOverDate, setDragOverDate] = React.useState(null);
     const [editingDateIndex, setEditingDateIndex] = React.useState(null);
@@ -219,6 +220,7 @@ export default function ScheduleCalendar({
                                             getConditionInfo={getConditionInfo}
                                             onToothChipDragStart={onToothChipDragStart}
                                             onToothChipDrop={onToothChipDrop}
+                                            onNodeDrop={onNodeDrop}
                                         />
                                     )}
                                 </div>

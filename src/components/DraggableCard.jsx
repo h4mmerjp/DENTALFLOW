@@ -11,7 +11,8 @@ export default function DraggableCard({
     onChangeTreatment = null,
     getConditionInfo = null,
     onToothChipDragStart = null,
-    onToothChipDrop = null
+    onToothChipDrop = null,
+    onNodeDrop = null
 }) {
     const isDisabled = !canDrag && !isInSchedule;
     const [isDragOver, setIsDragOver] = useState(false);
@@ -83,16 +84,38 @@ export default function DraggableCard({
 
             if (dragData.type === 'tooth-chip' && onToothChipDrop) {
                 onToothChipDrop(dragData, step);
+            } else if (dragData.type === 'treatment-node' && onNodeDrop) {
+                // ノード全体のドロップ処理
+                onNodeDrop(dragData, step);
             }
         } catch (err) {
             console.error('ドロップ処理エラー:', err);
         }
     };
 
+    // ノードドラッグ開始時にノードデータを設定
+    const handleNodeDragStart = (e) => {
+        if (!canDrag) return;
+
+        // ノードデータをJSON形式で設定
+        const nodeData = {
+            type: 'treatment-node',
+            nodeId: step.id,
+            groupId: step.groupId,
+            node: step
+        };
+        e.dataTransfer.setData('application/json', JSON.stringify(nodeData));
+
+        // 親コンポーネントのハンドラーも呼び出す
+        if (onDragStart) {
+            onDragStart(e, step);
+        }
+    };
+
     return (
         <div
             draggable={canDrag}
-            onDragStart={(e) => canDrag && onDragStart(e, step)}
+            onDragStart={handleNodeDragStart}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
@@ -102,7 +125,7 @@ export default function DraggableCard({
                 } ${step.isBranched ? 'border-orange-300' : ''}
                 ${isDragOver && canAcceptDrop ? 'border-green-500 bg-green-50 ring-2 ring-green-300' : ''}
                 ${isDragOver && !canAcceptDrop ? 'border-red-500 bg-red-50' : ''}`}
-            style={{ userSelect: 'none', minHeight: '140px' }}
+            style={{ userSelect: 'none', minHeight: '140px', touchAction: 'none' }}
         >
             {/* 上部：治療法選択または治療名表示 */}
             <div className="bg-gray-50 border-b border-gray-200 p-2 rounded-t-lg">

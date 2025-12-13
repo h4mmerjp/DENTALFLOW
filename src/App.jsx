@@ -300,6 +300,46 @@ function App() {
         }
     };
 
+    // ノード全体のドロップハンドラ（ノード間の合体）
+    const handleNodeDrop = (dragData, targetNode) => {
+        // 自分自身へのドロップは無視
+        if (dragData.nodeId === targetNode.id) {
+            return;
+        }
+
+        // ドラッグされたノードの全ての歯を対象ノードにマージ
+        const sourceNode = dragData.node;
+
+        if (!sourceNode.teeth || sourceNode.teeth.length === 0) {
+            alert('対象歯がないノードは合体できません');
+            return;
+        }
+
+        // 複数の歯を順次マージ
+        let allSuccess = true;
+        let errorMessage = '';
+
+        for (const tooth of sourceNode.teeth) {
+            const toothData = {
+                tooth: tooth,
+                nodeId: sourceNode.id,
+                groupId: sourceNode.groupId
+            };
+
+            const result = mergeToothToNode(toothData, targetNode);
+
+            if (!result.success) {
+                allSuccess = false;
+                errorMessage = result.message;
+                break;
+            }
+        }
+
+        if (!allSuccess) {
+            alert(`ノードの合体に失敗しました: ${errorMessage}`);
+        }
+    };
+
     // 歯式チップをノード外にドロップして分離
     const handleToothChipDropToEmpty = (dragData, targetDate) => {
         const result = splitToothFromNode(dragData.nodeId, [dragData.tooth], targetDate);
@@ -611,6 +651,7 @@ function App() {
                             onToothChipDragStart={handleToothChipDragStart}
                             onToothChipDrop={handleToothChipDrop}
                             onToothChipDropToEmpty={handleToothChipDropToEmpty}
+                            onNodeDrop={handleNodeDrop}
                         />
                     )}
 
@@ -631,6 +672,7 @@ function App() {
                             onToothChipDragStart={handleToothChipDragStart}
                             onToothChipDrop={handleToothChipDrop}
                             onToothChipDropToEmpty={handleToothChipDropToEmpty}
+                            onNodeDrop={handleNodeDrop}
                         />
                     )}
                 </div>
