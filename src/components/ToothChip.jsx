@@ -22,6 +22,9 @@ const ToothChip = ({
       return;
     }
 
+    // 親のノードがドラッグされないように伝播を停止
+    e.stopPropagation();
+
     setIsDragging(true);
 
     // ドラッグデータを設定

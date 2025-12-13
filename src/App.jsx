@@ -56,7 +56,8 @@ function App() {
         clearAllSchedules,
         changeScheduleDate,
         splitToothFromNode,
-        mergeToothToNode
+        mergeToothToNode,
+        mergeNodeToNode
     } = useTreatmentWorkflow();
 
     // 病名が変更されたら自動的に治療ノードを生成
@@ -315,28 +316,11 @@ function App() {
             return;
         }
 
-        // 複数の歯を順次マージ
-        let allSuccess = true;
-        let errorMessage = '';
+        // 新しいmergeNodeToNode関数を使用して、複数の歯を一度にマージ
+        const result = mergeNodeToNode(dragData.nodeId, dragData.groupId, targetNode);
 
-        for (const tooth of sourceNode.teeth) {
-            const toothData = {
-                tooth: tooth,
-                nodeId: sourceNode.id,
-                groupId: sourceNode.groupId
-            };
-
-            const result = mergeToothToNode(toothData, targetNode);
-
-            if (!result.success) {
-                allSuccess = false;
-                errorMessage = result.message;
-                break;
-            }
-        }
-
-        if (!allSuccess) {
-            alert(`ノードの合体に失敗しました: ${errorMessage}`);
+        if (!result.success) {
+            alert(`ノードの合体に失敗しました: ${result.message}`);
         }
     };
 

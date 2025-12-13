@@ -872,6 +872,140 @@ export function useTreatmentWorkflow() {
         };
     };
 
+    /**
+     * ノード全体を別のノードに合体（複数の歯を一度にマージ）
+     */
+    const mergeNodeToNode = (sourceNodeId, sourceGroupId, targetNode) => {
+        // スケジュール日付を確認
+        let sourceScheduleDate = null;
+        let targetScheduleDate = null;
+
+        for (const day of treatmentSchedule) {
+            if (day.treatments.some(t => t.groupId === sourceGroupId)) {
+                sourceScheduleDate = day.date;
+            }
+            if (day.treatments.some(t => t.groupId === targetNode.groupId)) {
+                targetScheduleDate = day.date;
+            }
+        }
+
+        // ソースノードを検索（workflowまたはスケジュールから）
+        let sourceNode = workflow.find(node => node.id === sourceNodeId);
+        if (!sourceNode) {
+            // スケジュール内を検索
+            for (const day of treatmentSchedule) {
+                const found = day.treatments.find(t => t.id === sourceNodeId);
+                if (found) {
+                    sourceNode = found;
+                    break;
+                }
+            }
+        }
+
+        if (!sourceNode) {
+            return { success: false, message: 'ソースノードが見つかりません。' };
+        }
+
+        // 同じノードへのドロップは不可
+        if (sourceNode.groupId === targetNode.groupId) {
+            return {
+                success: false,
+                message: '同じノードには合体できません。'
+            };
+        }
+
+        // 病名と治療法が一致しているか確認
+        if (sourceNode.condition !== targetNode.condition ||
+            sourceNode.treatment !== targetNode.treatment ||
+            sourceNode.cardNumber !== targetNode.cardNumber) {
+            return {
+                success: false,
+                message: '同じ病名・治療法・ステップ番号のノードにのみ合体できます。'
+            };
+        }
+
+        // ソースノードの歯がターゲットノードに既に含まれていないかチェック
+        const duplicateTeeth = sourceNode.teeth.filter(tooth => targetNode.teeth.includes(tooth));
+        if (duplicateTeeth.length > 0) {
+            return {
+                success: false,
+                message: `歯式 ${duplicateTeeth.join(', ')} は既にこのノードに含まれています。`
+            };
+        }
+
+        // 同じgroupIdを持つすべてのカードを取得（workflowとスケジュールから）
+        let sourceGroupNodes = workflow.filter(node => node.groupId === sourceGroupId);
+        let targetGroupNodes = workflow.filter(node => node.groupId === targetNode.groupId);
+
+        // スケジュール内も検索
+        if (sourceScheduleDate) {
+            treatmentSchedule.forEach(day => {
+                day.treatments.forEach(t => {
+                    if (t.groupId === sourceGroupId && !sourceGroupNodes.find(n => n.id === t.id)) {
+                        sourceGroupNodes.push(t);
+                    }
+                });
+            });
+        }
+        if (targetScheduleDate) {
+            treatmentSchedule.forEach(day => {
+                day.treatments.forEach(t => {
+                    if (t.groupId === targetNode.groupId && !targetGroupNodes.find(n => n.id === t.id)) {
+                        targetGroupNodes.push(t);
+                    }
+                });
+            });
+        }
+
+        // ターゲットノードに全ての歯を追加
+        const mergedTeeth = [...targetNode.teeth, ...sourceNode.teeth].sort((a, b) => a - b);
+
+        const updatedTargetNodes = targetGroupNodes.map(node => ({
+            ...node,
+            teeth: mergedTeeth
+        }));
+
+        // workflowを更新（ソースノードを削除、ターゲットノードを更新）
+        let newWorkflow = workflow.filter(node => node.groupId !== sourceGroupId);
+        newWorkflow = newWorkflow.map(node =>
+            node.groupId === targetNode.groupId
+                ? updatedTargetNodes.find(n => n.id === node.id) || node
+                : node
+        );
+
+        setWorkflow(newWorkflow);
+
+        // スケジュールを更新
+        const newSchedule = treatmentSchedule.map(day => {
+            let updatedTreatments = day.treatments;
+
+            // ソースノードを削除
+            if (day.date === sourceScheduleDate) {
+                updatedTreatments = updatedTreatments.filter(t => t.groupId !== sourceGroupId);
+            }
+
+            // ターゲットノードを更新
+            if (day.date === targetScheduleDate) {
+                updatedTreatments = updatedTreatments.map(t => {
+                    const updatedNode = updatedTargetNodes.find(n => n.id === t.id);
+                    return updatedNode || t;
+                });
+            }
+
+            return {
+                ...day,
+                treatments: updatedTreatments
+            };
+        });
+
+        setTreatmentSchedule(newSchedule);
+
+        return {
+            success: true,
+            message: `ノードを合体しました（歯式: ${sourceNode.teeth.join(', ')} → ${mergedTeeth.join(', ')}）`
+        };
+    };
+
     return {
         toothConditions,
         setToothConditions,
@@ -918,6 +1052,7 @@ export function useTreatmentWorkflow() {
         clearAllSchedules,
         changeScheduleDate,
         splitToothFromNode,
-        mergeToothToNode
+        mergeToothToNode,
+        mergeNodeToNode
     };
 }
