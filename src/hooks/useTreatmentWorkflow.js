@@ -629,16 +629,14 @@ export function useTreatmentWorkflow() {
         // workflowとスケジュールの両方から検索
         let sameGroupNodes = workflow.filter(node => node.groupId === sourceNode.groupId);
 
-        // スケジュール内のノードも含める
-        if (isInSchedule || sameGroupNodes.length === 0) {
-            treatmentSchedule.forEach(day => {
-                day.treatments.forEach(t => {
-                    if (t.groupId === sourceNode.groupId && !sameGroupNodes.find(n => n.id === t.id)) {
-                        sameGroupNodes.push(t);
-                    }
-                });
+        // スケジュール内のノードも必ず含める
+        treatmentSchedule.forEach(day => {
+            day.treatments.forEach(t => {
+                if (t.groupId === sourceNode.groupId && !sameGroupNodes.find(n => n.id === t.id)) {
+                    sameGroupNodes.push(t);
+                }
             });
-        }
+        });
 
         // 新しいノードセットを作成（分離した歯式用）
         const newNodes = sameGroupNodes.map(node => ({
@@ -773,25 +771,17 @@ export function useTreatmentWorkflow() {
         let sourceGroupNodes = workflow.filter(node => node.groupId === sourceGroupId);
         let targetGroupNodes = workflow.filter(node => node.groupId === targetNode.groupId);
 
-        // スケジュール内も検索
-        if (sourceScheduleDate) {
-            treatmentSchedule.forEach(day => {
-                day.treatments.forEach(t => {
-                    if (t.groupId === sourceGroupId && !sourceGroupNodes.find(n => n.id === t.id)) {
-                        sourceGroupNodes.push(t);
-                    }
-                });
+        // スケジュール内も必ず検索
+        treatmentSchedule.forEach(day => {
+            day.treatments.forEach(t => {
+                if (t.groupId === sourceGroupId && !sourceGroupNodes.find(n => n.id === t.id)) {
+                    sourceGroupNodes.push(t);
+                }
+                if (t.groupId === targetNode.groupId && !targetGroupNodes.find(n => n.id === t.id)) {
+                    targetGroupNodes.push(t);
+                }
             });
-        }
-        if (targetScheduleDate) {
-            treatmentSchedule.forEach(day => {
-                day.treatments.forEach(t => {
-                    if (t.groupId === targetNode.groupId && !targetGroupNodes.find(n => n.id === t.id)) {
-                        targetGroupNodes.push(t);
-                    }
-                });
-            });
-        }
+        });
 
         // ソースノードから歯式を削除
         const remainingTeeth = sourceNode.teeth.filter(t => t !== tooth);
@@ -937,25 +927,17 @@ export function useTreatmentWorkflow() {
         let sourceGroupNodes = workflow.filter(node => node.groupId === sourceGroupId);
         let targetGroupNodes = workflow.filter(node => node.groupId === targetNode.groupId);
 
-        // スケジュール内も検索
-        if (sourceScheduleDate) {
-            treatmentSchedule.forEach(day => {
-                day.treatments.forEach(t => {
-                    if (t.groupId === sourceGroupId && !sourceGroupNodes.find(n => n.id === t.id)) {
-                        sourceGroupNodes.push(t);
-                    }
-                });
+        // スケジュール内も必ず検索
+        treatmentSchedule.forEach(day => {
+            day.treatments.forEach(t => {
+                if (t.groupId === sourceGroupId && !sourceGroupNodes.find(n => n.id === t.id)) {
+                    sourceGroupNodes.push(t);
+                }
+                if (t.groupId === targetNode.groupId && !targetGroupNodes.find(n => n.id === t.id)) {
+                    targetGroupNodes.push(t);
+                }
             });
-        }
-        if (targetScheduleDate) {
-            treatmentSchedule.forEach(day => {
-                day.treatments.forEach(t => {
-                    if (t.groupId === targetNode.groupId && !targetGroupNodes.find(n => n.id === t.id)) {
-                        targetGroupNodes.push(t);
-                    }
-                });
-            });
-        }
+        });
 
         // ターゲットノードに全ての歯を追加
         const mergedTeeth = [...targetNode.teeth, ...sourceNode.teeth].sort((a, b) => a - b);
