@@ -56,7 +56,8 @@ function App() {
         clearAllSchedules,
         changeScheduleDate,
         splitToothFromNode,
-        mergeToothToNode
+        mergeToothToNode,
+        mergeNodeToNode
     } = useTreatmentWorkflow();
 
     // 病名が変更されたら自動的に治療ノードを生成
@@ -136,6 +137,10 @@ function App() {
     // 病名優先モードで歯をクリックしたときの処理
     const handleToothClickForCondition = (toothNumber) => {
         if (conditionFirstMode && selectedCondition) {
+            // まず、追加か削除かを判定
+            const currentConditions = toothConditions[toothNumber] || [];
+            const isRemoving = currentConditions.includes(selectedCondition);
+
             // 歯をクリックした瞬間に病名を適用/削除（トグル）
             setToothConditions(prev => {
                 const currentConditions = prev[toothNumber] || [];
@@ -181,10 +186,16 @@ function App() {
             });
 
             // ハイライト表示用に選択状態を更新（視覚的フィードバック）
+            // 実際の病名追加/削除に基づいて更新
             setSelectedTeethForCondition(prev => {
-                if (prev.includes(toothNumber)) {
+                if (isRemoving) {
+                    // 削除する場合 → ハイライトから削除
                     return prev.filter(t => t !== toothNumber);
                 } else {
+                    // 追加する場合 → ハイライトに追加（まだ含まれていない場合）
+                    if (prev.includes(toothNumber)) {
+                        return prev;
+                    }
                     return [...prev, toothNumber];
                 }
             });
@@ -287,6 +298,29 @@ function App() {
         } else {
             // エラー時は通知
             alert(result.message);
+        }
+    };
+
+    // ノード全体のドロップハンドラ（ノード間の合体）
+    const handleNodeDrop = (dragData, targetNode) => {
+        // 自分自身へのドロップは無視
+        if (dragData.nodeId === targetNode.id) {
+            return;
+        }
+
+        // ドラッグされたノードの全ての歯を対象ノードにマージ
+        const sourceNode = dragData.node;
+
+        if (!sourceNode.teeth || sourceNode.teeth.length === 0) {
+            alert('対象歯がないノードは合体できません');
+            return;
+        }
+
+        // 新しいmergeNodeToNode関数を使用して、複数の歯を一度にマージ
+        const result = mergeNodeToNode(dragData.nodeId, dragData.groupId, targetNode);
+
+        if (!result.success) {
+            alert(`ノードの合体に失敗しました: ${result.message}`);
         }
     };
 
@@ -601,6 +635,7 @@ function App() {
                             onToothChipDragStart={handleToothChipDragStart}
                             onToothChipDrop={handleToothChipDrop}
                             onToothChipDropToEmpty={handleToothChipDropToEmpty}
+                            onNodeDrop={handleNodeDrop}
                         />
                     )}
 
@@ -621,6 +656,7 @@ function App() {
                             onToothChipDragStart={handleToothChipDragStart}
                             onToothChipDrop={handleToothChipDrop}
                             onToothChipDropToEmpty={handleToothChipDropToEmpty}
+                            onNodeDrop={handleNodeDrop}
                         />
                     )}
                 </div>

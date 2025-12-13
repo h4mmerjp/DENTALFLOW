@@ -12,7 +12,8 @@ export default function WorkflowBoard({
     isGenerating,
     onToothChipDragStart,
     onToothChipDrop,
-    onToothChipDropToEmpty
+    onToothChipDropToEmpty,
+    onNodeDrop
 }) {
     const [isDragOverArea, setIsDragOverArea] = React.useState(false);
 
@@ -117,6 +118,7 @@ export default function WorkflowBoard({
                         getConditionInfo={getConditionInfo}
                         onToothChipDragStart={onToothChipDragStart}
                         onToothChipDrop={onToothChipDrop}
+                        onNodeDrop={onNodeDrop}
                     />
                 </div>
 
