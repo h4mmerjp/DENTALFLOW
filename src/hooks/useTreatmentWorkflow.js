@@ -663,6 +663,20 @@ export function useTreatmentWorkflow() {
             updatedNodesArray.push(updatedNode);
         });
 
+        console.log('=== splitToothFromNode デバッグ ===');
+        console.log('sourceNode:', sourceNode);
+        console.log('sourceNode.teeth:', sourceNode.teeth);
+        console.log('teethToSplit:', teethToSplit);
+        console.log('remainingTeeth:', remainingTeeth);
+        console.log('sameGroupNodes:', sameGroupNodes);
+        console.log('sameGroupNodes.length:', sameGroupNodes.length);
+        console.log('sameGroupNodes IDs:', sameGroupNodes.map(n => n.id));
+        console.log('nodeMapping size:', nodeMapping.size);
+        console.log('nodeMapping keys:', Array.from(nodeMapping.keys()));
+        console.log('isInSchedule:', isInSchedule);
+        console.log('sourceScheduleDate:', sourceScheduleDate);
+        console.log('finalTargetDate:', finalTargetDate);
+
         // workflowを更新（workflow内のノードのみ）
         const updatedWorkflowNodes = updatedNodesArray.filter(node =>
             workflow.find(wn => wn.id === node.id)
@@ -681,19 +695,31 @@ export function useTreatmentWorkflow() {
             // スケジュールを更新
             const newSchedule = treatmentSchedule.map(day => {
                 if (day.date === sourceScheduleDate && sourceScheduleDate === finalTargetDate) {
+                    console.log('同じスケジュール内で分離');
+                    console.log('day.date:', day.date);
+                    console.log('day.treatments:', day.treatments.map(t => ({ id: t.id, teeth: t.teeth })));
+
                     // 同じスケジュール内で分離
                     const updatedTreatments = [];
                     const newTreatments = [];
 
                     day.treatments.forEach(t => {
+                        console.log('  処理中のノード ID:', t.id);
                         const mapping = nodeMapping.get(t.id);
+                        console.log('  mapping:', mapping ? 'あり' : 'なし');
                         if (mapping) {
+                            console.log('  updated teeth:', mapping.updated.teeth);
+                            console.log('  new teeth:', mapping.new.teeth);
                             updatedTreatments.push(mapping.updated);
                             newTreatments.push(mapping.new);
                         } else {
+                            console.log('  マッピングなし - 元のノードを維持');
                             updatedTreatments.push(t);
                         }
                     });
+
+                    console.log('updatedTreatments:', updatedTreatments.map(t => ({ id: t.id, teeth: t.teeth })));
+                    console.log('newTreatments:', newTreatments.map(t => ({ id: t.id, teeth: t.teeth })));
 
                     return {
                         ...day,
