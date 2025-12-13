@@ -638,23 +638,33 @@ export function useTreatmentWorkflow() {
             });
         });
 
-        // 新しいノードセットを作成（分離した歯式用）
-        const newNodes = sameGroupNodes.map(node => ({
-            ...node,
-            id: crypto.randomUUID(), // 新しいIDを生成
-            groupId: newGroupId,
-            teeth: teethToSplit
-        }));
-
         // 元のノードを更新（残りの歯式）
         const remainingTeeth = sourceNode.teeth.filter(tooth => !teethToSplit.includes(tooth));
-        const updatedNodes = sameGroupNodes.map(node => ({
-            ...node,
-            teeth: remainingTeeth
-        }));
+
+        // 各ノードについて、元のIDと新しいノード、更新されたノードのマッピングを作成
+        const nodeMapping = new Map();
+        const newNodesArray = [];
+        const updatedNodesArray = [];
+
+        sameGroupNodes.forEach(node => {
+            const updatedNode = {
+                ...node,
+                teeth: remainingTeeth
+            };
+            const newNode = {
+                ...node,
+                id: crypto.randomUUID(),
+                groupId: newGroupId,
+                teeth: teethToSplit
+            };
+
+            nodeMapping.set(node.id, { updated: updatedNode, new: newNode });
+            newNodesArray.push(newNode);
+            updatedNodesArray.push(updatedNode);
+        });
 
         // workflowを更新（workflow内のノードのみ）
-        const updatedWorkflowNodes = updatedNodes.filter(node =>
+        const updatedWorkflowNodes = updatedNodesArray.filter(node =>
             workflow.find(wn => wn.id === node.id)
         );
         let newWorkflow = workflow.filter(node => node.groupId !== sourceNode.groupId)
@@ -666,25 +676,55 @@ export function useTreatmentWorkflow() {
 
         if (finalTargetDate) {
             // スケジュールに分離
-            // workflowには元のノードのみ残す（新しいノードは追加しない）
             setWorkflow(newWorkflow);
 
             // スケジュールを更新
             const newSchedule = treatmentSchedule.map(day => {
-                if (day.date === sourceScheduleDate) {
+                if (day.date === sourceScheduleDate && sourceScheduleDate === finalTargetDate) {
+                    // 同じスケジュール内で分離
+                    const updatedTreatments = [];
+                    const newTreatments = [];
+
+                    day.treatments.forEach(t => {
+                        const mapping = nodeMapping.get(t.id);
+                        if (mapping) {
+                            updatedTreatments.push(mapping.updated);
+                            newTreatments.push(mapping.new);
+                        } else {
+                            updatedTreatments.push(t);
+                        }
+                    });
+
+                    return {
+                        ...day,
+                        treatments: [...updatedTreatments, ...newTreatments]
+                    };
+                } else if (day.date === sourceScheduleDate) {
                     // 元のノードの歯式を更新
                     return {
                         ...day,
                         treatments: day.treatments.map(t => {
-                            const updatedNode = updatedNodes.find(n => n.id === t.id);
-                            return updatedNode || t;
+                            const mapping = nodeMapping.get(t.id);
+                            return mapping ? mapping.updated : t;
                         })
                     };
                 } else if (day.date === finalTargetDate) {
-                    // 新しいノードを追加
+                    // 別のスケジュールに新しいノードを追加
+                    const newTreatments = [];
+                    const sourceDay = treatmentSchedule.find(d => d.date === sourceScheduleDate);
+
+                    if (sourceDay) {
+                        sourceDay.treatments.forEach(t => {
+                            const mapping = nodeMapping.get(t.id);
+                            if (mapping) {
+                                newTreatments.push(mapping.new);
+                            }
+                        });
+                    }
+
                     return {
                         ...day,
-                        treatments: [...day.treatments, ...newNodes]
+                        treatments: [...day.treatments, ...newTreatments]
                     };
                 }
                 return day;
@@ -692,7 +732,7 @@ export function useTreatmentWorkflow() {
             setTreatmentSchedule(newSchedule);
         } else {
             // 未スケジュールに分離
-            newWorkflow = newWorkflow.concat(newNodes);
+            newWorkflow = newWorkflow.concat(newNodesArray);
             setWorkflow(newWorkflow);
         }
 
