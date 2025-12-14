@@ -538,6 +538,21 @@ export function useTreatmentWorkflow() {
 
     // スケジュールを一括リセット（スケジュール枠は残す）
     const clearAllSchedules = () => {
+        // 1. スケジュール上の全ノードを取得し、workflowに復帰させる（データ消失防止）
+        const allScheduledNodes = treatmentSchedule.reduce((acc, day) => acc.concat(day.treatments), []);
+        
+        // 既存のworkflowにないノードだけを追加
+        setWorkflow(prevWorkflow => {
+            const currentWorkflowIds = new Set(prevWorkflow.map(node => node.id));
+            const nodesToAdd = allScheduledNodes.filter(node => !currentWorkflowIds.has(node.id));
+            
+            if (nodesToAdd.length > 0) {
+                console.log('Recovering lost nodes:', nodesToAdd);
+                return [...prevWorkflow, ...nodesToAdd];
+            }
+            return prevWorkflow;
+        });
+
         const clearedSchedule = treatmentSchedule.map(day => ({
             date: day.date,
             treatments: []
@@ -655,13 +670,27 @@ export function useTreatmentWorkflow() {
             teeth: remainingTeeth
         }));
 
-        // workflowを更新（workflow内のノードのみ）
-        const updatedWorkflowNodes = updatedNodes.filter(node =>
-            workflow.find(wn => wn.id === node.id)
-        );
-        let newWorkflow = workflow.filter(node => node.groupId !== sourceNode.groupId)
-            .concat(updatedWorkflowNodes);
+        // workflowを更新
+        // 更新用の一時Mapを作成（IDをキーにして重複を排除）
+        const workflowMap = new Map();
 
+        // 1. 既存のworkflowから、対象グループ以外のノードをMapに追加
+        workflow.forEach(node => {
+            if (node.groupId !== sourceNode.groupId) {
+                workflowMap.set(node.id, node);
+            }
+        });
+
+        // 2. 更新されたノード（元のグループの残り）と新しいノード（分離された部分）を追加
+        // IDが重複する場合は上書きされる（最新の状態になる）
+        [...updatedNodes, ...newNodes].forEach(node => {
+            workflowMap.set(node.id, node);
+        });
+
+        const newWorkflow = Array.from(workflowMap.values());
+
+        console.log('Split completed. New Workflow count:', newWorkflow.length);
+        setWorkflow(newWorkflow);
         // targetDateが指定されている場合は、そのスケジュールに分離
         // 指定されていない場合は、元の場所（スケジュールまたは未スケジュール）に分離
         const finalTargetDate = targetDate !== null ? targetDate : sourceScheduleDate;

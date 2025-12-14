@@ -30,9 +30,8 @@ export default function ScheduleCalendar({
         if (scheduledCount === 0) {
             return;
         }
-        if (window.confirm('スケジュールに配置されたすべての治療を未スケジュール状態に戻しますか？\nスケジュール枠（日付）は残ります。')) {
-            onClearAllSchedules();
-        }
+        // 確認ダイアログを削除し、直接実行（ユーザーからの反応がないという報告への対応）
+        onClearAllSchedules();
     };
 
     // 日付編集モードに入る
