@@ -5,12 +5,12 @@ import { defaultSteps } from '../data/steps';
 import { useLocalStorage } from './useLocalStorage';
 
 export function useTreatmentWorkflow() {
-    const [toothConditions, setToothConditions] = useState({});
-    const [workflow, setWorkflow] = useState([]);
-    const [treatmentSchedule, setTreatmentSchedule] = useState([]);
-    const [selectedTreatmentOptions, setSelectedTreatmentOptions] = useState({});
-    const [conditions, setConditions] = useState(defaultConditions);
-    const [treatmentRules, setTreatmentRules] = useState(defaultTreatmentRules);
+    const [toothConditions, setToothConditions] = useLocalStorage('toothConditions', {});
+    const [workflow, setWorkflow] = useLocalStorage('workflow', []);
+    const [treatmentSchedule, setTreatmentSchedule] = useLocalStorage('treatmentSchedule', []);
+    const [selectedTreatmentOptions, setSelectedTreatmentOptions] = useLocalStorage('selectedTreatmentOptions', {});
+    const [conditions, setConditions] = useLocalStorage('conditions', defaultConditions);
+    const [treatmentRules, setTreatmentRules] = useLocalStorage('treatmentRules', defaultTreatmentRules);
     const [stepMaster, setStepMaster] = useLocalStorage('stepMaster', defaultSteps);
     const [autoScheduleEnabled, setAutoScheduleEnabled] = useLocalStorage('autoScheduleEnabled', true);
     const [aiPrompt, setAiPrompt] = useLocalStorage('aiPrompt', '患者の痛みを最優先に、急性症状から治療してください。根管治療は週1回ペース、補綴物は2週間隔で進めてください。');
