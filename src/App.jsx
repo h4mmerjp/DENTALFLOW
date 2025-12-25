@@ -57,7 +57,9 @@ function App() {
         changeScheduleDate,
         splitToothFromNode,
         mergeToothToNode,
-        mergeNodeToNode
+        mergeNodeToNode,
+        toggleTreatmentCompletion,
+        executeReschedulingFromDate
     } = useTreatmentWorkflow();
 
     // 病名が変更されたら自動的に治療ノードを生成
@@ -442,13 +444,11 @@ function App() {
                             <button
                                 onClick={() => {
                                     if (Object.keys(toothConditions).length === 0) return;
-                                    const confirmed = window.confirm('設定済みの病名をすべて削除しますか？\nこの操作は取り消せません。');
-                                    if (confirmed) {
-                                        clearAllConditions();
-                                        setSelectedTooth(null);
-                                        setBulkConditionMode(false);
-                                        resetConditionFirstMode();
-                                    }
+                                    // 確認ダイアログを削除し、直接実行
+                                    clearAllConditions();
+                                    setSelectedTooth(null);
+                                    setBulkConditionMode(false);
+                                    resetConditionFirstMode();
                                 }}
                                 disabled={Object.keys(toothConditions).length === 0}
                                 className={`w-full px-4 py-2 rounded-lg transition-colors font-medium flex items-center justify-center gap-2 ${
@@ -621,23 +621,22 @@ function App() {
                         )}
                     </div>
 
-                    {/* 未スケジュール治療一覧 */}
-                    {workflow.length > 0 && (
-                        <WorkflowBoard
-                            workflow={workflow}
-                            treatmentSchedule={treatmentSchedule}
-                            canDrag={isCardAvailableForDrag}
-                            onDragStart={handleDragStart}
-                            onChangeTreatment={handleChangeTreatment}
-                            getConditionInfo={getConditionInfo}
-                            onAutoSchedule={handleAutoScheduling}
-                            isGenerating={isGeneratingWorkflow}
-                            onToothChipDragStart={handleToothChipDragStart}
-                            onToothChipDrop={handleToothChipDrop}
-                            onToothChipDropToEmpty={handleToothChipDropToEmpty}
-                            onNodeDrop={handleNodeDrop}
-                        />
-                    )}
+                    {/* 未スケジュール治療一覧（常時表示） */}
+                    <WorkflowBoard
+                        workflow={workflow}
+                        treatmentSchedule={treatmentSchedule}
+                        canDrag={isCardAvailableForDrag}
+                        onDragStart={handleDragStart}
+                        onChangeTreatment={handleChangeTreatment}
+                        getConditionInfo={getConditionInfo}
+                        onAutoSchedule={handleAutoScheduling}
+                        isGenerating={isGeneratingWorkflow}
+                        onToothChipDragStart={handleToothChipDragStart}
+                        onToothChipDrop={handleToothChipDrop}
+                        onToothChipDropToEmpty={handleToothChipDropToEmpty}
+                        onNodeDrop={handleNodeDrop}
+                        onToggleCompletion={toggleTreatmentCompletion}
+                    />
 
                     {/* 治療スケジュール */}
                     {treatmentSchedule.length > 0 && (
@@ -657,6 +656,9 @@ function App() {
                             onToothChipDrop={handleToothChipDrop}
                             onToothChipDropToEmpty={handleToothChipDropToEmpty}
                             onNodeDrop={handleNodeDrop}
+                            onToggleCompletion={toggleTreatmentCompletion}
+                            onRescheduleFromDate={executeReschedulingFromDate}
+                            isGenerating={isGeneratingWorkflow}
                         />
                     )}
                 </div>

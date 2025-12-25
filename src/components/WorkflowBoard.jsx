@@ -13,7 +13,8 @@ export default function WorkflowBoard({
     onToothChipDragStart,
     onToothChipDrop,
     onToothChipDropToEmpty,
-    onNodeDrop
+    onNodeDrop,
+    onToggleCompletion
 }) {
     const [isDragOverArea, setIsDragOverArea] = React.useState(false);
 
@@ -23,8 +24,6 @@ export default function WorkflowBoard({
     });
 
     const unassigned = workflow.filter(step => !assignedIds.has(step.id));
-
-    if (unassigned.length === 0) return null;
 
     // 治療グループごとにまとめて表示（スタック形式）
     // groupIdでグループ化（分離・合体に対応）
@@ -119,6 +118,7 @@ export default function WorkflowBoard({
                         onToothChipDragStart={onToothChipDragStart}
                         onToothChipDrop={onToothChipDrop}
                         onNodeDrop={onNodeDrop}
+                        onToggleCompletion={onToggleCompletion}
                     />
                 </div>
 
@@ -156,8 +156,8 @@ export default function WorkflowBoard({
                 <h2 className="text-xl font-bold">未スケジュール治療</h2>
                 <button
                     onClick={onAutoSchedule}
-                    disabled={isGenerating || workflow.length === 0}
-                    className={`flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors ${isGenerating || workflow.length === 0
+                    disabled={isGenerating}
+                    className={`flex items-center gap-2 px-4 py-2 text-white rounded-lg transition-colors ${isGenerating
                         ? 'bg-gray-400 cursor-not-allowed'
                         : 'bg-purple-500 hover:bg-purple-600'
                         }`}

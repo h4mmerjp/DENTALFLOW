@@ -5,12 +5,12 @@ import { defaultSteps } from '../data/steps';
 import { useLocalStorage } from './useLocalStorage';
 
 export function useTreatmentWorkflow() {
-    const [toothConditions, setToothConditions] = useState({});
-    const [workflow, setWorkflow] = useState([]);
-    const [treatmentSchedule, setTreatmentSchedule] = useState([]);
-    const [selectedTreatmentOptions, setSelectedTreatmentOptions] = useState({});
-    const [conditions, setConditions] = useState(defaultConditions);
-    const [treatmentRules, setTreatmentRules] = useState(defaultTreatmentRules);
+    const [toothConditions, setToothConditions] = useLocalStorage('toothConditions', {});
+    const [workflow, setWorkflow] = useLocalStorage('workflow', []);
+    const [treatmentSchedule, setTreatmentSchedule] = useLocalStorage('treatmentSchedule', []);
+    const [selectedTreatmentOptions, setSelectedTreatmentOptions] = useLocalStorage('selectedTreatmentOptions', {});
+    const [conditions, setConditions] = useLocalStorage('conditions', defaultConditions);
+    const [treatmentRules, setTreatmentRules] = useLocalStorage('treatmentRules', defaultTreatmentRules);
     const [stepMaster, setStepMaster] = useLocalStorage('stepMaster', defaultSteps);
     const [autoScheduleEnabled, setAutoScheduleEnabled] = useLocalStorage('autoScheduleEnabled', true);
     const [aiPrompt, setAiPrompt] = useLocalStorage('aiPrompt', '患者の痛みを最優先に、急性症状から治療してください。根管治療は週1回ペース、補綴物は2週間隔で進めてください。');
@@ -168,7 +168,10 @@ export function useTreatmentWorkflow() {
         if (treatmentSchedule.length > 0) {
             treatmentSchedule.forEach(day => {
                 day.treatments.forEach(node => {
-                    scheduledNodesMap.set(`${node.baseId}-${node.cardNumber}`, day.date);
+                    scheduledNodesMap.set(`${node.baseId}-${node.cardNumber}`, {
+                        date: day.date,
+                        completed: node.completed || false
+                    });
                 });
             });
         }
@@ -247,19 +250,20 @@ export function useTreatmentWorkflow() {
 
                             workflowSteps.push({
                                 id: cardId,
-                                    baseId: `${condition}-${selectedTreatment.name}`,
-                                    groupId, // グループIDを追加
-                                    condition,
-                                    treatment: selectedTreatment.name,
-                                    stepName,
-                                    teeth: affectedTeeth,
-                                    cardNumber: i + 1,
-                                    totalCards: selectedTreatment.duration,
-                                    isSequential: selectedTreatment.duration > 1,
-                                    treatmentKey,
-                                    availableTreatments: treatments,
-                                    selectedTreatmentIndex,
-                                    hasMultipleTreatments: treatments.length > 1
+                                baseId: `${condition}-${selectedTreatment.name}`,
+                                groupId, // グループIDを追加
+                                condition,
+                                treatment: selectedTreatment.name,
+                                stepName,
+                                teeth: affectedTeeth,
+                                cardNumber: i + 1,
+                                totalCards: selectedTreatment.duration,
+                                isSequential: selectedTreatment.duration > 1,
+                                treatmentKey,
+                                availableTreatments: treatments,
+                                selectedTreatmentIndex,
+                                hasMultipleTreatments: treatments.length > 1,
+                                completed: false // デフォルトはfalse
                             });
                         }
                     }
@@ -294,9 +298,12 @@ export function useTreatmentWorkflow() {
         // 3. 配置の復元
         workflowSteps.forEach(node => {
             const mapKey = `${node.baseId}-${node.cardNumber}`;
-            const targetDate = scheduledNodesMap.get(mapKey);
+            const restorationData = scheduledNodesMap.get(mapKey);
+            
+            if (restorationData) {
+                const { date: targetDate, completed } = restorationData;
+                node.completed = completed; // 完了ステータスを復元
 
-            if (targetDate) {
                 const targetDay = newSchedule.find(day => day.date === targetDate);
                 if (targetDay) {
                     targetDay.treatments.push(node);
@@ -309,21 +316,35 @@ export function useTreatmentWorkflow() {
         return { workflowSteps, initialSchedule: newSchedule };
     };
 
-    const executeAutoScheduling = () => {
-        if (workflow.length === 0) {
-            return { success: false, message: '治療ノードが生成されていません。' };
+    const executeAutoScheduling = (fromDate = null) => {
+        if (workflow.length === 0 && treatmentSchedule.every(day => day.treatments.length === 0)) {
+            return { success: false, message: '治療ノードまたはスケジュールが空です。' };
         }
 
         setIsGeneratingWorkflow(true);
 
-        const newSchedule = treatmentSchedule.map(day => ({
-            ...day,
-            treatments: []
-        }));
+        // 新しいスケジュール案を作成
+        let newSchedule = treatmentSchedule.map(day => {
+            // 再配置開始日より前の日、または完了済みノードはその場に残す
+            const isBeforeStart = fromDate && new Date(day.date) < new Date(fromDate);
+            return {
+                ...day,
+                treatments: day.treatments.filter(t => t.completed || isBeforeStart)
+            };
+        });
 
         const priorityOrder = schedulingRules.priorityOrder;
 
-        const sortedTreatments = [...workflow].sort((a, b) => {
+        const assignedIds = new Set();
+        newSchedule.forEach(day => {
+            day.treatments.forEach(t => assignedIds.add(t.id));
+        });
+
+        // 配置待ちノードの収集：workflowから、まだスケジュールに固定されていないものを抽出
+        const nodesToAssign = workflow.filter(w => !assignedIds.has(w.id));
+
+        // 優先順位でソート
+        const sortedTreatments = nodesToAssign.sort((a, b) => {
             const aPriority = priorityOrder.indexOf(a.condition);
             const bPriority = priorityOrder.indexOf(b.condition);
 
@@ -340,43 +361,49 @@ export function useTreatmentWorkflow() {
 
         let totalAssigned = 0;
 
+        // 配置開始インデックスの決定
+        let startPlacementIndex = 0;
+        if (fromDate) {
+            const foundIndex = newSchedule.findIndex(day => day.date === fromDate);
+            if (foundIndex !== -1) {
+                // 指定日の「翌日」から配置を開始する
+                startPlacementIndex = foundIndex + 1;
+            }
+        }
+
         sortedTreatments.forEach(treatment => {
-            let currentDayIndex = 0; // 各治療ごとに最初からチェック
+            let currentDayIndex = startPlacementIndex;
             while (currentDayIndex < newSchedule.length) {
                 const currentDay = newSchedule[currentDayIndex];
-
-                // 急性症状のカウント
-                const acuteCareCount = currentDay.treatments.filter(t =>
-                    schedulingRules.acuteCareConditions.includes(t.condition)
-                ).length;
 
                 // 1日の最大治療数チェック
                 const canAddMore = currentDay.treatments.length < schedulingRules.maxTreatmentsPerDay;
 
-                // 急性症状の場合は専用の制限もチェック
-                const canAddAcuteCare = !schedulingRules.acuteCareConditions.includes(treatment.condition) ||
-                    acuteCareCount < schedulingRules.acuteCareMaxPerDay;
+                // 急性症状のチェック
+                const acuteCareCount = currentDay.treatments.filter(t =>
+                    schedulingRules.acuteCareConditions.includes(t.condition)
+                ).length;
+                const isAcute = schedulingRules.acuteCareConditions.includes(treatment.condition);
+                const canAddAcuteCare = !isAcute || acuteCareCount < schedulingRules.acuteCareMaxPerDay;
 
                 if (canAddMore && canAddAcuteCare) {
+                    // 順序指定のチェック
                     if (treatment.isSequential && treatment.cardNumber > 1) {
                         const previousCardNumber = treatment.cardNumber - 1;
-                        const previousCard = workflow.find(w =>
-                            w.baseId === treatment.baseId &&
-                            w.cardNumber === previousCardNumber
-                        );
+                        // workflow, unassignedNodesFromSchedule, newScheduleのどこかにあるはず
+                        let prevCardLocation = null;
+                        
+                        // まず現在の案(newSchedule)の中を前日まで探す
+                        for (let i = 0; i < currentDayIndex; i++) {
+                            if (newSchedule[i].treatments.some(t => t.baseId === treatment.baseId && t.cardNumber === previousCardNumber)) {
+                                prevCardLocation = 'before';
+                                break;
+                            }
+                        }
 
-                        if (previousCard) {
-                            let foundPrevious = false;
-                            for (let i = 0; i < currentDayIndex; i++) {
-                                if (newSchedule[i].treatments.some(t => t.id === previousCard.id)) {
-                                    foundPrevious = true;
-                                    break;
-                                }
-                            }
-                            if (!foundPrevious) {
-                                currentDayIndex++;
-                                continue;
-                            }
+                        if (!prevCardLocation) {
+                            currentDayIndex++;
+                            continue;
                         }
                     }
 
@@ -407,13 +434,20 @@ export function useTreatmentWorkflow() {
 
         setTreatmentSchedule(newSchedule);
         setIsGeneratingWorkflow(false);
-
         return {
             success: true,
             totalAssigned,
             totalTreatments: workflow.length,
             message: `${totalAssigned}件の治療を自動配置しました。`
         };
+    };
+
+    /**
+     * 特定の日付以降の未完了ノードを再配置
+     * @param {string} date - 起点となる日付
+     */
+    const executeReschedulingFromDate = (date) => {
+        executeAutoScheduling(date);
     };
 
     const canDropCard = (card, targetDate) => {
@@ -538,6 +572,21 @@ export function useTreatmentWorkflow() {
 
     // スケジュールを一括リセット（スケジュール枠は残す）
     const clearAllSchedules = () => {
+        // 1. スケジュール上の全ノードを取得し、workflowに復帰させる（データ消失防止）
+        const allScheduledNodes = treatmentSchedule.reduce((acc, day) => acc.concat(day.treatments), []);
+        
+        // 既存のworkflowにないノードだけを追加
+        setWorkflow(prevWorkflow => {
+            const currentWorkflowIds = new Set(prevWorkflow.map(node => node.id));
+            const nodesToAdd = allScheduledNodes.filter(node => !currentWorkflowIds.has(node.id));
+            
+            if (nodesToAdd.length > 0) {
+                console.log('Recovering lost nodes:', nodesToAdd);
+                return [...prevWorkflow, ...nodesToAdd];
+            }
+            return prevWorkflow;
+        });
+
         const clearedSchedule = treatmentSchedule.map(day => ({
             date: day.date,
             treatments: []
@@ -655,13 +704,27 @@ export function useTreatmentWorkflow() {
             teeth: remainingTeeth
         }));
 
-        // workflowを更新（workflow内のノードのみ）
-        const updatedWorkflowNodes = updatedNodes.filter(node =>
-            workflow.find(wn => wn.id === node.id)
-        );
-        let newWorkflow = workflow.filter(node => node.groupId !== sourceNode.groupId)
-            .concat(updatedWorkflowNodes);
+        // workflowを更新
+        // 更新用の一時Mapを作成（IDをキーにして重複を排除）
+        const workflowMap = new Map();
 
+        // 1. 既存のworkflowから、対象グループ以外のノードをMapに追加
+        workflow.forEach(node => {
+            if (node.groupId !== sourceNode.groupId) {
+                workflowMap.set(node.id, node);
+            }
+        });
+
+        // 2. 更新されたノード（元のグループの残り）と新しいノード（分離された部分）を追加
+        // IDが重複する場合は上書きされる（最新の状態になる）
+        [...updatedNodes, ...newNodes].forEach(node => {
+            workflowMap.set(node.id, node);
+        });
+
+        const newWorkflow = Array.from(workflowMap.values());
+
+        console.log('Split completed. New Workflow count:', newWorkflow.length);
+        setWorkflow(newWorkflow);
         // targetDateが指定されている場合は、そのスケジュールに分離
         // 指定されていない場合は、元の場所（スケジュールまたは未スケジュール）に分離
         const finalTargetDate = targetDate !== null ? targetDate : sourceScheduleDate;
@@ -672,24 +735,26 @@ export function useTreatmentWorkflow() {
             setWorkflow(newWorkflow);
 
             // スケジュールを更新
+            // スケジュールを更新
             const newSchedule = treatmentSchedule.map(day => {
-                if (day.date === sourceScheduleDate) {
-                    // 元のノードの歯式を更新
-                    return {
-                        ...day,
-                        treatments: day.treatments.map(t => {
-                            const updatedNode = updatedNodes.find(n => n.id === t.id);
-                            return updatedNode || t;
-                        })
-                    };
-                } else if (day.date === finalTargetDate) {
-                    // 新しいノードを追加
-                    return {
-                        ...day,
-                        treatments: [...day.treatments, ...newNodes]
-                    };
+                let currentDayTreatments = day.treatments;
+
+                // 1. 既存ノードの更新（すべての日に適用）
+                // day.treatmentsの中にupdatedNodesに含まれるIDがあれば更新
+                currentDayTreatments = currentDayTreatments.map(t => {
+                    const updatedNode = updatedNodes.find(n => n.id === t.id);
+                    return updatedNode || t;
+                });
+
+                // 2. 新しいノードの追加（ターゲット日のみ）
+                if (day.date === finalTargetDate) {
+                    currentDayTreatments = [...currentDayTreatments, ...newNodes];
                 }
-                return day;
+
+                return {
+                    ...day,
+                    treatments: currentDayTreatments
+                };
             });
             setTreatmentSchedule(newSchedule);
         } else {
@@ -834,29 +899,25 @@ export function useTreatmentWorkflow() {
         let newSchedule = treatmentSchedule.map(day => {
             let updatedTreatments = day.treatments;
 
-            // ソースノードがこの日付にある場合
-            if (day.date === sourceScheduleDate) {
-                if (remainingTeeth.length === 0) {
-                    // 歯式がなくなった場合は削除
-                    updatedTreatments = updatedTreatments.filter(t => t.groupId !== sourceGroupId);
-                } else {
-                    // 歯式を更新
-                    updatedTreatments = updatedTreatments.map(t =>
-                        t.groupId === sourceGroupId
-                            ? updatedSourceNodes.find(n => n.id === t.id) || t
-                            : t
-                    );
-                }
-            }
-
-            // ターゲットノードがこの日付にある場合
-            if (day.date === targetScheduleDate) {
+            // ソースノード更新（歯式削除またはノード削除）
+            if (remainingTeeth.length === 0) {
+                // 歯式がなくなった場合は削除
+                updatedTreatments = updatedTreatments.filter(t => t.groupId !== sourceGroupId);
+            } else {
+                // 歯式を更新
                 updatedTreatments = updatedTreatments.map(t =>
-                    t.groupId === targetNode.groupId
-                        ? updatedTargetNodes.find(n => n.id === t.id) || t
+                    t.groupId === sourceGroupId
+                        ? updatedSourceNodes.find(n => n.id === t.id) || t
                         : t
                 );
             }
+
+            // ターゲットノード更新
+            updatedTreatments = updatedTreatments.map(t =>
+                t.groupId === targetNode.groupId
+                    ? updatedTargetNodes.find(n => n.id === t.id) || t
+                    : t
+            );
 
             return {
                 ...day,
@@ -980,17 +1041,16 @@ export function useTreatmentWorkflow() {
             let updatedTreatments = day.treatments;
 
             // ソースノードを削除
-            if (day.date === sourceScheduleDate) {
-                updatedTreatments = updatedTreatments.filter(t => t.groupId !== sourceGroupId);
-            }
+            updatedTreatments = updatedTreatments.filter(t => t.groupId !== sourceGroupId);
 
             // ターゲットノードを更新
-            if (day.date === targetScheduleDate) {
-                updatedTreatments = updatedTreatments.map(t => {
+            updatedTreatments = updatedTreatments.map(t => {
+                if (t.groupId === targetNode.groupId) {
                     const updatedNode = updatedTargetNodes.find(n => n.id === t.id);
                     return updatedNode || t;
-                });
-            }
+                }
+                return t;
+            });
 
             return {
                 ...day,
@@ -1004,6 +1064,25 @@ export function useTreatmentWorkflow() {
             success: true,
             message: `ノードを合体しました（歯式: ${sourceNode.teeth.join(', ')} → ${mergedTeeth.join(', ')}）`
         };
+    };
+
+    /**
+     * ノードの完了ステータスを切り替え
+     * @param {string} nodeId - 対象のノードID
+     */
+    const toggleTreatmentCompletion = (nodeId) => {
+        // スケジュール内のノードを探して更新
+        setTreatmentSchedule(prevSchedule => prevSchedule.map(day => ({
+            ...day,
+            treatments: day.treatments.map(t =>
+                t.id === nodeId ? { ...t, completed: !t.completed } : t
+            )
+        })));
+
+        // workflow内のノードも同期（もしあれば）
+        setWorkflow(prevWorkflow => prevWorkflow.map(w =>
+            w.id === nodeId ? { ...w, completed: !w.completed } : w
+        ));
     };
 
     return {
@@ -1053,6 +1132,8 @@ export function useTreatmentWorkflow() {
         changeScheduleDate,
         splitToothFromNode,
         mergeToothToNode,
-        mergeNodeToNode
+        mergeNodeToNode,
+        toggleTreatmentCompletion,
+        executeReschedulingFromDate
     };
 }
