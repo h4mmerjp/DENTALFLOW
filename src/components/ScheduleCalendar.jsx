@@ -17,7 +17,10 @@ export default function ScheduleCalendar({
     onToothChipDragStart,
     onToothChipDrop,
     onToothChipDropToEmpty,
-    onNodeDrop
+    onNodeDrop,
+    onToggleCompletion,
+    onRescheduleFromDate,
+    isGenerating
 }) {
     const [dragOverDate, setDragOverDate] = React.useState(null);
     const [editingDateIndex, setEditingDateIndex] = React.useState(null);
@@ -192,9 +195,32 @@ export default function ScheduleCalendar({
                                         <Edit2 className="w-4 h-4" />
                                     </button>
                                     {day.treatments.length > 0 && (
-                                        <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full ml-2">
-                                            {day.treatments.length}件
-                                        </span>
+                                        <div className="flex items-center ml-auto">
+                                            <span className="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded-full mr-2">
+                                                {day.treatments.length}件
+                                            </span>
+                                            <button
+                                                onClick={() => onRescheduleFromDate(day.date)}
+                                                disabled={isGenerating}
+                                                className={`p-1 rounded transition-colors group relative ${
+                                                    isGenerating 
+                                                        ? 'text-gray-300 cursor-not-allowed' 
+                                                        : 'text-orange-500 hover:bg-orange-50'
+                                                }`}
+                                                title="この日以降の未完了ノードを再配置"
+                                            >
+                                                {isGenerating ? (
+                                                    <div className="w-4 h-4 border-2 border-gray-200 border-t-orange-500 rounded-full animate-spin" />
+                                                ) : (
+                                                    <RotateCcw className="w-4 h-4" />
+                                                )}
+                                                {!isGenerating && (
+                                                    <span className="absolute bottom-full right-0 mb-2 hidden group-hover:block bg-gray-800 text-white text-[10px] px-2 py-1 rounded whitespace-nowrap z-50">
+                                                        この日以降を再配置
+                                                    </span>
+                                                )}
+                                            </button>
+                                        </div>
                                     )}
                                 </>
                             )}
@@ -220,6 +246,7 @@ export default function ScheduleCalendar({
                                             onToothChipDragStart={onToothChipDragStart}
                                             onToothChipDrop={onToothChipDrop}
                                             onNodeDrop={onNodeDrop}
+                                            onToggleCompletion={onToggleCompletion}
                                         />
                                     )}
                                 </div>

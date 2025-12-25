@@ -57,7 +57,9 @@ function App() {
         changeScheduleDate,
         splitToothFromNode,
         mergeToothToNode,
-        mergeNodeToNode
+        mergeNodeToNode,
+        toggleTreatmentCompletion,
+        executeReschedulingFromDate
     } = useTreatmentWorkflow();
 
     // 病名が変更されたら自動的に治療ノードを生成
@@ -619,23 +621,22 @@ function App() {
                         )}
                     </div>
 
-                    {/* 未スケジュール治療一覧 */}
-                    {workflow.length > 0 && (
-                        <WorkflowBoard
-                            workflow={workflow}
-                            treatmentSchedule={treatmentSchedule}
-                            canDrag={isCardAvailableForDrag}
-                            onDragStart={handleDragStart}
-                            onChangeTreatment={handleChangeTreatment}
-                            getConditionInfo={getConditionInfo}
-                            onAutoSchedule={handleAutoScheduling}
-                            isGenerating={isGeneratingWorkflow}
-                            onToothChipDragStart={handleToothChipDragStart}
-                            onToothChipDrop={handleToothChipDrop}
-                            onToothChipDropToEmpty={handleToothChipDropToEmpty}
-                            onNodeDrop={handleNodeDrop}
-                        />
-                    )}
+                    {/* 未スケジュール治療一覧（常時表示） */}
+                    <WorkflowBoard
+                        workflow={workflow}
+                        treatmentSchedule={treatmentSchedule}
+                        canDrag={isCardAvailableForDrag}
+                        onDragStart={handleDragStart}
+                        onChangeTreatment={handleChangeTreatment}
+                        getConditionInfo={getConditionInfo}
+                        onAutoSchedule={handleAutoScheduling}
+                        isGenerating={isGeneratingWorkflow}
+                        onToothChipDragStart={handleToothChipDragStart}
+                        onToothChipDrop={handleToothChipDrop}
+                        onToothChipDropToEmpty={handleToothChipDropToEmpty}
+                        onNodeDrop={handleNodeDrop}
+                        onToggleCompletion={toggleTreatmentCompletion}
+                    />
 
                     {/* 治療スケジュール */}
                     {treatmentSchedule.length > 0 && (
@@ -655,6 +656,9 @@ function App() {
                             onToothChipDrop={handleToothChipDrop}
                             onToothChipDropToEmpty={handleToothChipDropToEmpty}
                             onNodeDrop={handleNodeDrop}
+                            onToggleCompletion={toggleTreatmentCompletion}
+                            onRescheduleFromDate={executeReschedulingFromDate}
+                            isGenerating={isGeneratingWorkflow}
                         />
                     )}
                 </div>

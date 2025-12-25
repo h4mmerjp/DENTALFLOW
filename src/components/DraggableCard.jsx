@@ -12,9 +12,11 @@ export default function DraggableCard({
     getConditionInfo = null,
     onToothChipDragStart = null,
     onToothChipDrop = null,
-    onNodeDrop = null
+    onNodeDrop = null,
+    onToggleCompletion = null
 }) {
     const isDisabled = !canDrag && !isInSchedule;
+    const showCheckbox = !!onToggleCompletion && isInSchedule;
     const [isDragOver, setIsDragOver] = useState(false);
     const [canAcceptDrop, setCanAcceptDrop] = useState(false);
     
@@ -123,10 +125,38 @@ export default function DraggableCard({
                     ? 'border-gray-200 bg-gray-50 cursor-not-allowed opacity-60'
                     : 'border-gray-300 cursor-move hover:shadow-md'
                 } ${step.isBranched ? 'border-orange-300' : ''}
+                ${step.completed ? 'opacity-80' : ''}
                 ${isDragOver && canAcceptDrop ? 'border-green-500 bg-green-50 ring-2 ring-green-300' : ''}
                 ${isDragOver && !canAcceptDrop ? 'border-red-500 bg-red-50' : ''}`}
-            style={{ userSelect: 'none', minHeight: '140px', touchAction: 'none' }}
+            style={{ 
+                userSelect: 'none', 
+                minHeight: '140px', 
+                touchAction: 'none',
+                backgroundColor: step.completed ? '#f0fdf4' : 'white',
+                borderColor: step.completed ? '#bbf7d0' : undefined
+            }}
         >
+            {/* 完了チェックボックス */}
+            {onToggleCompletion && (
+                <div className="absolute top-1 right-8 z-10">
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            onToggleCompletion(step.id);
+                        }}
+                        className={`w-6 h-6 rounded-full flex items-center justify-center transition-all ${
+                            step.completed 
+                                ? 'bg-green-500 text-white border-green-500' 
+                                : 'bg-white text-gray-300 border-2 border-gray-200 hover:border-green-300'
+                        }`}
+                        title={step.completed ? "未完了に戻す" : "完了にする"}
+                    >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                    </button>
+                </div>
+            )}
             {/* 上部：治療法選択または治療名表示 */}
             <div className="bg-gray-50 border-b border-gray-200 p-2 rounded-t-lg">
                 {step.hasMultipleTreatments && onChangeTreatment ? (
