@@ -4,3 +4,9 @@ dist/
 .env.local
 .DS_Store
 *.log
+
+# Supabase temp files
+supabase/.temp/
+
+# 厚労省マスターソースデータ（大容量）
+電子カルテ/

@@ -306,9 +306,21 @@ export function useTreatmentWorkflow() {
 
                 const targetDay = newSchedule.find(day => day.date === targetDate);
                 if (targetDay) {
-                    targetDay.treatments.push(node);
+                    // 重複を防ぐためにIDでチェック（基本的には新規生成なので重複しないはずだが念のため）
+                    if (!targetDay.treatments.find(t => t.id === node.id)) {
+                        targetDay.treatments.push(node);
+                    }
                 }
             }
+        });
+
+        // 4. スケジュール内の「ゴースト」（workflowStepsに含まれない、かつ未完了のノード）を掃除
+        // 計画変更で削除された古い病名のノードがスケジュールに残るのを防ぐ
+        const validNodeIds = new Set(workflowSteps.map(s => s.id));
+        newSchedule.forEach(day => {
+            day.treatments = day.treatments.filter(t => 
+                validNodeIds.has(t.id) || t.completed
+            );
         });
 
         setTreatmentSchedule(newSchedule);
@@ -1085,6 +1097,57 @@ export function useTreatmentWorkflow() {
         ));
     };
 
+    /**
+     * 治療計画を分岐させる（特定のステップから新しい病名に切り替える）
+     * @param {string} nodeId - 起点となるノードID
+     * @param {string} newCondition - 切り替え先の新しい病名
+     */
+    const divergeTreatmentPlan = (nodeId, newCondition) => {
+        // 1. 起点ノードの情報を取得
+        const sourceNode = workflow.find(w => w.id === nodeId);
+        if (!sourceNode) return { success: false, message: 'ノードが見つかりません。' };
+
+        const affectedTeeth = sourceNode.teeth;
+        
+        // 2. この歯に関連する「後続の未完了ノード」をすべて特定・削除
+        // 既に完了しているものは履歴として残すが、それ以降の計画は破棄
+        const idsToRemove = new Set();
+        workflow.forEach(w => {
+            // 同じ歯を対象としており
+            const hasCommonTeeth = w.teeth.some(t => affectedTeeth.includes(t));
+            if (hasCommonTeeth) {
+                // 完了していないものは削除対象
+                if (!w.completed) {
+                    idsToRemove.add(w.id);
+                }
+            }
+        });
+
+        // 3. toothConditions を更新
+        setToothConditions(prev => {
+            const next = { ...prev };
+            affectedTeeth.forEach(tooth => {
+                next[tooth] = newCondition;
+            });
+            return next;
+        });
+
+        // 4. workflowからこれらを削除
+        const updatedWorkflow = workflow.filter(w => !idsToRemove.has(w.id));
+        
+        // 5. 新しい病名に基づいてノードを生成
+        // ステートを即時反映させるため、setToothConditionsの完了を待たずに
+        // 内部のtoothConditions状態を想定して再生成を行う
+        setWorkflow(updatedWorkflow);
+        
+        // 少し遅延させてgenerateTreatmentNodesを呼び出す（ステート更新の反映待ち）
+        setTimeout(() => {
+            generateTreatmentNodes();
+        }, 10);
+
+        return { success: true, message: `病名を ${newCondition} へ変更しました。` };
+    };
+
     return {
         toothConditions,
         setToothConditions,
@@ -1134,6 +1197,7 @@ export function useTreatmentWorkflow() {
         mergeToothToNode,
         mergeNodeToNode,
         toggleTreatmentCompletion,
-        executeReschedulingFromDate
+        executeReschedulingFromDate,
+        divergeTreatmentPlan
     };
 }

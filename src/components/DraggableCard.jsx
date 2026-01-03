@@ -13,8 +13,11 @@ export default function DraggableCard({
     onToothChipDragStart = null,
     onToothChipDrop = null,
     onNodeDrop = null,
-    onToggleCompletion = null
+    onToggleCompletion = null,
+    onDivergePlan = null,
+    conditions = []
 }) {
+    const [showPivotMenu, setShowPivotMenu] = useState(false);
     const isDisabled = !canDrag && !isInSchedule;
     const showCheckbox = !!onToggleCompletion && isInSchedule;
     const [isDragOver, setIsDragOver] = useState(false);
@@ -210,8 +213,47 @@ export default function DraggableCard({
             <div className="p-2 border-t border-gray-100">
                 {/* 病名とページネーション */}
                 <div className="flex items-center justify-between text-xs mb-2">
-                    <div className={`px-2 py-0.5 rounded border ${conditionColorClass}`}>
-                        {step.condition}
+                    <div className="flex items-center gap-1">
+                        <div className={`px-2 py-0.5 rounded border ${conditionColorClass}`}>
+                            {step.condition}
+                        </div>
+                        {onDivergePlan && (
+                            <div className="relative">
+                                <button
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        setShowPivotMenu(!showPivotMenu);
+                                    }}
+                                    className="p-1 text-gray-400 hover:text-blue-500 hover:bg-blue-50 rounded transition-colors"
+                                    title="病名を変更して計画を分岐"
+                                >
+                                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                                    </svg>
+                                </button>
+                                
+                                {showPivotMenu && (
+                                    <div className="absolute left-0 bottom-full mb-2 w-32 bg-white border border-gray-200 rounded-lg shadow-xl z-[60] py-1">
+                                        <div className="px-2 py-1 text-[10px] text-gray-400 font-bold border-b border-gray-100 uppercase">
+                                            病名を選択
+                                        </div>
+                                        {conditions.map(c => (
+                                            <button
+                                                key={c.code}
+                                                onClick={(e) => {
+                                                    e.stopPropagation();
+                                                    onDivergePlan(step.id, c.code);
+                                                    setShowPivotMenu(false);
+                                                }}
+                                                className="w-full text-left px-3 py-1.5 hover:bg-blue-50 text-[11px] text-gray-700 transition-colors"
+                                            >
+                                                {c.code}
+                                            </button>
+                                        )).filter(btn => btn.key !== step.condition)}
+                                    </div>
+                                )}
+                            </div>
+                        )}
                     </div>
 
                     <div className="bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">

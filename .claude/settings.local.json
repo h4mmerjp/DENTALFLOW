@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(wc:*)",
+      "Bash(mkdir:*)",
+      "Bash(cat:*)",
+      "mcp__plugin_supabase_supabase__list_organizations",
+      "mcp__plugin_supabase_supabase__get_cost",
+      "mcp__plugin_supabase_supabase__confirm_cost"
+    ]
+  }
+}

@@ -59,7 +59,8 @@ function App() {
         mergeToothToNode,
         mergeNodeToNode,
         toggleTreatmentCompletion,
-        executeReschedulingFromDate
+        executeReschedulingFromDate,
+        divergeTreatmentPlan
     } = useTreatmentWorkflow();
 
     // 病名が変更されたら自動的に治療ノードを生成
@@ -658,7 +659,9 @@ function App() {
                             onNodeDrop={handleNodeDrop}
                             onToggleCompletion={toggleTreatmentCompletion}
                             onRescheduleFromDate={executeReschedulingFromDate}
+                            onDivergePlan={divergeTreatmentPlan}
                             isGenerating={isGeneratingWorkflow}
+                            conditions={conditions}
                         />
                     )}
                 </div>

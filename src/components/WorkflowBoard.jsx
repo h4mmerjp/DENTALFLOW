@@ -14,7 +14,9 @@ export default function WorkflowBoard({
     onToothChipDrop,
     onToothChipDropToEmpty,
     onNodeDrop,
-    onToggleCompletion
+    onToggleCompletion,
+    onDivergePlan,
+    conditions
 }) {
     const [isDragOverArea, setIsDragOverArea] = React.useState(false);
 
@@ -119,6 +121,8 @@ export default function WorkflowBoard({
                         onToothChipDrop={onToothChipDrop}
                         onNodeDrop={onNodeDrop}
                         onToggleCompletion={onToggleCompletion}
+                        onDivergePlan={onDivergePlan}
+                        conditions={conditions}
                     />
                 </div>
 

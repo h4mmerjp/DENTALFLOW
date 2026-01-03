@@ -20,7 +20,9 @@ export default function ScheduleCalendar({
     onNodeDrop,
     onToggleCompletion,
     onRescheduleFromDate,
-    isGenerating
+    onDivergePlan,
+    isGenerating,
+    conditions
 }) {
     const [dragOverDate, setDragOverDate] = React.useState(null);
     const [editingDateIndex, setEditingDateIndex] = React.useState(null);
@@ -247,6 +249,8 @@ export default function ScheduleCalendar({
                                             onToothChipDrop={onToothChipDrop}
                                             onNodeDrop={onNodeDrop}
                                             onToggleCompletion={onToggleCompletion}
+                                            onDivergePlan={onDivergePlan}
+                                            conditions={conditions}
                                         />
                                     )}
                                 </div>
