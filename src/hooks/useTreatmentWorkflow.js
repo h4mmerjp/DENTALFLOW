@@ -506,9 +506,22 @@ export function useTreatmentWorkflow() {
             return { success: false, message: '治療の順序が正しくありません。前の治療の後に配置してください。' };
         }
 
+        // 削除対象のノードIDを収集
+        const nodesToRemove = new Set([draggedNode.id]);
+
+        // 連続治療の最初のステップをドラッグした場合、後続ステップも削除対象に追加
+        // （後で新しい位置に再配置するため、元の位置から削除する必要がある）
+        if (autoScheduleEnabled && draggedNode.isSequential && draggedNode.cardNumber === 1) {
+            const remainingCards = workflow.filter(w =>
+                w.baseId === draggedNode.baseId && w.cardNumber > draggedNode.cardNumber
+            );
+            remainingCards.forEach(card => nodesToRemove.add(card.id));
+        }
+
+        // 対象ノードをスケジュールから削除
         let updatedSchedule = treatmentSchedule.map(day => ({
             ...day,
-            treatments: day.treatments.filter(t => t.id !== draggedNode.id)
+            treatments: day.treatments.filter(t => !nodesToRemove.has(t.id))
         }));
 
         const targetDayIndex = updatedSchedule.findIndex(day => day.date === targetDate);
