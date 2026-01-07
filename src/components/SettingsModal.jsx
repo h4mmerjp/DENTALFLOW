@@ -62,8 +62,14 @@ export default function SettingsModal({
     const [editingTreatmentIndex, setEditingTreatmentIndex] = useState(null);
     const [editingStepId, setEditingStepId] = useState(null);
 
-    // AI設定の開閉状態
+    // 各セクションの開閉状態
     const [isAiSettingsOpen, setIsAiSettingsOpen] = useState(false);
+    const [isRuleBasedOpen, setIsRuleBasedOpen] = useState(false);
+    const [isAutoScheduleOpen, setIsAutoScheduleOpen] = useState(false);
+    const [isExclusiveRulesOpen, setIsExclusiveRulesOpen] = useState(false);
+    const [isStepMasterOpen, setIsStepMasterOpen] = useState(false);
+    const [isConditionMasterOpen, setIsConditionMasterOpen] = useState(false);
+    const [isTreatmentMasterOpen, setIsTreatmentMasterOpen] = useState(false);
 
     if (!isOpen) return null;
 
@@ -267,11 +273,18 @@ export default function SettingsModal({
 
                 {/* ルールベース自動配置設定 */}
                 <div className="mb-6 p-4 bg-green-50 border border-green-200 rounded-lg">
-                    <h3 className="text-lg font-bold text-green-900 mb-3 flex items-center gap-2">
-                        ⚙️ ルールベース自動配置設定
-                    </h3>
+                    <button
+                        onClick={() => setIsRuleBasedOpen(!isRuleBasedOpen)}
+                        className="w-full flex items-center justify-between text-left"
+                    >
+                        <h3 className="text-lg font-bold text-green-900 flex items-center gap-2">
+                            {isRuleBasedOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+                            ⚙️ ルールベース自動配置設定
+                        </h3>
+                    </button>
 
-                    <div className="space-y-4">
+                    {isRuleBasedOpen && (
+                    <div className="mt-3 space-y-4">
                         {/* 基本設定 */}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
@@ -419,50 +432,79 @@ export default function SettingsModal({
                             </ul>
                         </div>
                     </div>
+                    )}
                 </div>
 
                 {/* 自動スケジューリング設定 */}
                 <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                    <div className="flex items-center justify-between">
-                        <div>
-                            <h3 className="text-lg font-bold text-blue-900 mb-1">自動スケジューリング</h3>
+                    <button
+                        onClick={() => setIsAutoScheduleOpen(!isAutoScheduleOpen)}
+                        className="w-full flex items-center justify-between text-left"
+                    >
+                        <h3 className="text-lg font-bold text-blue-900 flex items-center gap-2">
+                            {isAutoScheduleOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+                            📅 自動スケジューリング
+                            <span className={`ml-2 text-sm font-normal px-2 py-0.5 rounded ${autoScheduleEnabled ? 'bg-blue-200 text-blue-800' : 'bg-gray-200 text-gray-600'}`}>
+                                {autoScheduleEnabled ? 'ON' : 'OFF'}
+                            </span>
+                        </h3>
+                    </button>
+
+                    {isAutoScheduleOpen && (
+                    <div className="mt-3">
+                        <div className="flex items-center justify-between mb-2">
                             <p className="text-sm text-blue-700">
                                 複数ステップ治療の1回目を配置時に、残りのステップを自動的に後日に配置します
                             </p>
+                            <div className="flex items-center ml-4">
+                                <label className="relative inline-flex items-center cursor-pointer">
+                                    <input
+                                        type="checkbox"
+                                        checked={autoScheduleEnabled}
+                                        onChange={(e) => onAutoScheduleChange(e.target.checked)}
+                                        className="sr-only peer"
+                                    />
+                                    <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+                                    <span className="ml-3 text-sm font-medium text-blue-900">
+                                        {autoScheduleEnabled ? 'ON' : 'OFF'}
+                                    </span>
+                                </label>
+                            </div>
                         </div>
-                        <div className="flex items-center">
-                            <label className="relative inline-flex items-center cursor-pointer">
-                                <input
-                                    type="checkbox"
-                                    checked={autoScheduleEnabled}
-                                    onChange={(e) => onAutoScheduleChange(e.target.checked)}
-                                    className="sr-only peer"
-                                />
-                                <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
-                                <span className="ml-3 text-sm font-medium text-blue-900">
-                                    {autoScheduleEnabled ? 'ON' : 'OFF'}
-                                </span>
-                            </label>
-                        </div>
+                        {autoScheduleEnabled && (
+                            <div className="mt-2 text-xs text-blue-600 bg-blue-100 p-3 rounded">
+                                💡 例：インレーの「印象採得」を第1回目に配置すると、「セット」が自動的に第2回目に配置されます
+                            </div>
+                        )}
                     </div>
-                    {autoScheduleEnabled && (
-                        <div className="mt-2 text-xs text-blue-600">
-                            💡 例：インレーの「印象採得」を第1回目に配置すると、「セット」が自動的に第2回目に配置されます
-                        </div>
                     )}
                 </div>
 
                 {/* 排他的病名ルール設定 */}
                 <div className="mb-6 p-4 bg-orange-50 border border-orange-200 rounded-lg">
-                    <h3 className="text-lg font-bold text-orange-900 mb-3 flex items-center gap-2">
-                        🚫 排他的病名ルール設定（グループ間排他）
-                    </h3>
-                    <p className="text-sm text-orange-700 mb-4">
-                        グループ間で排他的な病名を設定します。同じグループ内の病名は同時設定可能です。<br />
-                        <span className="text-xs">例：C1⇄C2⇄C3⇄C4（すべて相互排他）、欠損⇄(C1&P1)（C1とP1は同時設定可だが欠損とは排他）</span>
-                    </p>
+                    <button
+                        onClick={() => setIsExclusiveRulesOpen(!isExclusiveRulesOpen)}
+                        className="w-full flex items-center justify-between text-left"
+                    >
+                        <h3 className="text-lg font-bold text-orange-900 flex items-center gap-2">
+                            {isExclusiveRulesOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+                            🚫 排他的病名ルール設定（グループ間排他）
+                            {exclusiveRules.length > 0 && (
+                                <span className="ml-2 text-sm font-normal bg-orange-200 text-orange-800 px-2 py-0.5 rounded">
+                                    {exclusiveRules.length}件
+                                </span>
+                            )}
+                        </h3>
+                    </button>
 
-                    <div className="space-y-3">
+                    {isExclusiveRulesOpen && (
+                    <div className="mt-3">
+                        <p className="text-sm text-orange-700 mb-4">
+                            グループ間で排他的な病名を設定します。同じグループ内の病名は同時設定可能です。<br />
+                            <span className="text-xs">例：C1⇄C2⇄C3⇄C4（すべて相互排他）、欠損⇄(C1&P1)（C1とP1は同時設定可だが欠損とは排他）</span>
+                        </p>
+
+                        <div className="space-y-3">
                         {/* 既存ルールの表示 */}
                         {exclusiveRules.map((rule, ruleIndex) => (
                             <div key={ruleIndex} className="flex items-center gap-2 p-3 bg-white border border-orange-200 rounded">
@@ -651,28 +693,44 @@ export default function SettingsModal({
                         </div>
                     </div>
 
-                    <div className="mt-3 text-xs text-orange-700 bg-orange-100 p-3 rounded">
-                        <p className="font-medium mb-1">💡 グループベース排他的病名ルールについて</p>
-                        <ul className="list-disc list-inside space-y-1">
-                            <li>グループを作成し、各グループに病名を設定します</li>
-                            <li>同じグループ内の病名は同時に設定できます（例：C1&P1）</li>
-                            <li>異なるグループの病名は排他的です（例：欠損⇄(C1&P1)）</li>
-                            <li>最低2つのグループが必要です</li>
-                            <li>各病名は1つのグループにのみ設定できます</li>
-                        </ul>
+                        <div className="mt-3 text-xs text-orange-700 bg-orange-100 p-3 rounded">
+                            <p className="font-medium mb-1">💡 グループベース排他的病名ルールについて</p>
+                            <ul className="list-disc list-inside space-y-1">
+                                <li>グループを作成し、各グループに病名を設定します</li>
+                                <li>同じグループ内の病名は同時に設定できます（例：C1&P1）</li>
+                                <li>異なるグループの病名は排他的です（例：欠損⇄(C1&P1)）</li>
+                                <li>最低2つのグループが必要です</li>
+                                <li>各病名は1つのグループにのみ設定できます</li>
+                            </ul>
+                        </div>
                     </div>
+                    )}
                 </div>
 
                 {/* ステップマスター設定 */}
                 <div className="mb-6 p-4 bg-purple-50 border border-purple-200 rounded-lg">
-                    <h3 className="text-lg font-bold text-purple-900 mb-3 flex items-center gap-2">
-                        📋 ステップマスター
-                    </h3>
-                    <p className="text-sm text-purple-700 mb-4">
-                        治療で使用するステップを登録し、対象病名を選択します。ステップは治療法マスターから参照できます。
-                    </p>
+                    <button
+                        onClick={() => setIsStepMasterOpen(!isStepMasterOpen)}
+                        className="w-full flex items-center justify-between text-left"
+                    >
+                        <h3 className="text-lg font-bold text-purple-900 flex items-center gap-2">
+                            {isStepMasterOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+                            📋 ステップマスター
+                            {stepMaster && stepMaster.filter(step => step.id !== 'step00').length > 0 && (
+                                <span className="ml-2 text-sm font-normal bg-purple-200 text-purple-800 px-2 py-0.5 rounded">
+                                    {stepMaster.filter(step => step.id !== 'step00').length}件
+                                </span>
+                            )}
+                        </h3>
+                    </button>
 
-                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                    {isStepMasterOpen && (
+                    <div className="mt-3">
+                        <p className="text-sm text-purple-700 mb-4">
+                            治療で使用するステップを登録し、対象病名を選択します。ステップは治療法マスターから参照できます。
+                        </p>
+
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                         {/* ステップ追加・編集フォーム */}
                         <div className={`border rounded-lg p-4 ${editingStepId ? 'bg-yellow-50 border-yellow-300' : 'bg-white border-purple-200'}`}>
                             <div className="flex justify-between items-center mb-3">
@@ -790,24 +848,38 @@ export default function SettingsModal({
                         </div>
                     </div>
 
-                    <div className="mt-3 text-xs text-purple-700 bg-purple-100 p-3 rounded">
-                        <p className="font-medium mb-1">💡 ステップマスターについて</p>
-                        <ul className="list-disc list-inside space-y-1">
-                            <li>治療で使用するステップを一元管理できます</li>
-                            <li>各ステップは複数の病名に対して使用可能です</li>
-                            <li>治療法マスターで病名を選ぶと、対応するステップのみ選択できます</li>
-                        </ul>
+                        <div className="mt-3 text-xs text-purple-700 bg-purple-100 p-3 rounded">
+                            <p className="font-medium mb-1">💡 ステップマスターについて</p>
+                            <ul className="list-disc list-inside space-y-1">
+                                <li>治療で使用するステップを一元管理できます</li>
+                                <li>各ステップは複数の病名に対して使用可能です</li>
+                                <li>治療法マスターで病名を選ぶと、対応するステップのみ選択できます</li>
+                            </ul>
+                        </div>
                     </div>
+                    )}
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* 病名設定 */}
                     <div className="p-4 bg-blue-50 border border-blue-200 rounded-lg">
-                        <h3 className="text-lg font-bold mb-3 text-blue-900 flex items-center gap-2">
-                            🏥 病名マスター
-                        </h3>
+                        <button
+                            onClick={() => setIsConditionMasterOpen(!isConditionMasterOpen)}
+                            className="w-full flex items-center justify-between text-left mb-3"
+                        >
+                            <h3 className="text-lg font-bold text-blue-900 flex items-center gap-2">
+                                {isConditionMasterOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+                                🏥 病名マスター
+                                {conditions.length > 0 && (
+                                    <span className="ml-2 text-sm font-normal bg-blue-200 text-blue-800 px-2 py-0.5 rounded">
+                                        {conditions.length}件
+                                    </span>
+                                )}
+                            </h3>
+                        </button>
 
-                        {/* 新しい病名追加 */}
+                        {isConditionMasterOpen && (
+                        <>
                         {/* 新しい病名追加・編集 */}
                         <div className={`border rounded-lg p-4 mb-4 ${editingConditionCode ? 'bg-yellow-50 border-yellow-300' : 'bg-white border-blue-200'}`}>
                             <div className="flex justify-between items-center mb-2">
@@ -884,15 +956,29 @@ export default function SettingsModal({
                                 </div>
                             ))}
                         </div>
+                        </>
+                        )}
                     </div>
 
                     {/* 治療法設定 */}
                     <div className="p-4 bg-green-50 border border-green-200 rounded-lg">
-                        <h3 className="text-lg font-bold mb-3 text-green-900 flex items-center gap-2">
-                            💊 治療法マスター
-                        </h3>
+                        <button
+                            onClick={() => setIsTreatmentMasterOpen(!isTreatmentMasterOpen)}
+                            className="w-full flex items-center justify-between text-left mb-3"
+                        >
+                            <h3 className="text-lg font-bold text-green-900 flex items-center gap-2">
+                                {isTreatmentMasterOpen ? <ChevronDown size={20} /> : <ChevronRight size={20} />}
+                                💊 治療法マスター
+                                {Object.keys(treatmentRules).length > 0 && (
+                                    <span className="ml-2 text-sm font-normal bg-green-200 text-green-800 px-2 py-0.5 rounded">
+                                        {Object.values(treatmentRules).flat().length}件
+                                    </span>
+                                )}
+                            </h3>
+                        </button>
 
-                        {/* 新しい治療法追加 */}
+                        {isTreatmentMasterOpen && (
+                        <>
                         {/* 新しい治療法追加・編集 */}
                         <div className={`border rounded-lg p-4 mb-4 ${editingTreatmentIndex ? 'bg-yellow-50 border-yellow-300' : 'bg-white border-green-200'}`}>
                             <div className="flex justify-between items-center mb-2">
@@ -1090,6 +1176,8 @@ export default function SettingsModal({
                                 </div>
                             ))}
                         </div>
+                        </>
+                        )}
                     </div>
                 </div>
 
