@@ -1,0 +1,3794 @@
+[
+  {
+    "procedure_code": "301000110",
+    "name": "歯科初診料",
+    "limit_count": 1,
+    "limit_type": "初診",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301000210",
+    "name": "地域歯科診療支援病院歯科初診料",
+    "limit_count": 1,
+    "limit_type": "病初診",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301000370",
+    "name": "乳幼児加算（初診）",
+    "limit_count": 1,
+    "limit_type": "乳（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301000470",
+    "name": "歯科診療特別対応加算１（初診）",
+    "limit_count": 1,
+    "limit_type": "歯科診療特別対応加算１（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301000570",
+    "name": "歯科診療特別対応加算２（初診）",
+    "limit_count": 1,
+    "limit_type": "歯科診療特別対応加算２（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301000670",
+    "name": "時間外加算（初診）",
+    "limit_count": 1,
+    "limit_type": "時間外（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301000770",
+    "name": "休日加算（初診）",
+    "limit_count": 1,
+    "limit_type": "休日（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301000870",
+    "name": "深夜加算（初診）",
+    "limit_count": 1,
+    "limit_type": "深夜（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301000970",
+    "name": "時間外特例医療機関加算（初診）",
+    "limit_count": 1,
+    "limit_type": "時間外（特）（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301001070",
+    "name": "乳幼児時間外加算（初診）",
+    "limit_count": 1,
+    "limit_type": "乳・時間外（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301001170",
+    "name": "乳幼児休日加算（初診）",
+    "limit_count": 1,
+    "limit_type": "乳・休日（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301001270",
+    "name": "乳幼児深夜加算（初診）",
+    "limit_count": 1,
+    "limit_type": "乳・深夜（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301001370",
+    "name": "乳幼児時間外特例医療機関加算（初診）",
+    "limit_count": 1,
+    "limit_type": "乳・時間外（特）（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301001570",
+    "name": "歯科外来診療医療安全対策加算１（初診）",
+    "limit_count": 1,
+    "limit_type": "歯科外来診療医療安全対策加算１（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301003990",
+    "name": "外泊（入院基本料の減額）（精神障害等の患者）",
+    "limit_count": 6,
+    "limit_type": "外泊（入院基本料の減額）（精神障害等の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301004090",
+    "name": "外泊（特定入院料の減額）（精神障害等の患者）",
+    "limit_count": 6,
+    "limit_type": "外泊（特定入院料の減額）（精神障害等の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301005870",
+    "name": "一般病棟入院期間加算（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "一般病棟入院期間加算（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301005970",
+    "name": "一般病棟入院期間加算（１４日以内の期間）（特別入院基本料等）",
+    "limit_count": 14,
+    "limit_type": "一般病棟入院期間加算（１４日以内）（特別入院基本料等）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301006070",
+    "name": "一般病棟入院期間加算（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "一般病棟入院期間加算（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301006170",
+    "name": "一般病棟入院期間加算（１５日以上３０日以内の期間）（特別入院基本料等）",
+    "limit_count": 16,
+    "limit_type": "一般病棟入院期間加算（１５日以上３０日以内）（特別入院基本料等）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301007970",
+    "name": "特定機能病院一般病棟入院期間加算（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "特定機能病院一般病棟入院期間加算（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301008070",
+    "name": "特定機能病院一般病棟入院期間加算（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "特定機能病院一般病棟入院期間加算（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301008770",
+    "name": "専門病院入院期間加算（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "専門病院入院期間加算（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301008870",
+    "name": "専門病院入院期間加算（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "専門病院入院期間加算（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301008910",
+    "name": "有床診療所入院基本料４（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "有床診療所入院基本料４（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301009110",
+    "name": "有床診療所入院基本料４（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "有床診療所入院基本料４（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301009310",
+    "name": "有床診療所入院基本料５（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "有床診療所入院基本料５（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301009510",
+    "name": "有床診療所入院基本料５（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "有床診療所入院基本料５（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301011610",
+    "name": "総合入院体制加算３（１日につき）",
+    "limit_count": 14,
+    "limit_type": "総合入院体制加算３",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301011710",
+    "name": "地域医療支援病院入院診療加算（入院初日）",
+    "limit_count": 1,
+    "limit_type": "地域医療支援病院入院診療加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301011810",
+    "name": "基幹型臨床研修病院入院診療加算（入院初日）",
+    "limit_count": 1,
+    "limit_type": "基幹型臨床研修病院入院診療加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301011910",
+    "name": "協力型臨床研修病院入院診療加算（入院初日）",
+    "limit_count": 1,
+    "limit_type": "協力型臨床研修病院入院診療加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301012110",
+    "name": "乳幼児加算（救急医療管理加算）",
+    "limit_count": 7,
+    "limit_type": "乳幼児加算（救急医療管理加算）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301012210",
+    "name": "在宅患者緊急入院診療加算（連携医療機関である場合（１の場合を除く。））（入院初日）",
+    "limit_count": 1,
+    "limit_type": "在宅患者緊急入院診療加算（連携医療機関（１以外））",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301012310",
+    "name": "在宅患者緊急入院診療加算（１及び２以外の場合）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "在宅患者緊急入院診療加算（１、２以外）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301012510",
+    "name": "２５対１補助体制加算（医師事務作業補助体制加算２）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "２５対１補助体制加算（医師事務作業補助体制加算２）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301012610",
+    "name": "５０対１補助体制加算（医師事務作業補助体制加算２）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "５０対１補助体制加算（医師事務作業補助体制加算２）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301012710",
+    "name": "７５対１補助体制加算（医師事務作業補助体制加算２）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "７５対１補助体制加算（医師事務作業補助体制加算２）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301012810",
+    "name": "１００対１補助体制加算（医師事務作業補助体制加算２）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "１００対１補助体制加算（医師事務作業補助体制加算２）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301016910",
+    "name": "がん診療連携拠点病院加算（がん診療連携拠点病院）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "がん診療連携拠点病院加算（がん診療連携拠点病院）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301017110",
+    "name": "医療安全対策加算１（入院初日）",
+    "limit_count": 1,
+    "limit_type": "医療安全対策加算１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301017310",
+    "name": "褥瘡ハイリスク患者ケア加算（入院中１回）",
+    "limit_count": 1,
+    "limit_type": "褥瘡ハイリスク患者ケア加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301017910",
+    "name": "地域歯科診療支援病院入院加算",
+    "limit_count": 1,
+    "limit_type": "地歯入院",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301018010",
+    "name": "特定集中治療室管理料３（７日以内の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料３（７日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301018110",
+    "name": "特定集中治療室管理料３（８日以上の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料３（８日以上）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301018970",
+    "name": "歯科診療特別対応連携加算",
+    "limit_count": 1,
+    "limit_type": "特連",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301022610",
+    "name": "有床診療所入院基本料６（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "有床診療所入院基本料６（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301022710",
+    "name": "有床診療所入院基本料６（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "有床診療所入院基本料６（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301023210",
+    "name": "１５対１補助体制加算（医師事務作業補助体制加算２）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "１５対１補助体制加算（医師事務作業補助体制加算２）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301023310",
+    "name": "２０対１補助体制加算（医師事務作業補助体制加算２）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "２０対１補助体制加算（医師事務作業補助体制加算２）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301023410",
+    "name": "５０対１急性期看護補助体制加算（１日につき）",
+    "limit_count": 14,
+    "limit_type": "５０対１急性期看護補助体制加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301023510",
+    "name": "７５対１急性期看護補助体制加算（１日につき）",
+    "limit_count": 14,
+    "limit_type": "７５対１急性期看護補助体制加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301023670",
+    "name": "救急・在宅重症児（者）受入加算",
+    "limit_count": 5,
+    "limit_type": "救急・在宅重症児（者）受入加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301023810",
+    "name": "栄養サポートチーム加算（週１回）",
+    "limit_count": 5,
+    "limit_type": "栄養サポートチーム加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301023910",
+    "name": "医療安全対策加算２（入院初日）",
+    "limit_count": 1,
+    "limit_type": "医療安全対策加算２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301024710",
+    "name": "後発医薬品使用体制加算３（入院初日）",
+    "limit_count": 1,
+    "limit_type": "後発医薬品使用体制加算３",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301024810",
+    "name": "特定集中治療室管理料４（特定集中治療室管理料）（７日以内の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料４（特定集中治療室管理料・７日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301024910",
+    "name": "特定集中治療室管理料４（特定集中治療室管理料）（８日以上の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料４（特定集中治療室管理料・８日以上）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301025010",
+    "name": "特定集中治療室管理料４（広範囲熱傷特定集中治療管理料）（７日以内の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料４（広範囲熱傷特定集中治療・７日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301025270",
+    "name": "小児加算（特定集中治療室管理料）（７日以内の期間）",
+    "limit_count": 7,
+    "limit_type": "小児加算（特定集中治療室管理料）（７日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301025370",
+    "name": "小児加算（特定集中治療室管理料）（８日以上１４日以内の期間）",
+    "limit_count": 7,
+    "limit_type": "小児加算（特定集中治療室管理料）（８日以上１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301025510",
+    "name": "緩和ケア病棟入院料１（３０日以内の期間）",
+    "limit_count": 30,
+    "limit_type": "緩和ケア病棟入院料１（３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301026070",
+    "name": "歯科診療特別対応地域支援加算",
+    "limit_count": 1,
+    "limit_type": "特地",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301026870",
+    "name": "重症児（者）受入連携加算（一般病棟入院基本料）",
+    "limit_count": 1,
+    "limit_type": "重症児（者）受入連携加算（一般病棟入院基本料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301026970",
+    "name": "救急・在宅等支援病床初期加算（地域一般入院基本料）",
+    "limit_count": 14,
+    "limit_type": "救急・在宅等支援病床初期加算（地域一般入院基本料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301027270",
+    "name": "重症児（者）受入連携加算（療養病棟入院基本料）",
+    "limit_count": 1,
+    "limit_type": "重症児（者）受入連携加算（療養病棟入院基本料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301027870",
+    "name": "重症児（者）受入連携加算（有床診療所入院基本料）",
+    "limit_count": 1,
+    "limit_type": "重症児（者）受入連携加算（有床診療所入院基本料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301027970",
+    "name": "看取り加算（有床診療所入院基本料）",
+    "limit_count": 1,
+    "limit_type": "看取り加算（有床診療所入院基本料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301028070",
+    "name": "看取り加算（在宅療養支援診療所）（有床診療所入院基本料）",
+    "limit_count": 1,
+    "limit_type": "看取り加算（在支診）（有床診療所入院基本料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301028170",
+    "name": "重症児（者）受入連携加算（有床診療所療養病床入院基本料）",
+    "limit_count": 1,
+    "limit_type": "重症児（者）受入連携加算（有床診療所療養病床入院基本料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301028270",
+    "name": "看取り加算（有床診療所療養病床入院基本料）",
+    "limit_count": 1,
+    "limit_type": "看取り加算（有床診療所療養病床入院基本料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301028370",
+    "name": "看取り加算（在宅療養支援診療所）（有床診療所療養病床入院基本料）",
+    "limit_count": 1,
+    "limit_type": "看取り加算（在支診）（有床診療所療養病床入院基本料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301028410",
+    "name": "小児加算（救急医療管理加算）",
+    "limit_count": 7,
+    "limit_type": "小児加算（救急医療管理加算）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301028510",
+    "name": "在宅患者緊急入院診療加算（在宅療養支援診療所又は在宅療養支援病院に係る連携による場合）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "在宅患者緊急入院診療加算（在支診又は在支病）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301028610",
+    "name": "３０対１補助体制加算（医師事務作業補助体制加算２）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "３０対１補助体制加算（医師事務作業補助体制加算２）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301028710",
+    "name": "４０対１補助体制加算（医師事務作業補助体制加算２）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "４０対１補助体制加算（医師事務作業補助体制加算２）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301028810",
+    "name": "２５対１急性期看護補助体制加算（看護補助者５割以上）（１日につき）",
+    "limit_count": 14,
+    "limit_type": "２５対１急性期看護補助体制加算（看護補助者５割以上）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301028910",
+    "name": "２５対１急性期看護補助体制加算（看護補助者５割未満）（１日につき）",
+    "limit_count": 14,
+    "limit_type": "２５対１急性期看護補助体制加算（看護補助者５割未満）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301029070",
+    "name": "夜間５０対１急性期看護補助体制加算",
+    "limit_count": 14,
+    "limit_type": "夜間５０対１急性期看護補助体制加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301029170",
+    "name": "夜間１００対１急性期看護補助体制加算",
+    "limit_count": 14,
+    "limit_type": "夜間１００対１急性期看護補助体制加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301030010",
+    "name": "栄養サポートチーム加算（特定地域）（週１回）",
+    "limit_count": 5,
+    "limit_type": "栄養サポートチーム加算（特定地域）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301030410",
+    "name": "患者サポート体制充実加算（入院初日）",
+    "limit_count": 1,
+    "limit_type": "患者サポート体制充実加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301031410",
+    "name": "病棟薬剤業務実施加算１（週１回）",
+    "limit_count": 5,
+    "limit_type": "病棟薬剤業務実施加算１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301031710",
+    "name": "緩和ケア病棟入院料１（３１日以上６０日以内の期間）",
+    "limit_count": 30,
+    "limit_type": "緩和ケア病棟入院料１（３１日以上６０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301032670",
+    "name": "特定一般病棟入院期間加算（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "特定一般病棟入院期間加算（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301032770",
+    "name": "特定一般病棟入院期間加算（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "特定一般病棟入院期間加算（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301032970",
+    "name": "救急・在宅等支援病床初期加算（特定一般病棟入院料）",
+    "limit_count": 14,
+    "limit_type": "救急・在宅等支援病床初期加算（特定一般病棟入院料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301044110",
+    "name": "有床診療所入院基本料１（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "有床診療所入院基本料１（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301044210",
+    "name": "有床診療所入院基本料１（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "有床診療所入院基本料１（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301044410",
+    "name": "有床診療所入院基本料２（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "有床診療所入院基本料２（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301044510",
+    "name": "有床診療所入院基本料２（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "有床診療所入院基本料２（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301044710",
+    "name": "有床診療所入院基本料３（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "有床診療所入院基本料３（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301044810",
+    "name": "有床診療所入院基本料３（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "有床診療所入院基本料３（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301045310",
+    "name": "（療養病床入院患者）有床診療所入院基本料１（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "療養病床・有床診療所入院基本料１（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301045410",
+    "name": "（療養病床入院患者）有床診療所入院基本料１（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "療養病床・有床診療所入院基本料１（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301045610",
+    "name": "（療養病床入院患者）有床診療所入院基本料２（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "療養病床・有床診療所入院基本料２（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301045710",
+    "name": "（療養病床入院患者）有床診療所入院基本料２（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "療養病床・有床診療所入院基本料２（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301045910",
+    "name": "（療養病床入院患者）有床診療所入院基本料３（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "療養病床・有床診療所入院基本料３（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301046010",
+    "name": "（療養病床入院患者）有床診療所入院基本料３（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "療養病床・有床診療所入院基本料３（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301046310",
+    "name": "救急医療管理加算１（１日につき）",
+    "limit_count": 7,
+    "limit_type": "救急医療管理加算１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301046410",
+    "name": "救急医療管理加算２（１日につき）",
+    "limit_count": 7,
+    "limit_type": "救急医療管理加算２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301046610",
+    "name": "１５対１補助体制加算（医師事務作業補助体制加算１）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "１５対１補助体制加算（医師事務作業補助体制加算１）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301046710",
+    "name": "２０対１補助体制加算（医師事務作業補助体制加算１）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "２０対１補助体制加算（医師事務作業補助体制加算１）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301046810",
+    "name": "２５対１補助体制加算（医師事務作業補助体制加算１）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "２５対１補助体制加算（医師事務作業補助体制加算１）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301046910",
+    "name": "３０対１補助体制加算（医師事務作業補助体制加算１）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "３０対１補助体制加算（医師事務作業補助体制加算１）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301047010",
+    "name": "４０対１補助体制加算（医師事務作業補助体制加算１）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "４０対１補助体制加算（医師事務作業補助体制加算１）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301047110",
+    "name": "５０対１補助体制加算（医師事務作業補助体制加算１）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "５０対１補助体制加算（医師事務作業補助体制加算１）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301047210",
+    "name": "７５対１補助体制加算（医師事務作業補助体制加算１）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "７５対１補助体制加算（医師事務作業補助体制加算１）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301047310",
+    "name": "１００対１補助体制加算（医師事務作業補助体制加算１）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "１００対１補助体制加算（医師事務作業補助体制加算１）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301047410",
+    "name": "夜間３０対１急性期看護補助体制加算",
+    "limit_count": 14,
+    "limit_type": "夜間３０対１急性期看護補助体制加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301047510",
+    "name": "褥瘡ハイリスク患者ケア加算（特定地域）（入院中１回）",
+    "limit_count": 1,
+    "limit_type": "褥瘡ハイリスク患者ケア加算（特定地域）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301048310",
+    "name": "特定集中治療室管理料１（７日以内の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料１（７日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301048410",
+    "name": "特定集中治療室管理料１（８日以上の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料１（８日以上）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301048510",
+    "name": "特定集中治療室管理料２（特定集中治療室管理料）（７日以内の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料２（特定集中治療室管理料・７日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301048610",
+    "name": "特定集中治療室管理料２（特定集中治療室管理料）（８日以上の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料２（特定集中治療室管理料・８日以上）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301048710",
+    "name": "特定集中治療室管理料２（広範囲熱傷特定集中治療管理料）（７日以内の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料２（広範囲熱傷特定集中治療・７日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301048970",
+    "name": "総合入院体制加算１（１日につき）",
+    "limit_count": 14,
+    "limit_type": "総合入院体制加算１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301050910",
+    "name": "ハイケアユニット入院医療管理料１（１日につき）",
+    "limit_count": 21,
+    "limit_type": "ハイケアユニット入院医療管理料１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301051010",
+    "name": "ハイケアユニット入院医療管理料２（１日につき）",
+    "limit_count": 21,
+    "limit_type": "ハイケアユニット入院医療管理料２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301056010",
+    "name": "総合入院体制加算２（１日につき）",
+    "limit_count": 14,
+    "limit_type": "総合入院体制加算２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301056170",
+    "name": "夜間看護体制加算（急性期看護補助体制加算）",
+    "limit_count": 14,
+    "limit_type": "夜間看護体制加算（急性期看護補助体制加算）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301056210",
+    "name": "看護職員夜間１２対１配置加算１（１日につき）",
+    "limit_count": 14,
+    "limit_type": "看護職員夜間１２対１配置加算１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301056310",
+    "name": "看護職員夜間１２対１配置加算２（１日につき）",
+    "limit_count": 14,
+    "limit_type": "看護職員夜間１２対１配置加算２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301056410",
+    "name": "看護職員夜間１６対１配置加算１（１日につき）",
+    "limit_count": 14,
+    "limit_type": "看護職員夜間１６対１配置加算１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301056570",
+    "name": "夜間７５対１看護補助加算",
+    "limit_count": 20,
+    "limit_type": "夜間７５対１看護補助加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301056810",
+    "name": "がん診療連携拠点病院加算（地域がん診療病院）（入院初日）",
+    "limit_count": 1,
+    "limit_type": "がん診療連携拠点病院加算（地域がん診療病院）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301056910",
+    "name": "小児がん拠点病院加算（入院初日）",
+    "limit_count": 1,
+    "limit_type": "小児がん拠点病院加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301057070",
+    "name": "歯科医師連携加算",
+    "limit_count": 5,
+    "limit_type": "歯科医師連携加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301057110",
+    "name": "入退院支援加算１（一般病棟入院基本料等の場合）（退院時１回）",
+    "limit_count": 1,
+    "limit_type": "入退院支援加算１（一般病棟入院基本料等の場合）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301057210",
+    "name": "入退院支援加算１（療養病棟入院基本料等の場合）（退院時１回）",
+    "limit_count": 1,
+    "limit_type": "入退院支援加算１（療養病棟入院基本料等の場合）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301057310",
+    "name": "入退院支援加算２（一般病棟入院基本料等の場合）（退院時１回）",
+    "limit_count": 1,
+    "limit_type": "入退院支援加算２（一般病棟入院基本料等の場合）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301057410",
+    "name": "入退院支援加算２（療養病棟入院基本料等の場合）（退院時１回）",
+    "limit_count": 1,
+    "limit_type": "入退院支援加算２（療養病棟入院基本料等の場合）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301057510",
+    "name": "入退院支援加算３（退院時１回）",
+    "limit_count": 1,
+    "limit_type": "入退院支援加算３",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301057670",
+    "name": "地域連携診療計画加算（入退院支援加算）",
+    "limit_count": 1,
+    "limit_type": "地域連携診療計画加算（入退院支援加算）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301057710",
+    "name": "入退院支援加算（特定地域）（一般病棟入院基本料等の場合）",
+    "limit_count": 1,
+    "limit_type": "入退院支援加算（特定地域）（一般病棟入院基本料等の場合）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301057810",
+    "name": "入退院支援加算（特定地域）（療養病棟入院基本料等の場合）",
+    "limit_count": 1,
+    "limit_type": "入退院支援加算（特定地域）（療養病棟入院基本料等の場合）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301057910",
+    "name": "後発医薬品使用体制加算２（入院初日）",
+    "limit_count": 1,
+    "limit_type": "後発医薬品使用体制加算２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301058110",
+    "name": "薬剤総合評価調整加算（退院時１回）",
+    "limit_count": 1,
+    "limit_type": "薬剤総合評価調整加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301058270",
+    "name": "緩和ケア病棟緊急入院初期加算",
+    "limit_count": 15,
+    "limit_type": "緩和ケア病棟緊急入院初期加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301062570",
+    "name": "急性期患者支援療養病床初期加算（療養病棟入院基本料）",
+    "limit_count": 14,
+    "limit_type": "急性期患者支援療養病床初期加算（療養病棟入院基本料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301062670",
+    "name": "在宅患者支援療養病床初期加算（療養病棟入院基本料）",
+    "limit_count": 14,
+    "limit_type": "在宅患者支援療養病床初期加算（療養病棟入院基本料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301065570",
+    "name": "介護障害連携加算１（有床診療所入院基本料）",
+    "limit_count": 16,
+    "limit_type": "介護障害連携加算１（有床診療所入院基本料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301065670",
+    "name": "介護障害連携加算２（有床診療所入院基本料）",
+    "limit_count": 16,
+    "limit_type": "介護障害連携加算２（有床診療所入院基本料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301066010",
+    "name": "がんゲノム拠点病院加算",
+    "limit_count": 1,
+    "limit_type": "がんゲノム拠点病院加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301066110",
+    "name": "医療安全対策地域連携加算１",
+    "limit_count": 1,
+    "limit_type": "医療安全対策地域連携加算１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301066210",
+    "name": "医療安全対策地域連携加算２",
+    "limit_count": 1,
+    "limit_type": "医療安全対策地域連携加算２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301066410",
+    "name": "小児加算（入退院支援加算１又は２）",
+    "limit_count": 1,
+    "limit_type": "小児加算（入退院支援加算１又は２）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301066510",
+    "name": "入院時支援加算１（入退院支援加算）",
+    "limit_count": 1,
+    "limit_type": "入院時支援加算１（入退院支援加算）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301066610",
+    "name": "認知症ケア加算１（１４日以内の期間）（１日につき）",
+    "limit_count": 14,
+    "limit_type": "認知症ケア加算１（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301066810",
+    "name": "認知症ケア加算３（１４日以内の期間）（１日につき）",
+    "limit_count": 14,
+    "limit_type": "認知症ケア加算３（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301067010",
+    "name": "認知症ケア加算１（１４日以内の期間）（身体的拘束を実施した場合）（１日につき）",
+    "limit_count": 14,
+    "limit_type": "認知症ケア加算１（１４日以内）身体的拘束実施",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301067210",
+    "name": "認知症ケア加算３（１４日以内の期間）（身体的拘束を実施した場合）（１日につき）",
+    "limit_count": 14,
+    "limit_type": "認知症ケア加算３（１４日以内）身体的拘束実施",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301067410",
+    "name": "後発医薬品使用体制加算１（入院初日）",
+    "limit_count": 1,
+    "limit_type": "後発医薬品使用体制加算１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301067570",
+    "name": "早期離床・リハビリテーション加算（特定集中治療室管理料）",
+    "limit_count": 14,
+    "limit_type": "早期離床・リハビリテーション加算（特定集中治療室管理料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301067610",
+    "name": "小児特定集中治療室管理料（７日以内の期間）",
+    "limit_count": 7,
+    "limit_type": "小児特定集中治療室管理料（７日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301067710",
+    "name": "小児特定集中治療室管理料（８日以上の期間）",
+    "limit_count": 28,
+    "limit_type": "小児特定集中治療室管理料（８日以上）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301067810",
+    "name": "緩和ケア病棟入院料２（３０日以内の期間）",
+    "limit_count": 30,
+    "limit_type": "緩和ケア病棟入院料２（３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301067910",
+    "name": "緩和ケア病棟入院料２（３１日以上６０日以内の期間）",
+    "limit_count": 30,
+    "limit_type": "緩和ケア病棟入院料２（３１日以上６０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301072110",
+    "name": "看護職員夜間１６対１配置加算２（１日につき）",
+    "limit_count": 14,
+    "limit_type": "看護職員夜間１６対１配置加算２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301072810",
+    "name": "歯科初診料（未届出）",
+    "limit_count": 1,
+    "limit_type": "初診（未届出）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301072970",
+    "name": "歯科外来診療医療安全対策加算２（初診）",
+    "limit_count": 1,
+    "limit_type": "歯科外来診療医療安全対策加算２（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301073510",
+    "name": "入院時支援加算２（入退院支援加算）",
+    "limit_count": 1,
+    "limit_type": "入院時支援加算２（入退院支援加算）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301073610",
+    "name": "総合機能評価加算（入退院支援加算）",
+    "limit_count": 1,
+    "limit_type": "総合機能評価加算（入退院支援加算）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301073710",
+    "name": "認知症ケア加算２（１４日以内の期間）（１日につき）",
+    "limit_count": 14,
+    "limit_type": "認知症ケア加算２（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301073910",
+    "name": "認知症ケア加算２（１４日以内の期間）（身体的拘束を実施した場合）（１日につき）",
+    "limit_count": 14,
+    "limit_type": "認知症ケア加算２（１４日以内）身体的拘束実施",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301074110",
+    "name": "せん妄ハイリスク患者ケア加算（入院中１回）",
+    "limit_count": 1,
+    "limit_type": "せん妄ハイリスク患者ケア加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301074270",
+    "name": "薬剤調整加算",
+    "limit_count": 1,
+    "limit_type": "薬剤調整加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301074310",
+    "name": "地域医療体制確保加算（入院初日）",
+    "limit_count": 1,
+    "limit_type": "地域医療体制確保加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301074470",
+    "name": "早期栄養介入管理加算（経腸栄養）（特定集中治療室管理料）",
+    "limit_count": 7,
+    "limit_type": "早期栄養介入管理加算（経腸栄養）（特定集中治療室管理料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301088870",
+    "name": "急性期患者支援病床初期加算（許可病床数４００床以上）（他の保険医療機関の一般病棟から転棟した患者の場合）",
+    "limit_count": 14,
+    "limit_type": "急性期患者支援病床初期加算（４００床以上・他医一般病棟から転棟）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301089070",
+    "name": "急性期患者支援病床初期加算（許可病床数４００床未満）（他の保険医療機関の一般病棟から転棟した患者の場合）",
+    "limit_count": 14,
+    "limit_type": "急性期患者支援病床初期加算（４００床未満・他医一般病棟から転棟）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301089170",
+    "name": "急性期患者支援病床初期加算（許可病床数４００床未満）（１の患者以外の患者の場合）",
+    "limit_count": 14,
+    "limit_type": "急性期患者支援病床初期加算（４００床未満・１の患者以外の場合）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301090410",
+    "name": "特定集中治療室管理料１（７日以内の期間）（急性血液浄化又はＥＣＭＯ、臓器移植）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料１（７日以内）（急性血液浄化等の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301090510",
+    "name": "特定集中治療室管理料１（８日以上の期間）（急性血液浄化又はＥＣＭＯ、臓器移植）",
+    "limit_count": 23,
+    "limit_type": "特定集中治療室管理料１（８日以上）（急性血液浄化等の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301090610",
+    "name": "特定集中治療室管理料２（特定集中治療室管理料）（７日以内の期間）（急性血液浄化又はＥＣＭＯ、臓器移植）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料２（７日以内）（急性血液浄化等の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301090710",
+    "name": "特定集中治療室管理料２（特定集中治療室管理料）（８日以上の期間）（急性血液浄化又はＥＣＭＯ、臓器移植）",
+    "limit_count": 23,
+    "limit_type": "特定集中治療室管理料２（８日以上）（急性血液浄化等の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301090810",
+    "name": "特定集中治療室管理料３（７日以内の期間）（急性血液浄化又はＥＣＭＯ、臓器移植）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料３（７日以内）（急性血液浄化等の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301090910",
+    "name": "特定集中治療室管理料３（８日以上の期間）（急性血液浄化又はＥＣＭＯ、臓器移植）",
+    "limit_count": 23,
+    "limit_type": "特定集中治療室管理料３（８日以上）（急性血液浄化等の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301091010",
+    "name": "特定集中治療室管理料４（特定集中治療室管理料）（７日以内の期間）（急性血液浄化又はＥＣＭＯ、臓器移植）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料４（７日以内）（急性血液浄化等の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301091110",
+    "name": "特定集中治療室管理料４（特定集中治療室管理料）（８日以上の期間）（急性血液浄化又はＥＣＭＯ、臓器移植）",
+    "limit_count": 23,
+    "limit_type": "特定集中治療室管理料４（８日以上）（急性血液浄化等の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301122370",
+    "name": "急性期患者支援病床初期加算（許可病床数４００床以上）（１の患者以外の患者の場合）",
+    "limit_count": 14,
+    "limit_type": "急性期患者支援病床初期加算（４００床以上・１の患者以外の場合）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301122870",
+    "name": "歯科診療特別対応加算３（初診）",
+    "limit_count": 1,
+    "limit_type": "歯科診療特別対応加算３（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301123070",
+    "name": "歯科外来診療感染対策加算１（初診）",
+    "limit_count": 1,
+    "limit_type": "歯科外来診療感染対策加算１（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301123170",
+    "name": "歯科外来診療感染対策加算２（初診）",
+    "limit_count": 1,
+    "limit_type": "歯科外来診療感染対策加算２（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301123270",
+    "name": "歯科外来診療感染対策加算３（初診）",
+    "limit_count": 1,
+    "limit_type": "歯科外来診療感染対策加算３（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301123370",
+    "name": "歯科外来診療感染対策加算４（初診）",
+    "limit_count": 1,
+    "limit_type": "歯科外来診療感染対策加算４（初診）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301123570",
+    "name": "医療情報取得加算（初診）",
+    "limit_count": 1,
+    "limit_type": "医療情報取得加算（初診）",
+    "valid_from": "20241201",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301123670",
+    "name": "医療ＤＸ推進体制整備加算６（初診）",
+    "limit_count": 1,
+    "limit_type": "医療ＤＸ推進体制整備加算６（初診）",
+    "valid_from": "20250401",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301123710",
+    "name": "歯科初診料（情報通信機器を用いた場合）",
+    "limit_count": 1,
+    "limit_type": "初診（情報通信機器を用いた場合）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301124970",
+    "name": "医療情報取得加算（再診）",
+    "limit_count": 1,
+    "limit_type": "医療情報取得加算（再診）",
+    "valid_from": "20241201",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301137370",
+    "name": "経腸栄養管理加算（療養病棟入院基本料）",
+    "limit_count": 7,
+    "limit_type": "経腸栄養管理加算（療養病棟入院基本料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301145210",
+    "name": "救急医療管理加算２（１日につき）（その他の重症な状態が一定割合以上）",
+    "limit_count": 7,
+    "limit_type": "救急医療管理加算２（その他の重症な状態が一定割合以上）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301145310",
+    "name": "診療録管理体制加算１（入院初日）",
+    "limit_count": 1,
+    "limit_type": "診療録管理体制加算１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301145410",
+    "name": "診療録管理体制加算２（入院初日）",
+    "limit_count": 1,
+    "limit_type": "診療録管理体制加算２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301145510",
+    "name": "診療録管理体制加算３（入院初日）",
+    "limit_count": 1,
+    "limit_type": "診療録管理体制加算３",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301146010",
+    "name": "特定感染症入院医療管理加算（治療室の場合）（疑似症）（１日につき）",
+    "limit_count": 1,
+    "limit_type": "特定感染症入院医療管理加算（治療室）（疑似症）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301146110",
+    "name": "特定感染症入院医療管理加算（１以外の場合）（疑似症）（１日につき）",
+    "limit_count": 1,
+    "limit_type": "特定感染症入院医療管理加算（１以外）（疑似症）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301146410",
+    "name": "特定感染症患者療養環境特別加算（個室）（疑似症）（１日につき）",
+    "limit_count": 1,
+    "limit_type": "特定感染症患者療養環境特別加算（個室）（疑似症）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301146810",
+    "name": "がん診療連携拠点病院加算（特例型）（がん診療連携拠点）",
+    "limit_count": 1,
+    "limit_type": "がん診療連携拠点病院加算（特例型）（がん診療連携拠点）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301146910",
+    "name": "がん診療連携拠点病院加算（特例型）（地域がん診療病院）",
+    "limit_count": 1,
+    "limit_type": "がん診療連携拠点病院加算（特例型）（地域がん診療病院）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301147010",
+    "name": "リハビリテーション・栄養・口腔連携体制加算（１日につき）",
+    "limit_count": 14,
+    "limit_type": "リハビリテーション・栄養・口腔連携体制加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301147210",
+    "name": "バイオ後続品使用体制加算（入院初日）",
+    "limit_count": 1,
+    "limit_type": "バイオ後続品使用体制加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301147370",
+    "name": "薬剤業務向上加算（病棟薬剤業務実施加算１）",
+    "limit_count": 5,
+    "limit_type": "薬剤業務向上加算（病棟薬剤業務実施加算１）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301147470",
+    "name": "入院事前調整加算（入退院支援加算）",
+    "limit_count": 1,
+    "limit_type": "入院事前調整加算（入退院支援加算）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301147510",
+    "name": "医療的ケア児（者）入院前支援加算",
+    "limit_count": 1,
+    "limit_type": "医療的ケア児（者）入院前支援加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301147610",
+    "name": "医療的ケア児（者）入院前支援加算（情報通信機器を用いた場合）",
+    "limit_count": 1,
+    "limit_type": "医療的ケア児（者）入院前支援加算（情報通信機器を用いた場合）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301147710",
+    "name": "特定集中治療室管理料５（７日以内の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料５（７日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301147810",
+    "name": "特定集中治療室管理料５（８日以上の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料５（８日以上）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301147910",
+    "name": "特定集中治療室管理料５（７日以内の期間）（急性血液浄化又はＥＣＭＯ、臓器移植）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料５（７日以内）（急性血液浄化等の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301148010",
+    "name": "特定集中治療室管理料５（８日以上の期間）（急性血液浄化又はＥＣＭＯ、臓器移植）",
+    "limit_count": 23,
+    "limit_type": "特定集中治療室管理料５（８日以上）（急性血液浄化等の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301148110",
+    "name": "特定集中治療室管理料６（特定集中治療室管理料）（７日以内の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料６（特定集中治療室管理料・７日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301148210",
+    "name": "特定集中治療室管理料６（特定集中治療室管理料）（８日以上の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料６（特定集中治療室管理料・８日以上）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301148310",
+    "name": "特定集中治療室管理料６（広範囲熱傷特定集中治療管理料）（７日以内の期間）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料６（広範囲熱傷特定集中治療・７日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301148510",
+    "name": "特定集中治療室管理料６（特定集中治療室管理料）（７日以内の期間）（急性血液浄化又はＥＣＭＯ、臓器移植）",
+    "limit_count": 7,
+    "limit_type": "特定集中治療室管理料６（７日以内）（急性血液浄化等の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301148610",
+    "name": "特定集中治療室管理料６（特定集中治療室管理料）（８日以上の期間）（急性血液浄化又はＥＣＭＯ、臓器移植）",
+    "limit_count": 23,
+    "limit_type": "特定集中治療室管理料６（８日以上）（急性血液浄化等の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301149370",
+    "name": "看護補助加算（小児入院医療管理料１、２又は３に限る）",
+    "limit_count": 14,
+    "limit_type": "看護補助加算（小児入院医療管理料１、２又は３）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301149470",
+    "name": "看護補助体制充実加算（小児入院医療管理料１、２又は３に限る）",
+    "limit_count": 14,
+    "limit_type": "看護補助体制充実加算（小児入院医療管理料１、２又は３）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301159470",
+    "name": "在宅患者支援病床初期加算（介護老人保健施設から入院した患者）（救急搬送）",
+    "limit_count": 14,
+    "limit_type": "在宅患者支援病床初期加算（老健施設から入院した患者）（救急搬送）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301159570",
+    "name": "在宅患者支援病床初期加算（介護老人保健施設から入院した患者）（１以外）",
+    "limit_count": 14,
+    "limit_type": "在宅患者支援病床初期加算（老健施設から入院した患者）（１以外）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301159670",
+    "name": "在宅患者支援病床初期加算（自宅等から入院した患者の場合）（救急搬送）",
+    "limit_count": 14,
+    "limit_type": "在宅患者支援病床初期加算（自宅等から入院した患者）（救急搬送）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301159770",
+    "name": "在宅患者支援病床初期加算（自宅等から入院した患者の場合）（１以外）",
+    "limit_count": 14,
+    "limit_type": "在宅患者支援病床初期加算（自宅等から入院した患者）（１以外）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301179170",
+    "name": "地域包括医療病棟初期加算（地域包括医療病棟入院料）",
+    "limit_count": 14,
+    "limit_type": "地域包括医療病棟初期加算（地域包括医療病棟入院料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301179370",
+    "name": "２５対１看護補助体制加算（看護補助者５割以上）（地域包括医療病棟入院料）",
+    "limit_count": 14,
+    "limit_type": "２５対１看護補助体制加算（看護補助者５割以上・地域包括医療病棟）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301179470",
+    "name": "２５対１看護補助体制加算（看護補助者５割未満）（地域包括医療病棟入院料）",
+    "limit_count": 14,
+    "limit_type": "２５対１看護補助体制加算（看護補助者５割未満・地域包括医療病棟）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301179570",
+    "name": "５０対１看護補助体制加算（地域包括医療病棟入院料）",
+    "limit_count": 14,
+    "limit_type": "５０対１看護補助体制加算（地域包括医療病棟入院料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301179670",
+    "name": "７５対１看護補助体制加算（地域包括医療病棟入院料）",
+    "limit_count": 14,
+    "limit_type": "７５対１看護補助体制加算（地域包括医療病棟入院料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301180470",
+    "name": "看護職員夜間１２対１配置加算１（地域包括医療病棟入院料）",
+    "limit_count": 14,
+    "limit_type": "看護職員夜間１２対１配置加算１（地域包括医療病棟入院料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301180570",
+    "name": "看護職員夜間１２対１配置加算２（地域包括医療病棟入院料）",
+    "limit_count": 14,
+    "limit_type": "看護職員夜間１２対１配置加算２（地域包括医療病棟入院料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301180670",
+    "name": "看護職員夜間１６対１配置加算１（地域包括医療病棟入院料）",
+    "limit_count": 14,
+    "limit_type": "看護職員夜間１６対１配置加算１（地域包括医療病棟入院料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301180770",
+    "name": "看護職員夜間１６対１配置加算２（地域包括医療病棟入院料）",
+    "limit_count": 14,
+    "limit_type": "看護職員夜間１６対１配置加算２（地域包括医療病棟入院料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301180870",
+    "name": "リハビリテーション・栄養・口腔連携加算（地域包括医療病棟入院料）",
+    "limit_count": 14,
+    "limit_type": "リハビリテーション・栄養・口腔連携加算（地域包括医療病棟）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301182310",
+    "name": "地域歯科診療支援病院歯科初診料（情報通信機器を用いた場合）",
+    "limit_count": 1,
+    "limit_type": "病初診（情報通信機器を用いた場合）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301183310",
+    "name": "特定感染症患者療養環境特別加算（陰圧室）（疑似症）（１日につき）",
+    "limit_count": 1,
+    "limit_type": "特定感染症患者療養環境特別加算（陰圧室）（疑似症）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301183470",
+    "name": "医療ＤＸ推進体制整備加算４（初診）",
+    "limit_count": 1,
+    "limit_type": "医療ＤＸ推進体制整備加算４（初診）",
+    "valid_from": "20250401",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301183570",
+    "name": "医療ＤＸ推進体制整備加算５（初診）",
+    "limit_count": 1,
+    "limit_type": "医療ＤＸ推進体制整備加算５（初診）",
+    "valid_from": "20250401",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301183670",
+    "name": "医療ＤＸ推進体制整備加算１（初診）",
+    "limit_count": 1,
+    "limit_type": "医療ＤＸ推進体制整備加算１（初診）",
+    "valid_from": "20250401",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301183770",
+    "name": "医療ＤＸ推進体制整備加算２（初診）",
+    "limit_count": 1,
+    "limit_type": "医療ＤＸ推進体制整備加算２（初診）",
+    "valid_from": "20250401",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301183870",
+    "name": "医療ＤＸ推進体制整備加算３（初診）",
+    "limit_count": 1,
+    "limit_type": "医療ＤＸ推進体制整備加算３（初診）",
+    "valid_from": "20250401",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301706310",
+    "name": "（療養病床入院患者）有床診療所入院基本料４（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "療養病床・有床診療所入院基本料４（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301706510",
+    "name": "（療養病床入院患者）有床診療所入院基本料４（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "療養病床・有床診療所入院基本料４（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301706910",
+    "name": "（療養病床入院患者）有床診療所入院基本料５（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "療養病床・有床診療所入院基本料５（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301707110",
+    "name": "（療養病床入院患者）有床診療所入院基本料５（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "療養病床・有床診療所入院基本料５（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301707510",
+    "name": "（療養病床入院患者）有床診療所入院基本料６（１４日以内の期間）",
+    "limit_count": 14,
+    "limit_type": "療養病床・有床診療所入院基本料６（１４日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "301707710",
+    "name": "（療養病床入院患者）有床診療所入院基本料６（１５日以上３０日以内の期間）",
+    "limit_count": 16,
+    "limit_type": "療養病床・有床診療所入院基本料６（１５日以上３０日以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302000110",
+    "name": "歯科疾患管理料",
+    "limit_count": 1,
+    "limit_type": "歯科疾患管理料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302000570",
+    "name": "フッ化物洗口指導加算",
+    "limit_count": 1,
+    "limit_type": "Ｆ洗",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302000610",
+    "name": "歯科衛生実地指導料１",
+    "limit_count": 1,
+    "limit_type": "実地指１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302000710",
+    "name": "歯科特定疾患療養管理料",
+    "limit_count": 2,
+    "limit_type": "特疾管",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302000870",
+    "name": "共同療養指導計画加算",
+    "limit_count": 1,
+    "limit_type": "共計",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302000910",
+    "name": "特定薬剤治療管理料",
+    "limit_count": 1,
+    "limit_type": "薬",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302001070",
+    "name": "特定薬剤治療管理料（４月目以降減算）",
+    "limit_count": 1,
+    "limit_type": "薬（４月目以降減算）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302001170",
+    "name": "初回月加算",
+    "limit_count": 1,
+    "limit_type": "薬（初回）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302001210",
+    "name": "悪性腫瘍特異物質治療管理料（尿中ＢＴＡに係るもの）",
+    "limit_count": 1,
+    "limit_type": "悪性腫瘍特異物質治療管理料（尿中ＢＴＡ）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302001310",
+    "name": "悪性腫瘍特異物質治療管理料（その他のもの）（１項目）",
+    "limit_count": 1,
+    "limit_type": "悪性腫瘍特異物質治療管理料（その他・１項目）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302001410",
+    "name": "悪性腫瘍特異物質治療管理料（その他のもの）（２項目以上）",
+    "limit_count": 1,
+    "limit_type": "悪性腫瘍特異物質治療管理料（その他・２項目以上）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302001570",
+    "name": "腫瘍マーカー検査初回月加算",
+    "limit_count": 1,
+    "limit_type": "腫瘍マーカー検査初回月加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302001710",
+    "name": "手術前医学管理料",
+    "limit_count": 1,
+    "limit_type": "手前",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302001810",
+    "name": "手術後医学管理料（病院の場合）（１日につき）",
+    "limit_count": 3,
+    "limit_type": "手後（病院）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302001910",
+    "name": "手術後医学管理料（診療所の場合）（１日につき）",
+    "limit_count": 3,
+    "limit_type": "手後（診療所）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302002070",
+    "name": "手術後医学管理料（同一月）減算",
+    "limit_count": 3,
+    "limit_type": "減算（手後）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302002410",
+    "name": "退院前訪問指導料",
+    "limit_count": 1,
+    "limit_type": "退前",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302002610",
+    "name": "薬剤管理指導料１（特に安全管理が必要な医薬品が投薬又は注射されている患者の場合）",
+    "limit_count": 4,
+    "limit_type": "薬管１（安全管理を要する医薬品投与患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302002710",
+    "name": "薬剤管理指導料２（１の患者以外の患者の場合）",
+    "limit_count": 4,
+    "limit_type": "薬管２（１の患者以外の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302002870",
+    "name": "麻薬管理指導加算（薬剤管理指導料）",
+    "limit_count": 4,
+    "limit_type": "麻加",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302003210",
+    "name": "診療情報提供料（２）",
+    "limit_count": 1,
+    "limit_type": "情２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302003510",
+    "name": "退院時薬剤情報管理指導料",
+    "limit_count": 1,
+    "limit_type": "退院時薬剤情報管理指導料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302003710",
+    "name": "新製有床義歯管理料（１口腔につき）（２以外の場合）",
+    "limit_count": 1,
+    "limit_type": "義管（２以外）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302004110",
+    "name": "退院時共同指導料１（在宅療養支援歯科診療所１、在宅療養支援歯科診療所２又は在宅療養支援歯科病院の場合）",
+    "limit_count": 2,
+    "limit_type": "退院時共同指導料１（歯援診１、歯援診２又は歯援病）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302004210",
+    "name": "退院時共同指導料１（１以外の場合）",
+    "limit_count": 2,
+    "limit_type": "退院時共同指導料１（１以外）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302004310",
+    "name": "退院時共同指導料２",
+    "limit_count": 2,
+    "limit_type": "退院時共同指導料２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302004470",
+    "name": "保険医共同指導加算",
+    "limit_count": 2,
+    "limit_type": "保険医共同指導加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302004570",
+    "name": "多機関共同指導管理加算",
+    "limit_count": 2,
+    "limit_type": "多機関共同指導管理加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302004710",
+    "name": "肺血栓塞栓症予防管理料",
+    "limit_count": 1,
+    "limit_type": "肺血栓塞栓症予防管理料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302004910",
+    "name": "歯科衛生実地指導料２",
+    "limit_count": 1,
+    "limit_type": "実地指２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302005210",
+    "name": "介護支援等連携指導料",
+    "limit_count": 2,
+    "limit_type": "介護支援等連携指導料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302005410",
+    "name": "がん治療連携指導料",
+    "limit_count": 1,
+    "limit_type": "がん治療連携指導料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302005810",
+    "name": "周術期等口腔機能管理計画策定料",
+    "limit_count": 1,
+    "limit_type": "周計",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302005910",
+    "name": "周術期等口腔機能管理料（１）（手術前）",
+    "limit_count": 1,
+    "limit_type": "周管１（手術前）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302006010",
+    "name": "周術期等口腔機能管理料（１）（手術後）",
+    "limit_count": 3,
+    "limit_type": "周管１（手術後）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302006110",
+    "name": "周術期等口腔機能管理料（２）（手術前）",
+    "limit_count": 1,
+    "limit_type": "周管２（手術前）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302006210",
+    "name": "周術期等口腔機能管理料（２）（手術後）",
+    "limit_count": 2,
+    "limit_type": "周管２（手術後）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302006310",
+    "name": "周術期等口腔機能管理料（３）",
+    "limit_count": 1,
+    "limit_type": "周管３",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302006410",
+    "name": "がん性疼痛緩和指導管理料",
+    "limit_count": 1,
+    "limit_type": "がん性疼痛緩和指導管理料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302006710",
+    "name": "外来緩和ケア管理料",
+    "limit_count": 1,
+    "limit_type": "外来緩和ケア管理料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302006910",
+    "name": "外来リハビリテーション診療料１",
+    "limit_count": 5,
+    "limit_type": "外来リハビリテーション診療料１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302007010",
+    "name": "外来リハビリテーション診療料２",
+    "limit_count": 3,
+    "limit_type": "外来リハビリテーション診療料２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302007110",
+    "name": "外来放射線照射診療料",
+    "limit_count": 5,
+    "limit_type": "外来放射線照射診療料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302007310",
+    "name": "がん治療連携計画策定料１",
+    "limit_count": 1,
+    "limit_type": "がん治療連携計画策定料１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302007410",
+    "name": "がん治療連携計画策定料２",
+    "limit_count": 1,
+    "limit_type": "がん治療連携計画策定料２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302007510",
+    "name": "がん治療連携管理料（がん診療連携拠点病院の場合）",
+    "limit_count": 1,
+    "limit_type": "がん治療連携管理料（がん診療連携拠点病院）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302007710",
+    "name": "広範囲顎骨支持型補綴物管理料１（１口腔につき）",
+    "limit_count": 1,
+    "limit_type": "特イ管１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302007810",
+    "name": "がん患者指導管理料（歯科医師が看護師と共同して診療方針等を話し合い、その内容を文書等により提供した場合）",
+    "limit_count": 1,
+    "limit_type": "がん患者指導管理料（歯科医師等の共同診療方針等を文書等で提供）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302007910",
+    "name": "がん患者指導管理料（歯科医師、看護師又は公認心理師が心理的不安を軽減するための面接を行った場合）",
+    "limit_count": 6,
+    "limit_type": "がん患者指導管理料（歯科医師等が心理的不安軽減のため面接）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302008010",
+    "name": "がん患者指導管理料（歯科医師又は薬剤師が抗悪性腫瘍剤の投薬又は注射の必要性等について文書により説明を行った場合）",
+    "limit_count": 6,
+    "limit_type": "がん患者指導管理料（歯科医師等が抗悪性腫瘍剤の必要性等文書説明）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302008310",
+    "name": "新製有床義歯管理料（１口腔につき）（困難な場合）",
+    "limit_count": 1,
+    "limit_type": "義管（困難）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302008610",
+    "name": "入院栄養食事指導料１（初回）（週１回）",
+    "limit_count": 1,
+    "limit_type": "入院栄養食事指導料１（初回）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302008710",
+    "name": "入院栄養食事指導料１（２回目）（週１回）",
+    "limit_count": 1,
+    "limit_type": "入院栄養食事指導料１（２回目）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302008810",
+    "name": "入院栄養食事指導料２（初回）（週１回）",
+    "limit_count": 1,
+    "limit_type": "入院栄養食事指導料２（初回）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302008910",
+    "name": "入院栄養食事指導料２（２回目）（週１回）",
+    "limit_count": 1,
+    "limit_type": "入院栄養食事指導料２（２回目）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302009110",
+    "name": "がん治療連携管理料（地域がん診療病院の場合）",
+    "limit_count": 1,
+    "limit_type": "がん治療連携管理料（地域がん診療病院）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302009210",
+    "name": "がん治療連携管理料（小児がん拠点病院の場合）",
+    "limit_count": 1,
+    "limit_type": "がん治療連携管理料（小児がん拠点病院）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302009310",
+    "name": "薬剤総合評価調整管理料",
+    "limit_count": 1,
+    "limit_type": "薬剤総合評価調整管理料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302010110",
+    "name": "歯周病患者画像活用指導料（月１回目）",
+    "limit_count": 1,
+    "limit_type": "歯周病患者画像活用指導料（月１回目）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302010550",
+    "name": "歯周病患者画像活用指導料（月２回目）",
+    "limit_count": 1,
+    "limit_type": "歯周病患者画像活用指導料（月２回目）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302010710",
+    "name": "歯科疾患管理料（初診月）",
+    "limit_count": 1,
+    "limit_type": "歯科疾患管理料（初診月）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302011010",
+    "name": "小児口腔機能管理料",
+    "limit_count": 1,
+    "limit_type": "小児口腔機能管理料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302011110",
+    "name": "口腔機能管理料",
+    "limit_count": 1,
+    "limit_type": "口腔機能管理料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302011270",
+    "name": "特定薬剤治療管理加算（バンコマイシンを投与している患者）",
+    "limit_count": 1,
+    "limit_type": "薬（バンコマイシン投与の患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302011410",
+    "name": "療養・就労両立支援指導料（初回）",
+    "limit_count": 1,
+    "limit_type": "療養・就労両立支援指導料（初回）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302011510",
+    "name": "療養・就労両立支援指導料（２回目以降）",
+    "limit_count": 1,
+    "limit_type": "療養・就労両立支援指導料（２回目以降）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302012210",
+    "name": "外来腫瘍化学療法診療料１（抗悪性腫瘍剤を投与した場合（初回から３回目まで））",
+    "limit_count": 3,
+    "limit_type": "外来腫瘍化学療法診療料１（抗悪性腫瘍剤を投与（初回～３回目））",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302012310",
+    "name": "外来腫瘍化学療法診療料１（イ以外の必要な治療管理を行った場合）",
+    "limit_count": 5,
+    "limit_type": "外来腫瘍化学療法診療料１（イ以外の必要な治療管理）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302012410",
+    "name": "外来腫瘍化学療法診療料２（抗悪性腫瘍剤を投与した場合（初回から３回目まで））",
+    "limit_count": 3,
+    "limit_type": "外来腫瘍化学療法診療料２（抗悪性腫瘍剤を投与（初回～３回目））",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302012510",
+    "name": "外来腫瘍化学療法診療料２（イ以外の必要な治療管理を行った場合）",
+    "limit_count": 5,
+    "limit_type": "外来腫瘍化学療法診療料２（イ以外の必要な治療管理）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302012770",
+    "name": "連携充実加算（外来腫瘍化学療法診療料１・イ・（１））",
+    "limit_count": 1,
+    "limit_type": "連携充実加算（外来腫瘍化学療法診療料１・イ・（１））",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302012910",
+    "name": "こころの連携指導料（１）",
+    "limit_count": 1,
+    "limit_type": "こころの連携指導料（１）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302013110",
+    "name": "乳幼児加算（初診）（外来腫瘍化学療法診療料）",
+    "limit_count": 1,
+    "limit_type": "乳（初診）（外来腫瘍化学療法診療料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302013210",
+    "name": "時間外加算（初診）（外来腫瘍化学療法診療料）",
+    "limit_count": 1,
+    "limit_type": "時間外（初診）（外来腫瘍化学療法診療料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302013310",
+    "name": "休日加算（初診）（外来腫瘍化学療法診療料）",
+    "limit_count": 1,
+    "limit_type": "休日（初診）（外来腫瘍化学療法診療料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302013410",
+    "name": "深夜加算（初診）（外来腫瘍化学療法診療料）",
+    "limit_count": 1,
+    "limit_type": "深夜（初診）（外来腫瘍化学療法診療料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302013510",
+    "name": "時間外特例医療機関加算（初診）（外来腫瘍化学療法診療料）",
+    "limit_count": 1,
+    "limit_type": "時間外（特）（初診）（外来腫瘍化学療法診療料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302013610",
+    "name": "乳幼児時間外加算（初診）（外来腫瘍化学療法診療料）",
+    "limit_count": 1,
+    "limit_type": "乳・時間外（初診）（外来腫瘍化学療法診療料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302013710",
+    "name": "乳幼児休日加算（初診）（外来腫瘍化学療法診療料）",
+    "limit_count": 1,
+    "limit_type": "乳・休日（初診）（外来腫瘍化学療法診療料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302013810",
+    "name": "乳幼児深夜加算（初診）（外来腫瘍化学療法診療料）",
+    "limit_count": 1,
+    "limit_type": "乳・深夜（初診）（外来腫瘍化学療法診療料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302013910",
+    "name": "乳幼児時間外特例医療機関加算（初診）（外来腫瘍化学療法診療料）",
+    "limit_count": 1,
+    "limit_type": "乳・時間外（特）（初診）（外来腫瘍化学療法診療料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302016710",
+    "name": "小児口腔機能管理料（情報通信機器を用いた場合）",
+    "limit_count": 1,
+    "limit_type": "小児口腔機能管理料（情報通信機器を用いた場合）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302016910",
+    "name": "口腔機能管理料（情報通信機器を用いた場合）",
+    "limit_count": 1,
+    "limit_type": "口腔機能管理料（情報通信機器を用いた場合）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302017210",
+    "name": "周術期等口腔機能管理料（４）",
+    "limit_count": 2,
+    "limit_type": "周管４",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302017510",
+    "name": "回復期等口腔機能管理料",
+    "limit_count": 1,
+    "limit_type": "回復期等口腔機能管理料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302017610",
+    "name": "根面う蝕管理料",
+    "limit_count": 1,
+    "limit_type": "根面う蝕管理料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302017810",
+    "name": "エナメル質初期う蝕管理料",
+    "limit_count": 1,
+    "limit_type": "エナメル質初期う蝕管理料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302018110",
+    "name": "歯科特定疾患療養管理料（情報通信機器を用いた場合）",
+    "limit_count": 2,
+    "limit_type": "特疾管（情報通信機器を用いた場合）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302018270",
+    "name": "難治性がん性疼痛緩和指導管理加算",
+    "limit_count": 1,
+    "limit_type": "難治性がん性疼痛緩和指導管理加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302018310",
+    "name": "外来腫瘍化学療法診療料１（抗悪性腫瘍剤を投与した場合（４回目以降））",
+    "limit_count": 5,
+    "limit_type": "外来腫瘍化学療法診療料１（抗悪性腫瘍剤を投与（４回目以降））",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302018410",
+    "name": "外来腫瘍化学療法診療料２（抗悪性腫瘍剤を投与した場合（４回目以降））",
+    "limit_count": 5,
+    "limit_type": "外来腫瘍化学療法診療料２（抗悪性腫瘍剤を投与（４回目以降））",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302018510",
+    "name": "外来腫瘍化学療法診療料３（抗悪性腫瘍剤を投与した場合（初回から３回目まで））",
+    "limit_count": 3,
+    "limit_type": "外来腫瘍化学療法診療料３（抗悪性腫瘍剤を投与（初回～３回目））",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302018610",
+    "name": "外来腫瘍化学療法診療料３（抗悪性腫瘍剤を投与した場合（４回目以降））",
+    "limit_count": 5,
+    "limit_type": "外来腫瘍化学療法診療料３（抗悪性腫瘍剤を投与（４回目以降））",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302018710",
+    "name": "外来腫瘍化学療法診療料３（イ以外の必要な治療管理を行った場合）",
+    "limit_count": 5,
+    "limit_type": "外来腫瘍化学療法診療料３（イ以外の必要な治療管理）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302018870",
+    "name": "がん薬物療法体制充実加算（外来腫瘍化学療法診療料１・イ・（１））",
+    "limit_count": 1,
+    "limit_type": "がん薬物療法体制充実加算（外来腫瘍化学療法診療料１・イ・（１））",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302018910",
+    "name": "歯科遠隔連携診療料",
+    "limit_count": 1,
+    "limit_type": "歯科遠隔連携診療料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302019210",
+    "name": "栄養情報連携料",
+    "limit_count": 1,
+    "limit_type": "栄養情報連携料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302019310",
+    "name": "広範囲顎骨支持型補綴物管理料２（１口腔につき）",
+    "limit_count": 1,
+    "limit_type": "特イ管２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302019510",
+    "name": "医療情報取得加算（初診）（医学管理等）",
+    "limit_count": 1,
+    "limit_type": "医療情報取得加算（初診）（医学管理等）",
+    "valid_from": "20241201",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302019710",
+    "name": "医療情報取得加算（再診）（医学管理等）",
+    "limit_count": 1,
+    "limit_type": "医療情報取得加算（再診）（医学管理等）",
+    "valid_from": "20241201",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302019810",
+    "name": "医療ＤＸ推進体制整備加算６（医学管理等）",
+    "limit_count": 1,
+    "limit_type": "医療ＤＸ推進体制整備加算６（医学管理等）",
+    "valid_from": "20250401",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302019910",
+    "name": "医療ＤＸ推進体制整備加算４（医学管理等）",
+    "limit_count": 1,
+    "limit_type": "医療ＤＸ推進体制整備加算４（医学管理等）",
+    "valid_from": "20250401",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302020010",
+    "name": "医療ＤＸ推進体制整備加算５（医学管理等）",
+    "limit_count": 1,
+    "limit_type": "医療ＤＸ推進体制整備加算５（医学管理等）",
+    "valid_from": "20250401",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302020110",
+    "name": "医療ＤＸ推進体制整備加算１（医学管理等）",
+    "limit_count": 1,
+    "limit_type": "医療ＤＸ推進体制整備加算１（医学管理等）",
+    "valid_from": "20250401",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302020210",
+    "name": "医療ＤＸ推進体制整備加算２（医学管理等）",
+    "limit_count": 1,
+    "limit_type": "医療ＤＸ推進体制整備加算２（医学管理等）",
+    "valid_from": "20250401",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "302020310",
+    "name": "医療ＤＸ推進体制整備加算３（医学管理等）",
+    "limit_count": 1,
+    "limit_type": "医療ＤＸ推進体制整備加算３（医学管理等）",
+    "valid_from": "20250401",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303001270",
+    "name": "地域医療連携体制加算（歯科訪問診療料）",
+    "limit_count": 1,
+    "limit_type": "地域医療連携体制加算（歯科訪問診療料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303002410",
+    "name": "在宅患者訪問薬剤管理指導料（単一建物診療患者が１人の場合）",
+    "limit_count": 8,
+    "limit_type": "在宅患者訪問薬剤管理指導料（単一建物診療患者が１人）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303002510",
+    "name": "在宅患者訪問薬剤管理指導料（単一建物診療患者が２人以上９人以下の場合）",
+    "limit_count": 8,
+    "limit_type": "在宅患者訪問薬剤管理指導料（単一建物診療患者が２～９人）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303002670",
+    "name": "麻薬管理指導加算（在宅患者訪問薬剤管理指導料）",
+    "limit_count": 8,
+    "limit_type": "麻",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303002710",
+    "name": "退院前在宅療養指導管理料",
+    "limit_count": 1,
+    "limit_type": "前",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303002810",
+    "name": "在宅麻薬等注射指導管理料",
+    "limit_count": 1,
+    "limit_type": "在宅麻薬等注射指導管理料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303002910",
+    "name": "在宅患者連携指導料",
+    "limit_count": 1,
+    "limit_type": "在宅患者連携指導料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303003010",
+    "name": "在宅患者緊急時等カンファレンス料",
+    "limit_count": 2,
+    "limit_type": "在宅患者緊急時等カンファレンス料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303003310",
+    "name": "歯科疾患在宅療養管理料（在宅療養支援歯科診療所２の場合）",
+    "limit_count": 1,
+    "limit_type": "歯在管（歯援診２）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303003410",
+    "name": "歯科疾患在宅療養管理料（１から３まで以外の場合）",
+    "limit_count": 1,
+    "limit_type": "歯在管（１から３まで以外）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303004510",
+    "name": "在宅悪性腫瘍患者共同指導管理料",
+    "limit_count": 1,
+    "limit_type": "在悪共同",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303005710",
+    "name": "在宅患者訪問口腔リハビリテーション指導管理料（１０歯未満）",
+    "limit_count": 4,
+    "limit_type": "訪問口腔リハ（１０歯未満）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303005810",
+    "name": "在宅患者訪問口腔リハビリテーション指導管理料（１０歯以上２０歯未満）",
+    "limit_count": 4,
+    "limit_type": "訪問口腔リハ（１０歯以上２０歯未満）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303005910",
+    "name": "在宅患者訪問口腔リハビリテーション指導管理料（２０歯以上）",
+    "limit_count": 4,
+    "limit_type": "訪問口腔リハ（２０歯以上）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303007310",
+    "name": "訪問歯科衛生指導料（単一建物診療患者が１人の場合）",
+    "limit_count": 8,
+    "limit_type": "訪衛指（単一建物診療患者が１人）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303007410",
+    "name": "訪問歯科衛生指導料（単一建物診療患者が２人以上９人以下の場合）",
+    "limit_count": 8,
+    "limit_type": "訪衛指（単一建物診療患者が２～９人）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303007510",
+    "name": "訪問歯科衛生指導料（１及び２以外の場合）",
+    "limit_count": 8,
+    "limit_type": "訪衛指（１及び２以外）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303007610",
+    "name": "歯科疾患在宅療養管理料（在宅療養支援歯科診療所１の場合）",
+    "limit_count": 1,
+    "limit_type": "歯在管（歯援診１）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303008110",
+    "name": "小児在宅患者訪問口腔リハビリテーション指導管理料",
+    "limit_count": 4,
+    "limit_type": "小児訪問口腔リハ",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303008510",
+    "name": "在宅患者訪問薬剤管理指導料（１及び２以外の場合）",
+    "limit_count": 8,
+    "limit_type": "在宅患者訪問薬剤管理指導料（１及び２以外）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303008670",
+    "name": "乳幼児加算（在宅患者訪問薬剤管理指導料）",
+    "limit_count": 8,
+    "limit_type": "乳幼児加算（在宅患者訪問薬剤管理指導料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303010970",
+    "name": "通信画像情報活用加算（歯科訪問診療料）",
+    "limit_count": 1,
+    "limit_type": "通信画像情報活用加算（歯科訪問診療料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303014870",
+    "name": "在宅医療ＤＸ情報活用加算２",
+    "limit_count": 1,
+    "limit_type": "在宅医療ＤＸ情報活用加算２",
+    "valid_from": "20250401",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303015010",
+    "name": "歯科疾患在宅療養管理料（在宅療養支援歯科病院の場合）",
+    "limit_count": 1,
+    "limit_type": "歯在管（在宅療養支援歯科病院）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303015370",
+    "name": "在宅歯科医療情報連携加算（歯科疾患在宅療養管理料）",
+    "limit_count": 1,
+    "limit_type": "在宅歯科医療情報連携加算（歯在管）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303015770",
+    "name": "在宅歯科医療情報連携加算（在宅患者訪問口腔リハビリテーション指導管理料）",
+    "limit_count": 1,
+    "limit_type": "在宅歯科医療情報連携加算（訪問口腔リハ）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303016170",
+    "name": "在宅歯科医療情報連携加算（小児在宅患者訪問口腔リハビリテーション指導管理料）",
+    "limit_count": 1,
+    "limit_type": "在宅歯科医療情報連携加算（小児訪問口腔リハ）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303016210",
+    "name": "在宅歯科栄養サポートチーム等連携指導料１",
+    "limit_count": 1,
+    "limit_type": "在宅歯科栄養サポートチーム等連携指導料１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303016310",
+    "name": "在宅歯科栄養サポートチーム等連携指導料２",
+    "limit_count": 1,
+    "limit_type": "在宅歯科栄養サポートチーム等連携指導料２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303016410",
+    "name": "在宅歯科栄養サポートチーム等連携指導料３",
+    "limit_count": 1,
+    "limit_type": "在宅歯科栄養サポートチーム等連携指導料３",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303016510",
+    "name": "在宅腫瘍化学療法注射指導管理料",
+    "limit_count": 1,
+    "limit_type": "在宅腫瘍化学療法注射指導管理料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "303016870",
+    "name": "在宅医療ＤＸ情報活用加算１",
+    "limit_count": 1,
+    "limit_type": "在宅医療ＤＸ情報活用加算１",
+    "valid_from": "20250401",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "304001910",
+    "name": "有床義歯咀嚼機能検査（１口腔につき）（有床義歯咀嚼機能検査１（１回につき）（下顎運動測定と咀嚼能力測定を併せて行う場合））",
+    "limit_count": 2,
+    "limit_type": "有床義歯咀嚼機能検査１（下顎運動測定と咀嚼能力測定を併施）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "304002010",
+    "name": "有床義歯咀嚼機能検査（１口腔につき）（有床義歯咀嚼機能検査１（１回につき）（咀嚼能力測定のみを行う場合））",
+    "limit_count": 2,
+    "limit_type": "有床義歯咀嚼機能検査１（咀嚼能力測定）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "304002110",
+    "name": "舌圧検査（１回につき）",
+    "limit_count": 2,
+    "limit_type": "舌圧検査",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "304002210",
+    "name": "有床義歯咀嚼機能検査（１口腔につき）（有床義歯咀嚼機能検査２（１回につき）（下顎運動測定と咬合圧測定を併せて行う場合））",
+    "limit_count": 2,
+    "limit_type": "有床義歯咀嚼機能検査２（下顎運動測定と咬合圧測定を併施）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "304002310",
+    "name": "有床義歯咀嚼機能検査（１口腔につき）（有床義歯咀嚼機能検査２（１回につき）（咬合圧測定のみを行う場合））",
+    "limit_count": 2,
+    "limit_type": "有床義歯咀嚼機能検査２（咬合圧測定）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "304002410",
+    "name": "咀嚼能力検査１（１回につき）",
+    "limit_count": 1,
+    "limit_type": "咀嚼能力検査１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "304002510",
+    "name": "咬合圧検査１（１回につき）",
+    "limit_count": 1,
+    "limit_type": "咬合圧検査１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "304002610",
+    "name": "精密触覚機能検査",
+    "limit_count": 1,
+    "limit_type": "精密触覚機能検査",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "304002710",
+    "name": "小児口唇閉鎖力検査（１回につき）",
+    "limit_count": 1,
+    "limit_type": "小児口唇閉鎖力検査",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "304002910",
+    "name": "口腔細菌定量検査１（１回につき）",
+    "limit_count": 2,
+    "limit_type": "口腔細菌定量検査１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "304003070",
+    "name": "口腔細菌定量検査（１回につき）（２回目）減算",
+    "limit_count": 2,
+    "limit_type": "口腔細菌定量検査（２回目）減算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "304003110",
+    "name": "口腔細菌定量検査２（１回につき）",
+    "limit_count": 1,
+    "limit_type": "口腔細菌定量検査２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "305001910",
+    "name": "基本的エックス線診断料（１日につき）（入院の日から起算して４週間以内の期間）",
+    "limit_count": 28,
+    "limit_type": "基エ（４週以内）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "305002990",
+    "name": "歯科画像診断管理加算１",
+    "limit_count": 1,
+    "limit_type": "歯科画像診断管理加算１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "305003090",
+    "name": "遠隔画像診断による画像診断管理加算１",
+    "limit_count": 1,
+    "limit_type": "遠隔歯科画像診断管理加算１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "305004910",
+    "name": "写真診断（歯科用３次元エックス線断層撮影）",
+    "limit_count": 1,
+    "limit_type": "写真診断（歯科用３次元エックス線断層撮影）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "305005050",
+    "name": "他医療機関撮影の写真診断（歯科用３次元エックス線断層撮影）",
+    "limit_count": 1,
+    "limit_type": "他医撮影の写真診断（歯科用３次元エックス線断層撮影）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "305005590",
+    "name": "歯科画像診断管理加算２",
+    "limit_count": 1,
+    "limit_type": "歯科画像診断管理加算２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "305005690",
+    "name": "遠隔画像診断による画像診断管理加算２",
+    "limit_count": 1,
+    "limit_type": "遠隔歯科画像診断管理加算２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "305005850",
+    "name": "医科コンピューター断層診断",
+    "limit_count": 1,
+    "limit_type": "医科コンピューター断層診断",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "306001170",
+    "name": "特定疾患処方管理加算（処方料）",
+    "limit_count": 1,
+    "limit_type": "特処（処方）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "306001670",
+    "name": "特定疾患処方管理加算（処方箋料）",
+    "limit_count": 1,
+    "limit_type": "特処（処方箋料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "306001710",
+    "name": "調剤技術基本料（入院中の患者に投薬を行った場合）",
+    "limit_count": 1,
+    "limit_type": "調基（入院）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "306001810",
+    "name": "調剤技術基本料（その他の患者に投薬を行った場合）",
+    "limit_count": 1,
+    "limit_type": "調基（その他）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "306001970",
+    "name": "院内製剤加算",
+    "limit_count": 1,
+    "limit_type": "院内製剤加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "306002070",
+    "name": "抗悪性腫瘍剤処方管理加算（処方料）（１処方につき）",
+    "limit_count": 1,
+    "limit_type": "抗悪性腫瘍剤処方管理加算（処方料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "306002170",
+    "name": "抗悪性腫瘍剤処方管理加算（処方箋料）",
+    "limit_count": 1,
+    "limit_type": "抗悪性腫瘍剤処方管理加算（処方箋料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "307001170",
+    "name": "血漿成分製剤加算（点滴注射）",
+    "limit_count": 1,
+    "limit_type": "血漿（点滴）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "307001370",
+    "name": "血漿成分製剤加算（中心静脈注射）",
+    "limit_count": 1,
+    "limit_type": "血漿（中心静脈注射）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "307004790",
+    "name": "バイオ後続品導入初期加算",
+    "limit_count": 1,
+    "limit_type": "バイオ後続品導入初期加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "308002510",
+    "name": "歯科口腔リハビリテーション料１（有床義歯のロ以外の場合）（１口腔につき）",
+    "limit_count": 1,
+    "limit_type": "歯科口腔リハビリテーション料１（有床義歯のロ以外）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "308002610",
+    "name": "歯科口腔リハビリテーション料１（有床義歯の困難な場合）（１口腔につき）",
+    "limit_count": 1,
+    "limit_type": "歯科口腔リハビリテーション料１（有床義歯の困難）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "308002710",
+    "name": "歯科口腔リハビリテーション料１（舌接触補助床の場合）（１口腔につき）",
+    "limit_count": 4,
+    "limit_type": "歯科口腔リハビリテーション料１（舌接触補助床）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "308002810",
+    "name": "歯科口腔リハビリテーション料２（１口腔につき）",
+    "limit_count": 1,
+    "limit_type": "歯科口腔リハビリテーション料２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "308004210",
+    "name": "歯科口腔リハビリテーション料１（その他の場合）（１口腔につき）",
+    "limit_count": 4,
+    "limit_type": "歯科口腔リハビリテーション料１（その他）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "308004570",
+    "name": "摂食嚥下機能回復体制加算１（摂食機能療法）",
+    "limit_count": 5,
+    "limit_type": "摂食嚥下機能回復体制加算１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "308004670",
+    "name": "摂食嚥下機能回復体制加算２（摂食機能療法）",
+    "limit_count": 5,
+    "limit_type": "摂食嚥下機能回復体制加算２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "308004770",
+    "name": "摂食嚥下機能回復体制加算３（摂食機能療法）",
+    "limit_count": 5,
+    "limit_type": "摂食嚥下機能回復体制加算３",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "308010610",
+    "name": "歯科口腔リハビリテーション料３（口腔機能の発達不全を有する１８歳未満の患者の場合）（１口腔につき）",
+    "limit_count": 2,
+    "limit_type": "歯科口腔リハビリテーション料３（口腔機能の発達不全）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "308010710",
+    "name": "歯科口腔リハビリテーション料３（口腔機能の低下を来している患者の場合）（１口腔につき）",
+    "limit_count": 2,
+    "limit_type": "歯科口腔リハビリテーション料３（口腔機能の低下）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309005710",
+    "name": "歯周病安定期治療（２０歯以上）",
+    "limit_count": 1,
+    "limit_type": "ＳＰＴ（２０歯以上）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309007210",
+    "name": "口腔内装置調整・修理（口腔内装置調整（口腔内装置調整１））（１口腔につき）",
+    "limit_count": 1,
+    "limit_type": "口腔内装置調整１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309008410",
+    "name": "心身医学療法（入院中の患者）",
+    "limit_count": 9,
+    "limit_type": "心身医学療法（入院）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309008510",
+    "name": "心身医学療法（入院中の患者以外の患者（初診時））",
+    "limit_count": 1,
+    "limit_type": "心身医学療法（入院外（初診時））",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309008610",
+    "name": "心身医学療法（入院中の患者以外の患者（再診時））",
+    "limit_count": 9,
+    "limit_type": "心身医学療法（入院外（再診時））",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309009010",
+    "name": "高気圧酸素治療（１日につき）",
+    "limit_count": 30,
+    "limit_type": "高気圧酸素治療",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309011310",
+    "name": "周術期等専門的口腔衛生処置（１口腔につき）（周術期等専門的口腔衛生処置１）",
+    "limit_count": 6,
+    "limit_type": "術口衛１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309011410",
+    "name": "機械的歯面清掃処置（１口腔につき）",
+    "limit_count": 1,
+    "limit_type": "歯清",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309014610",
+    "name": "口腔内分泌物吸引（１日につき）",
+    "limit_count": 2,
+    "limit_type": "口腔内分泌物吸引",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309014710",
+    "name": "歯周病安定期治療（１歯以上１０歯未満）",
+    "limit_count": 1,
+    "limit_type": "ＳＰＴ（１歯以上１０歯未満）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309014810",
+    "name": "歯周病安定期治療（１０歯以上２０歯未満）",
+    "limit_count": 1,
+    "limit_type": "ＳＰＴ（１０歯以上２０歯未満）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309015110",
+    "name": "フッ化物歯面塗布処置（１口腔につき）（う蝕多発傾向者の場合）",
+    "limit_count": 1,
+    "limit_type": "Ｆ局（う蝕多発傾向者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309015210",
+    "name": "フッ化物歯面塗布処置（１口腔につき）（初期の根面う蝕に罹患している患者の場合）",
+    "limit_count": 1,
+    "limit_type": "Ｆ局（初期の根面う蝕に罹患）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309016610",
+    "name": "フッ化物歯面塗布処置（１口腔につき）（エナメル質初期う蝕に罹患している患者の場合）",
+    "limit_count": 1,
+    "limit_type": "Ｆ局（エナメル質初期う蝕患者）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309019210",
+    "name": "周術期等専門的口腔衛生処置（１口腔につき）（周術期等専門的口腔衛生処置２）",
+    "limit_count": 1,
+    "limit_type": "術口衛２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309019310",
+    "name": "在宅等療養患者専門的口腔衛生処置（１口腔につき）",
+    "limit_count": 1,
+    "limit_type": "在宅等療養患者専門的口腔衛生処置",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309019410",
+    "name": "口腔粘膜処置（１口腔につき）",
+    "limit_count": 1,
+    "limit_type": "口腔粘膜処置",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309019610",
+    "name": "歯周病重症化予防治療（１歯以上１０歯未満）",
+    "limit_count": 1,
+    "limit_type": "Ｐ重防（１歯以上１０歯未満）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309019710",
+    "name": "歯周病重症化予防治療（１０歯以上２０歯未満）",
+    "limit_count": 1,
+    "limit_type": "Ｐ重防（１０歯以上２０歯未満）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309019810",
+    "name": "歯周病重症化予防治療（２０歯以上）",
+    "limit_count": 1,
+    "limit_type": "Ｐ重防（２０歯以上）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309020010",
+    "name": "非経口摂取患者口腔粘膜処置（１口腔につき）",
+    "limit_count": 2,
+    "limit_type": "非経口処",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309021110",
+    "name": "回復期等専門的口腔衛生処置（１口腔につき）",
+    "limit_count": 2,
+    "limit_type": "回復期等専門的口腔衛生処置",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "309021210",
+    "name": "口腔バイオフィルム除去処置（１口腔につき）",
+    "limit_count": 2,
+    "limit_type": "口腔バイオフィルム除去処置",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "310019410",
+    "name": "デブリードマン（１００平方センチメートル未満）",
+    "limit_count": 1,
+    "limit_type": "デブリードマン１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "310019510",
+    "name": "デブリードマン（１００平方センチメートル以上３０００平方センチメートル未満）",
+    "limit_count": 1,
+    "limit_type": "デブリードマン２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "310021070",
+    "name": "提供者の療養上の費用（皮膚移植術）",
+    "limit_count": 1,
+    "limit_type": "提供者の療養上の費用（皮膚移植術）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "310025670",
+    "name": "不規則抗体検査加算",
+    "limit_count": 1,
+    "limit_type": "不規則抗体検査加算",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "310026410",
+    "name": "輸血管理料（輸血管理料１）",
+    "limit_count": 1,
+    "limit_type": "輸血管理料１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "310026510",
+    "name": "輸血管理料（輸血管理料２）",
+    "limit_count": 1,
+    "limit_type": "輸血管理料２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "310033310",
+    "name": "広範囲顎骨支持型装置掻爬術（１顎につき）",
+    "limit_count": 1,
+    "limit_type": "特イ掻",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "312000110",
+    "name": "放射線治療管理料（１門照射、対向２門照射又は外部照射を行った場合）",
+    "limit_count": 2,
+    "limit_type": "放射線治療管理料（１門照射、対向２門照射、外部照射）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "312000210",
+    "name": "放射線治療管理料（非対向２門照射、３門照射又は腔内照射を行った場合）",
+    "limit_count": 2,
+    "limit_type": "放射線治療管理料（非対向２門照射、３門照射、腔内照射）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "312000310",
+    "name": "放射線治療管理料（４門以上の照射、運動照射、原体照射又は組織内照射を行った場合）",
+    "limit_count": 2,
+    "limit_type": "放射線治療管理料（４門以上、運動照射、原体照射、組織内照射）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "312000410",
+    "name": "放射線治療管理料（強度変調放射線治療（ＩＭＲＴ）による体外照射を行った場合）",
+    "limit_count": 2,
+    "limit_type": "放射線治療管理料（ＩＭＲＴによる体外照射）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "312002070",
+    "name": "術中照射療法加算（体外照射）",
+    "limit_count": 1,
+    "limit_type": "術中照射療法加算（体外照射）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "312002170",
+    "name": "体外照射用固定器具加算（体外照射）",
+    "limit_count": 1,
+    "limit_type": "体外照射用固定器具加算（体外照射）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "312002210",
+    "name": "電磁波温熱療法（一連につき）（深在性悪性腫瘍に対するもの）",
+    "limit_count": 1,
+    "limit_type": "電磁波温熱療法（深在性悪性腫瘍）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "312002310",
+    "name": "電磁波温熱療法（一連につき）（浅在性悪性腫瘍に対するもの）",
+    "limit_count": 1,
+    "limit_type": "電磁波温熱療法（浅在性悪性腫瘍）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "313024010",
+    "name": "広範囲顎骨支持型補綴診断料（１口腔につき）",
+    "limit_count": 1,
+    "limit_type": "特イ診",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "314000310",
+    "name": "歯科矯正管理料",
+    "limit_count": 1,
+    "limit_type": "歯科矯正管理料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "314000910",
+    "name": "動的処置（１口腔１回につき）（動的処置の開始の日又はマルチブラケット法の開始の日から起算して２年以内に行った場合（同一月内の第１回目））",
+    "limit_count": 1,
+    "limit_type": "動的処置（２年以内（同一月内の第１回目））",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "314001110",
+    "name": "動的処置（１口腔１回につき）（動的処置の開始の日又はマルチブラケット法の開始の日から起算して２年を超えた後に行った場合（同一月内の第１回目））",
+    "limit_count": 1,
+    "limit_type": "動的処置（２年超（同一月内の第１回目））",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "314011510",
+    "name": "歯科矯正相談料（歯科矯正相談料１）",
+    "limit_count": 1,
+    "limit_type": "歯科矯正相談料１",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "314011610",
+    "name": "歯科矯正相談料（歯科矯正相談料２）",
+    "limit_count": 1,
+    "limit_type": "歯科矯正相談料２",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "315000110",
+    "name": "口腔病理診断料（組織診断料）（歯科診療に係るものに限る。）",
+    "limit_count": 1,
+    "limit_type": "口腔病理診断料（組織診断料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "315000210",
+    "name": "口腔病理診断料（組織診断料）（他医療機関作製の組織標本）（歯科診療に係るものに限る。）",
+    "limit_count": 1,
+    "limit_type": "口腔病理診断料（組織診断料）（他医療機関作製の組織標本）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "315000310",
+    "name": "口腔病理判断料（歯科診療に係るものに限る。）",
+    "limit_count": 1,
+    "limit_type": "口腔病理判断料",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "315000410",
+    "name": "口腔病理診断料（細胞診断料）（歯科診療に係るものに限る。）",
+    "limit_count": 1,
+    "limit_type": "口腔病理診断料（細胞診断料）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "315000510",
+    "name": "口腔病理診断料（細胞診断料）（他医療機関作製の標本）（歯科診療に係るものに限る。）",
+    "limit_count": 1,
+    "limit_type": "口腔病理診断料（細胞診断料）（他医療機関作製の標本）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "315001110",
+    "name": "口腔病理診断料（組織診断料）（他医療機関作製の組織標本）（デジタル病理画像）（歯科診療に係るものに限る。）",
+    "limit_count": 1,
+    "limit_type": "口腔病理診断料（組織診断料）（他医作製組織標本デジタル病理画像）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "315001210",
+    "name": "口腔病理診断料（細胞診断料）（他医療機関作製の標本）（デジタル病理画像）（歯科診療に係るものに限る。）",
+    "limit_count": 1,
+    "limit_type": "口腔病理診断料（細胞診断料）（他医作製標本デジタル病理画像）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  },
+  {
+    "procedure_code": "320003210",
+    "name": "療養担当手当（入院外）",
+    "limit_count": 1,
+    "limit_type": "療養担当手当（入院外）",
+    "valid_from": "20240601",
+    "valid_to": "99999999"
+  }
+]

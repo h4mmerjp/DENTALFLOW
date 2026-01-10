@@ -24,7 +24,9 @@ export default function DraggableCard({
     const [canAcceptDrop, setCanAcceptDrop] = useState(false);
     
     // 病名情報を取得して色を決定
-    const conditionInfo = getConditionInfo ? getConditionInfo(step.condition) : null;
+    // actualConditionが存在する場合はそれを使用（変遷後のノード用）、なければconditionを使用
+    const actualConditionCode = step.actualCondition || step.condition;
+    const conditionInfo = getConditionInfo ? getConditionInfo(actualConditionCode) : null;
     const conditionColorClass = conditionInfo ? conditionInfo.color : 'bg-gray-100 border-gray-400 text-gray-800';
 
     const handlePrevTreatment = (e) => {

@@ -746,7 +746,7 @@ export function useTreatmentWorkflow() {
             workflowMap.set(node.id, node);
         });
 
-        const newWorkflow = Array.from(workflowMap.values());
+        let newWorkflow = Array.from(workflowMap.values());
 
         console.log('Split completed. New Workflow count:', newWorkflow.length);
         setWorkflow(newWorkflow);
@@ -1111,54 +1111,199 @@ export function useTreatmentWorkflow() {
     };
 
     /**
+     * 指定した病名・歯に対する治療ノードを生成
+     * @param {string} displayCondition - 表示用病名（例: "C2→C3"）
+     * @param {string} actualCondition - 実際の病名（例: "C3"）※treatmentRulesの検索に使用
+     * @param {string[]} teeth - 対象歯
+     * @returns {Array} 生成されたノード配列
+     */
+    const generateNodesForCondition = (displayCondition, actualCondition, teeth) => {
+        const treatments = treatmentRules[actualCondition] || [];
+        if (treatments.length === 0) return [];
+
+        const nodes = [];
+        const groupId = crypto.randomUUID();
+
+        teeth.forEach(tooth => {
+            const treatmentKey = `${actualCondition}-${tooth}`;
+            const selectedTreatmentIndex = selectedTreatmentOptions[treatmentKey] || 0;
+            const selectedTreatment = treatments[selectedTreatmentIndex] || treatments[0];
+
+            if (selectedTreatment) {
+                for (let i = 0; i < selectedTreatment.duration; i++) {
+                    const cardId = crypto.randomUUID();
+                    let stepName;
+                    if (selectedTreatment.stepIds && selectedTreatment.stepIds[i]) {
+                        stepName = getStepName(selectedTreatment.stepIds[i]);
+                    } else if (selectedTreatment.steps && selectedTreatment.steps[i]) {
+                        stepName = selectedTreatment.steps[i];
+                    } else {
+                        stepName = `${selectedTreatment.name}(${i + 1})`;
+                    }
+
+                    nodes.push({
+                        id: cardId,
+                        baseId: `${displayCondition}-${selectedTreatment.name}-${tooth}`,
+                        groupId,
+                        condition: displayCondition,        // 表示用（例: "C2→C3"）
+                        actualCondition: actualCondition,   // 実際の病名（例: "C3"）
+                        treatment: selectedTreatment.name,
+                        stepName,
+                        teeth: [tooth],
+                        cardNumber: i + 1,
+                        totalCards: selectedTreatment.duration,
+                        isSequential: selectedTreatment.duration > 1,
+                        treatmentKey,
+                        availableTreatments: treatments,
+                        selectedTreatmentIndex,
+                        hasMultipleTreatments: treatments.length > 1,
+                        completed: false
+                    });
+                }
+            }
+        });
+
+        return nodes;
+    };
+
+    /**
      * 治療計画を分岐させる（特定のステップから新しい病名に切り替える）
      * @param {string} nodeId - 起点となるノードID
      * @param {string} newCondition - 切り替え先の新しい病名
      */
     const divergeTreatmentPlan = (nodeId, newCondition) => {
-        // 1. 起点ノードの情報を取得
-        const sourceNode = workflow.find(w => w.id === nodeId);
+        // 1. 起点ノードの情報を取得（workflowとスケジュール両方を検索）
+        let sourceNode = workflow.find(w => w.id === nodeId);
+        let sourceScheduleDate = null;
+
+        if (!sourceNode) {
+            for (const day of treatmentSchedule) {
+                const found = day.treatments.find(t => t.id === nodeId);
+                if (found) {
+                    sourceNode = found;
+                    sourceScheduleDate = day.date;
+                    break;
+                }
+            }
+        }
+
         if (!sourceNode) return { success: false, message: 'ノードが見つかりません。' };
 
-        const affectedTeeth = sourceNode.teeth;
-        
-        // 2. この歯に関連する「後続の未完了ノード」をすべて特定・削除
-        // 既に完了しているものは履歴として残すが、それ以降の計画は破棄
-        const idsToRemove = new Set();
+        const { groupId, cardNumber, teeth: affectedTeeth, condition: oldCondition } = sourceNode;
+
+        // 元の病名を取得（既に変遷表示の場合は最初の病名を抽出）
+        const originalCondition = oldCondition.includes('→')
+            ? oldCondition.split('→')[0]
+            : oldCondition;
+
+        // 変遷表示用の病名を生成
+        const transitionCondition = `${oldCondition}→${newCondition}`;
+
+        // 2. 同一シーケンス内のノードを全て収集（workflowとスケジュール両方から）
+        const allGroupNodes = [];
         workflow.forEach(w => {
-            // 同じ歯を対象としており
-            const hasCommonTeeth = w.teeth.some(t => affectedTeeth.includes(t));
-            if (hasCommonTeeth) {
-                // 完了していないものは削除対象
-                if (!w.completed) {
-                    idsToRemove.add(w.id);
+            if (w.groupId === groupId) {
+                allGroupNodes.push(w);
+            }
+        });
+        treatmentSchedule.forEach(day => {
+            day.treatments.forEach(t => {
+                if (t.groupId === groupId && !allGroupNodes.find(n => n.id === t.id)) {
+                    allGroupNodes.push(t);
                 }
+            });
+        });
+
+        // 3. 前のステップを特定
+        const priorNodeIds = new Set();
+        allGroupNodes.forEach(w => {
+            if (w.cardNumber < cardNumber && !w.completed) {
+                priorNodeIds.add(w.id);
             }
         });
 
-        // 3. toothConditions を更新
+        // 4. 削除対象を特定（完了済みノードは除外）
+        const idsToRemove = new Set();
+        allGroupNodes.forEach(w => {
+            if (w.cardNumber >= cardNumber && !w.completed) {
+                idsToRemove.add(w.id);
+            }
+        });
+
+        // 5. workflow更新
+        const updatedWorkflow = workflow
+            .filter(w => !idsToRemove.has(w.id))
+            .map(w => priorNodeIds.has(w.id) ? { ...w, completed: true } : w);
+
+        // 6. toothConditions更新
         setToothConditions(prev => {
             const next = { ...prev };
             affectedTeeth.forEach(tooth => {
-                next[tooth] = newCondition;
+                const currentConditions = Array.isArray(next[tooth]) ? next[tooth] : [next[tooth]].filter(Boolean);
+                const filtered = currentConditions.filter(c => {
+                    const baseCondition = c.includes('→') ? c.split('→').pop() : c;
+                    return baseCondition !== originalCondition && baseCondition !== oldCondition.split('→').pop();
+                });
+                next[tooth] = [...filtered, newCondition];
             });
             return next;
         });
 
-        // 4. workflowからこれらを削除
-        const updatedWorkflow = workflow.filter(w => !idsToRemove.has(w.id));
-        
-        // 5. 新しい病名に基づいてノードを生成
-        // ステートを即時反映させるため、setToothConditionsの完了を待たずに
-        // 内部のtoothConditions状態を想定して再生成を行う
-        setWorkflow(updatedWorkflow);
-        
-        // 少し遅延させてgenerateTreatmentNodesを呼び出す（ステート更新の反映待ち）
-        setTimeout(() => {
-            generateTreatmentNodes();
-        }, 10);
+        // 7. 新しい治療ノードを生成
+        const newNodes = generateNodesForCondition(transitionCondition, newCondition, affectedTeeth);
 
-        return { success: true, message: `病名を ${newCondition} へ変更しました。` };
+        // 8. treatmentSchedule更新（削除・完了扱い・新規ノード配置を一括処理）
+        setTreatmentSchedule(prev => {
+            // まず削除と完了扱いを適用
+            let newSchedule = prev.map(day => ({
+                ...day,
+                treatments: day.treatments
+                    .filter(t => !idsToRemove.has(t.id))
+                    .map(t => priorNodeIds.has(t.id) ? { ...t, completed: true } : t)
+            }));
+
+            // 起点ノードがスケジュール上にあった場合、新しいノードもスケジュールに配置
+            if (sourceScheduleDate) {
+                const startDayIndex = newSchedule.findIndex(day => day.date === sourceScheduleDate);
+
+                if (startDayIndex !== -1) {
+                    newNodes.forEach((node, index) => {
+                        const targetDayIndex = startDayIndex + index;
+
+                        // 必要に応じて日を追加
+                        while (targetDayIndex >= newSchedule.length) {
+                            const lastDate = newSchedule.length > 0
+                                ? new Date(newSchedule[newSchedule.length - 1].date)
+                                : new Date();
+                            const nextDate = new Date(lastDate);
+                            nextDate.setDate(lastDate.getDate() + schedulingRules.scheduleIntervalDays);
+                            newSchedule.push({
+                                date: nextDate.toISOString().split('T')[0],
+                                treatments: []
+                            });
+                        }
+
+                        newSchedule[targetDayIndex] = {
+                            ...newSchedule[targetDayIndex],
+                            treatments: [...newSchedule[targetDayIndex].treatments, node]
+                        };
+                    });
+                }
+            }
+
+            return newSchedule;
+        });
+
+        // 9. workflow更新
+        if (sourceScheduleDate) {
+            // スケジュールに配置済みなのでworkflowには追加しない
+            setWorkflow(updatedWorkflow);
+        } else {
+            // workflowに新しいノードを追加
+            setWorkflow([...updatedWorkflow, ...newNodes]);
+        }
+
+        return { success: true, message: `病名を ${oldCondition} から ${newCondition} へ変更しました。` };
     };
 
     return {

@@ -1,0 +1,614 @@
+[
+  {
+    "procedure_code": "301000370",
+    "name": "乳幼児加算（初診）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301001070",
+    "name": "乳幼児時間外加算（初診）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301001170",
+    "name": "乳幼児休日加算（初診）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301001270",
+    "name": "乳幼児深夜加算（初診）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301001370",
+    "name": "乳幼児時間外特例医療機関加算（初診）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301001870",
+    "name": "乳幼児加算（再診）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301002470",
+    "name": "乳幼児時間外加算（再診）（入院外）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301002570",
+    "name": "乳幼児休日加算（再診）（入院外）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301002670",
+    "name": "乳幼児深夜加算（再診）（入院外）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301002770",
+    "name": "乳幼児時間外特例医療機関加算（再診）（入院外）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301012110",
+    "name": "乳幼児加算（救急医療管理加算）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301012910",
+    "name": "乳幼児加算（病院）（特別入院基本料等を除く。）（１日につき）",
+    "min_age_months": 0,
+    "max_age_months": 3
+  },
+  {
+    "procedure_code": "301013010",
+    "name": "乳幼児加算（病院）（特別入院基本料等）（１日につき）",
+    "min_age_months": 0,
+    "max_age_months": 3
+  },
+  {
+    "procedure_code": "301013110",
+    "name": "乳幼児加算（診療所）（１日につき）",
+    "min_age_months": 0,
+    "max_age_months": 3
+  },
+  {
+    "procedure_code": "301013210",
+    "name": "幼児加算（病院）（特別入院基本料等を除く。）（１日につき）",
+    "min_age_months": 3,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301013310",
+    "name": "幼児加算（病院）（特別入院基本料等）（１日につき）",
+    "min_age_months": 3,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301013410",
+    "name": "幼児加算（診療所）（１日につき）",
+    "min_age_months": 3,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301013710",
+    "name": "超重症児（者）入院診療加算（６歳未満の場合）（１日につき）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301013910",
+    "name": "準超重症児（者）入院診療加算（６歳未満の場合）（１日につき）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301015910",
+    "name": "小児療養環境特別加算（１日につき）",
+    "min_age_months": 0,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "301025270",
+    "name": "小児加算（特定集中治療室管理料）（７日以内の期間）",
+    "min_age_months": 0,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "301025370",
+    "name": "小児加算（特定集中治療室管理料）（８日以上１４日以内の期間）",
+    "min_age_months": 0,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "301028410",
+    "name": "小児加算（救急医療管理加算）",
+    "min_age_months": 6,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "301029870",
+    "name": "小児加算（緩和ケア診療加算）",
+    "min_age_months": 0,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "301058890",
+    "name": "乳幼児時間外加算（再診）（入院）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301058990",
+    "name": "乳幼児休日加算（再診）（入院）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301059090",
+    "name": "乳幼児深夜加算（再診）（入院）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301059190",
+    "name": "乳幼児時間外特例医療機関加算（再診）（入院）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "301066410",
+    "name": "小児加算（入退院支援加算１又は２）",
+    "min_age_months": 0,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "301146610",
+    "name": "小児緩和ケア診療加算（１日につき）",
+    "min_age_months": 0,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "301146710",
+    "name": "小児個別栄養食事管理加算（小児緩和ケア診療加算）",
+    "min_age_months": 0,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "302000570",
+    "name": "フッ化物洗口指導加算",
+    "min_age_months": 4,
+    "max_age_months": 16
+  },
+  {
+    "procedure_code": "302006670",
+    "name": "小児加算（がん性疼痛緩和指導管理料）",
+    "min_age_months": 0,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "302006870",
+    "name": "小児加算（外来緩和ケア管理料）",
+    "min_age_months": 0,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "302011010",
+    "name": "小児口腔機能管理料",
+    "min_age_months": 0,
+    "max_age_months": 18
+  },
+  {
+    "procedure_code": "302012670",
+    "name": "小児加算（外来腫瘍化学療法診療料）",
+    "min_age_months": 0,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "302013110",
+    "name": "乳幼児加算（初診）（外来腫瘍化学療法診療料）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "302013610",
+    "name": "乳幼児時間外加算（初診）（外来腫瘍化学療法診療料）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "302013710",
+    "name": "乳幼児休日加算（初診）（外来腫瘍化学療法診療料）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "302013810",
+    "name": "乳幼児深夜加算（初診）（外来腫瘍化学療法診療料）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "302013910",
+    "name": "乳幼児時間外特例医療機関加算（初診）（外来腫瘍化学療法診療料）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "302014010",
+    "name": "乳幼児加算（再診）（外来腫瘍化学療法診療料）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "302015010",
+    "name": "乳幼児時間外加算（再診）（入院外）（外来腫瘍化学療法診療料）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "302015210",
+    "name": "乳幼児休日加算（再診）（入院外）（外来腫瘍化学療法診療料）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "302015410",
+    "name": "乳幼児深夜加算（再診）（入院外）（外来腫瘍化学療法診療料）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "302015610",
+    "name": "乳幼児時間外特例医療機関加算（再診）（入院外）（外来腫瘍化学療法診療料）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "302016710",
+    "name": "小児口腔機能管理料（情報通信機器を用いた場合）",
+    "min_age_months": 0,
+    "max_age_months": 18
+  },
+  {
+    "procedure_code": "303003870",
+    "name": "乳幼児加算（退院前在宅療養指導管理料）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "303008670",
+    "name": "乳幼児加算（在宅患者訪問薬剤管理指導料）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "304002710",
+    "name": "小児口唇閉鎖力検査（１回につき）",
+    "min_age_months": 0,
+    "max_age_months": 18
+  },
+  {
+    "procedure_code": "305001770",
+    "name": "乳幼児加算（撮影）",
+    "min_age_months": 0,
+    "max_age_months": 3
+  },
+  {
+    "procedure_code": "305005770",
+    "name": "幼児加算（撮影）",
+    "min_age_months": 3,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "306000970",
+    "name": "乳幼児加算（処方料）",
+    "min_age_months": 0,
+    "max_age_months": 3
+  },
+  {
+    "procedure_code": "306001470",
+    "name": "乳幼児加算（処方箋料）",
+    "min_age_months": 0,
+    "max_age_months": 3
+  },
+  {
+    "procedure_code": "307000370",
+    "name": "乳幼児加算（静脈内注射）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "307000710",
+    "name": "点滴注射（乳幼児）（１日分の注射量が１００ｍＬ以上の場合）（１日につき）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "307001070",
+    "name": "乳幼児加算（点滴注射）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "307001470",
+    "name": "乳幼児加算（中心静脈注射）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "307001670",
+    "name": "乳幼児加算（中心静脈注射用カテーテル挿入）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "307003170",
+    "name": "乳幼児加算（末梢留置型中心静脈注射用カテーテル挿入）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "307003790",
+    "name": "外来化学療法加算１（１５歳未満の患者の場合）",
+    "min_age_months": 0,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "307004190",
+    "name": "外来化学療法加算２（１５歳未満の患者の場合）",
+    "min_age_months": 0,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "307004370",
+    "name": "乳幼児加算（植込型カテーテルによる中心静脈注射）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "308000610",
+    "name": "障害児（者）リハビリテーション料（６歳未満）（１単位）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "308000710",
+    "name": "障害児（者）リハビリテーション料（６歳以上１８歳未満）（１単位）",
+    "min_age_months": 6,
+    "max_age_months": 18
+  },
+  {
+    "procedure_code": "308010610",
+    "name": "歯科口腔リハビリテーション料３（口腔機能の発達不全を有する１８歳未満の患者の場合）（１口腔につき）",
+    "min_age_months": 0,
+    "max_age_months": 18
+  },
+  {
+    "procedure_code": "309008770",
+    "name": "２０歳未満加算（心身医学療法）",
+    "min_age_months": 0,
+    "max_age_months": 20
+  },
+  {
+    "procedure_code": "309009690",
+    "name": "乳幼児加算イ（処置）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "309015110",
+    "name": "フッ化物歯面塗布処置（１口腔につき）（う蝕多発傾向者の場合）",
+    "min_age_months": 0,
+    "max_age_months": 16
+  },
+  {
+    "procedure_code": "309016790",
+    "name": "乳幼児加算ロ（処置）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "309021470",
+    "name": "乳幼児加算（口腔リンパ管腫局所注入）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "309021610",
+    "name": "ハイフローセラピー（１５歳未満の患者の場合）（１日につき）",
+    "min_age_months": 0,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "310018410",
+    "name": "小児創傷処理（６歳未満）（筋肉、臓器に達するもの（長径２．５センチメートル未満））",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310018510",
+    "name": "小児創傷処理（６歳未満）（筋肉、臓器に達するもの（長径２．５センチメートル以上５センチメートル未満））",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310018610",
+    "name": "小児創傷処理（６歳未満）（筋肉、臓器に達するもの（長径５センチメートル以上１０センチメートル未満））",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310018710",
+    "name": "小児創傷処理（６歳未満）（筋肉、臓器に達するもの（長径１０センチメートル以上））",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310018810",
+    "name": "小児創傷処理（６歳未満）（筋肉、臓器に達しないもの（長径２．５センチメートル未満））",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310018910",
+    "name": "小児創傷処理（６歳未満）（筋肉、臓器に達しないもの（長径２．５センチメートル以上５センチメートル未満））",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310019010",
+    "name": "小児創傷処理（６歳未満）（筋肉、臓器に達しないもの（長径５センチメートル以上１０センチメートル未満））",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310019110",
+    "name": "小児創傷処理（６歳未満）（筋肉、臓器に達しないもの（長径１０センチメートル以上））",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310019270",
+    "name": "真皮縫合加算（小児創傷処理（６歳未満））",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310019370",
+    "name": "デブリードマン加算（小児創傷処理（６歳未満））",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310022670",
+    "name": "乳幼児加算（中心静脈注射用植込型カテーテル設置）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310024510",
+    "name": "自己血貯血（６歳未満の患者の場合（体重１ｋｇにつき４ｍＬごとに））（液状保存の場合）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310024610",
+    "name": "自己血貯血（６歳未満の患者の場合（体重１ｋｇにつき４ｍＬごとに））（凍結保存の場合）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310024910",
+    "name": "自己血輸血（６歳未満の患者の場合（体重１ｋｇにつき４ｍＬごとに））（液状保存の場合）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310025010",
+    "name": "自己血輸血（６歳未満の患者の場合（体重１ｋｇにつき４ｍＬごとに））（凍結保存の場合）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310026170",
+    "name": "乳幼児加算（輸血）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310027190",
+    "name": "乳幼児加算イ（６歳未満・全身麻酔以外）（手術）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310027590",
+    "name": "乳幼児加算（全身麻酔下）（手術）",
+    "min_age_months": 0,
+    "max_age_months": 3
+  },
+  {
+    "procedure_code": "310029050",
+    "name": "小児後出血処置（６歳未満）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310035390",
+    "name": "乳幼児加算ロ（６歳未満・全身麻酔以外）（手術）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "310035710",
+    "name": "希釈式自己血輸血（６歳未満の患者の場合（体重１ｋｇにつき４ｍＬごとに））",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "311000690",
+    "name": "乳幼児加算（全身麻酔以外）（麻酔）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "311000890",
+    "name": "未熟児加算（全身麻酔）（麻酔）",
+    "min_age_months": 0,
+    "max_age_months": 1
+  },
+  {
+    "procedure_code": "311001090",
+    "name": "乳児加算（全身麻酔）（麻酔）",
+    "min_age_months": 0,
+    "max_age_months": 1
+  },
+  {
+    "procedure_code": "311001190",
+    "name": "幼児加算（全身麻酔）（麻酔）",
+    "min_age_months": 1,
+    "max_age_months": 3
+  },
+  {
+    "procedure_code": "312003370",
+    "name": "乳幼児加算（放射線治療）",
+    "min_age_months": 0,
+    "max_age_months": 3
+  },
+  {
+    "procedure_code": "312003470",
+    "name": "幼児加算（放射線治療）",
+    "min_age_months": 3,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "312003570",
+    "name": "小児加算（放射線治療）",
+    "min_age_months": 6,
+    "max_age_months": 15
+  },
+  {
+    "procedure_code": "313022990",
+    "name": "乳幼児加算ロ（歯冠修復及び欠損補綴）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  },
+  {
+    "procedure_code": "313028890",
+    "name": "乳幼児加算イ（歯冠修復及び欠損補綴）",
+    "min_age_months": 0,
+    "max_age_months": 6
+  }
+]
