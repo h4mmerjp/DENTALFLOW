@@ -1,13 +1,17 @@
 import { useState, useEffect, useCallback } from 'react';
 import { supabase } from '../lib/supabase';
+import { useAuth } from '../contexts/AuthContext';
 
 /**
  * useTreatmentWorkflowV2 - Supabase版治療ワークフロー管理フック
  *
  * LocalStorageからSupabaseへの移行版
  * 既存のuseTreatmentWorkflowと同じインターフェースを維持
+ *
+ * AuthContext統合により、user_idベースのRLSポリシーに対応
  */
 export function useTreatmentWorkflowV2(patientId = null) {
+  const { user } = useAuth();
   // ========================================
   // State Management
   // ========================================
@@ -155,6 +159,12 @@ export function useTreatmentWorkflowV2(patientId = null) {
       return;
     }
 
+    if (!user) {
+      console.warn('User not authenticated, skipping data load');
+      setIsLoading(false);
+      return;
+    }
+
     try {
       setIsLoading(true);
 
@@ -268,7 +278,7 @@ export function useTreatmentWorkflowV2(patientId = null) {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [user]);
 
   // ========================================
   // Effects
@@ -292,6 +302,10 @@ export function useTreatmentWorkflowV2(patientId = null) {
    * 自動スケジューリング実行（RPC使用）
    */
   const executeAutoScheduling = async (fromDate = null) => {
+    if (!user) {
+      return { success: false, message: 'ユーザーが認証されていません。' };
+    }
+
     if (!currentPatientId) {
       return { success: false, message: '患者IDが設定されていません。' };
     }
@@ -332,6 +346,10 @@ export function useTreatmentWorkflowV2(patientId = null) {
    * 治療計画分岐（RPC使用）
    */
   const divergeTreatmentPlan = async (nodeId, newCondition) => {
+    if (!user) {
+      return { success: false, message: 'ユーザーが認証されていません。' };
+    }
+
     if (!currentPatientId) {
       return { success: false, message: '患者IDが設定されていません。' };
     }
@@ -359,7 +377,7 @@ export function useTreatmentWorkflowV2(patientId = null) {
    * スケジュールクリア（RPC使用）
    */
   const clearAllSchedules = async () => {
-    if (!currentPatientId) return;
+    if (!user || !currentPatientId) return;
 
     try {
       const { data, error } = await supabase
@@ -442,7 +460,7 @@ export function useTreatmentWorkflowV2(patientId = null) {
   };
 
   const clearAllConditions = async () => {
-    if (!currentPatientId) return;
+    if (!user || !currentPatientId) return;
 
     setToothConditions({});
     setWorkflow([]);
@@ -498,6 +516,11 @@ export function useTreatmentWorkflowV2(patientId = null) {
   };
 
   const toggleTreatmentCompletion = async (nodeId) => {
+    if (!user) {
+      console.warn('User not authenticated');
+      return;
+    }
+
     try {
       const { data: nodeData } = await supabase
         .from('treatment_nodes')

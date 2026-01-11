@@ -3,7 +3,7 @@ import { Play, Settings, ChevronDown, ChevronRight } from 'lucide-react';
 import { useAuth } from './contexts/AuthContext';
 import LandingPage from './components/LandingPage';
 import UserMenu from './components/UserMenu';
-import { useTreatmentWorkflow } from './hooks/useTreatmentWorkflow';
+import { useTreatmentWorkflowV2 } from './hooks/useTreatmentWorkflowV2';
 import ToothChart from './components/ToothChart';
 import ConditionSelector from './components/ConditionSelector';
 import WorkflowBoard from './components/WorkflowBoard';
@@ -85,7 +85,7 @@ function AuthenticatedApp() {
         toggleTreatmentCompletion,
         executeReschedulingFromDate,
         divergeTreatmentPlan
-    } = useTreatmentWorkflow();
+    } = useTreatmentWorkflowV2();
 
     // 病名が変更されたら自動的に治療ノードを生成
     useEffect(() => {
