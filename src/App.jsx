@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Play, Settings, ChevronDown, ChevronRight } from 'lucide-react';
+import { useAuth } from './contexts/AuthContext';
+import LandingPage from './components/LandingPage';
+import UserMenu from './components/UserMenu';
 import { useTreatmentWorkflow } from './hooks/useTreatmentWorkflow';
 import ToothChart from './components/ToothChart';
 import ConditionSelector from './components/ConditionSelector';
@@ -8,6 +11,27 @@ import ScheduleCalendar from './components/ScheduleCalendar';
 import SettingsModal from './components/SettingsModal';
 
 function App() {
+    const { user, loading } = useAuth();
+
+    // ローディング中
+    if (loading) {
+        return (
+            <div className="min-h-screen flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+            </div>
+        );
+    }
+
+    // 未認証 → ランディングページ表示
+    if (!user) {
+        return <LandingPage />;
+    }
+
+    // 認証済み - 既存のアプリを表示
+    return <AuthenticatedApp />;
+}
+
+function AuthenticatedApp() {
     const [selectedTooth, setSelectedTooth] = useState(null);
     const [bulkConditionMode, setBulkConditionMode] = useState(false);
     const [treatmentGroupingMode, setTreatmentGroupingMode] = useState('individual');
@@ -346,8 +370,8 @@ function App() {
                 {/* ヘッダー */}
                 <div className="bg-white rounded-lg shadow-md p-4 mb-6">
                     <div className="flex justify-between items-center">
-                        <h1 className="text-2xl font-bold text-gray-800">歯科治療ワークフロー生成</h1>
-                        <div className="flex gap-2">
+                        <h1 className="text-2xl font-bold text-blue-600">DentalFlow</h1>
+                        <div className="flex gap-4 items-center">
                             <button
                                 onClick={() => setShowSettings(true)}
                                 className="flex items-center gap-2 px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
@@ -355,6 +379,7 @@ function App() {
                                 <Settings className="w-4 h-4" />
                                 設定
                             </button>
+                            <UserMenu />
                         </div>
                     </div>
                 </div>
