@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { defaultConditions } from '../data/conditions';
 import { defaultTreatmentRules } from '../data/treatments';
 import { defaultSteps } from '../data/steps';
@@ -12,6 +12,25 @@ export function useTreatmentWorkflow() {
     const [conditions, setConditions] = useLocalStorage('conditions', defaultConditions);
     const [treatmentRules, setTreatmentRules] = useLocalStorage('treatmentRules', defaultTreatmentRules);
     const [stepMaster, setStepMaster] = useLocalStorage('stepMaster', defaultSteps);
+
+    // LocalStorageのキャッシュにない新しいデフォルト値を起動時にマージ
+    useEffect(() => {
+        setConditions(prev => {
+            const existingCodes = new Set(prev.map(c => c.code));
+            const newItems = defaultConditions.filter(c => !existingCodes.has(c.code));
+            return newItems.length > 0 ? [...prev, ...newItems] : prev;
+        });
+        setTreatmentRules(prev => {
+            const newEntries = Object.entries(defaultTreatmentRules).filter(([code]) => !(code in prev));
+            if (newEntries.length === 0) return prev;
+            return { ...prev, ...Object.fromEntries(newEntries) };
+        });
+        setStepMaster(prev => {
+            const existingIds = new Set(prev.map(s => s.id));
+            const newItems = defaultSteps.filter(s => !existingIds.has(s.id));
+            return newItems.length > 0 ? [...prev, ...newItems] : prev;
+        });
+    }, []); // eslint-disable-line react-hooks/exhaustive-deps
     const [autoScheduleEnabled, setAutoScheduleEnabled] = useLocalStorage('autoScheduleEnabled', true);
     const [aiPrompt, setAiPrompt] = useLocalStorage('aiPrompt', '患者の痛みを最優先に、急性症状から治療してください。根管治療は週1回ペース、補綴物は2週間隔で進めてください。');
     const [isGeneratingWorkflow, setIsGeneratingWorkflow] = useState(false);
@@ -179,7 +198,17 @@ export function useTreatmentWorkflow() {
         const workflowSteps = [];
         const priority = ['per', 'pul', 'C4', 'C3', 'P2', 'C2', 'P1', 'C1'];
 
-        priority.forEach(condition => {
+        // priorityリストにない病名（義歯コードなど）も処理対象に含める
+        const allAssignedConditions = new Set();
+        Object.values(toothConditions).forEach(conditionsList => {
+            conditionsList.forEach(code => allAssignedConditions.add(code));
+        });
+        const conditionsToProcess = [
+            ...priority.filter(c => allAssignedConditions.has(c)),
+            ...[...allAssignedConditions].filter(c => !priority.includes(c))
+        ];
+
+        conditionsToProcess.forEach(condition => {
             const affectedTeeth = [];
             Object.entries(toothConditions).forEach(([tooth, conditionsList]) => {
                 if (conditionsList.includes(condition)) {
