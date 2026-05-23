@@ -28,6 +28,10 @@ export const defaultTreatmentRules = {
         { name: 'SRP→再評価', duration: 3, stepIds: ['step014', 'step015', 'step016'] },
         { name: 'SRPのみ', duration: 2, stepIds: ['step014', 'step015'] }
     ],
+    'C3処置': [
+        { name: 'コア+クラウン（4回）', duration: 4, stepIds: ['step_c3t01', 'step_c3t02', 'step_c3t03', 'step_c3t04'] },
+        { name: '支台築造のみ', duration: 1, stepIds: ['step_c3t01'] }
+    ],
     '局部上': [
         { name: 'クラスプデンチャー（上顎）', duration: 7, stepIds: ['step_rpd01', 'step_rpd02', 'step_rpd03', 'step_rpd04', 'step_rpd05', 'step_rpd06', 'step_rpd07'] }
     ],

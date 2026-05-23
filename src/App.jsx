@@ -473,18 +473,22 @@ function App() {
 
                                 {/* 病名選択ボタン */}
                                 <div className="grid grid-cols-2 md:grid-cols-3 gap-2 mb-4">
-                                    {conditions.map(condition => (
-                                        <button
-                                            key={condition.code}
-                                            onClick={() => handleConditionSelect(condition.code)}
-                                            className={`px-3 py-2 border rounded transition-all text-sm ${selectedCondition === condition.code
-                                                ? `${condition.color} ring-2 ring-green-500`
-                                                : 'bg-white border-gray-300 hover:bg-gray-50'
-                                                }`}
-                                        >
-                                            {condition.symbol}（{condition.name.split('（')[1]?.replace('）', '') || condition.name}）
-                                        </button>
-                                    ))}
+                                    {conditions.map(condition => {
+                                        const isDenture = ['局部上', '局部下', '総義歯上', '総義歯下'].includes(condition.code);
+                                        return (
+                                            <button
+                                                key={condition.code}
+                                                onClick={() => handleConditionSelect(condition.code)}
+                                                className={`px-3 py-2 border rounded transition-all text-sm ${selectedCondition === condition.code
+                                                    ? `${condition.color} ring-2 ring-green-500`
+                                                    : 'bg-white border-gray-300 hover:bg-gray-50'
+                                                    }`}
+                                            >
+                                                {condition.symbol}（{condition.name.split('（')[1]?.replace('）', '') || condition.name}）
+                                                {isDenture && <span className="block text-xs text-gray-400 leading-none mt-0.5">複数歯</span>}
+                                            </button>
+                                        );
+                                    })}
                                 </div>
 
                                 {selectedCondition && (
@@ -524,7 +528,11 @@ function App() {
                         {/* 病名選択 */}
                         {!conditionFirstMode && (selectedTooth || bulkConditionMode) && (
                             <ConditionSelector
-                                conditions={conditions}
+                                conditions={
+                                    (selectedTooth && !bulkConditionMode)
+                                        ? conditions.filter(c => !['局部上', '局部下', '総義歯上', '総義歯下'].includes(c.code))
+                                        : conditions
+                                }
                                 selectedTooth={selectedTooth}
                                 bulkConditionMode={bulkConditionMode}
                                 toothConditions={toothConditions}

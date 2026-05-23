@@ -112,6 +112,32 @@ export const defaultSteps = [
     description: ''
   },
 
+  // C3処置歯（根充後）ステップ
+  {
+    id: 'step_c3t01',
+    name: '支台築造（コア）',
+    conditionCodes: ['C3処置'],
+    description: ''
+  },
+  {
+    id: 'step_c3t02',
+    name: 'クラウン印象',
+    conditionCodes: ['C3処置'],
+    description: ''
+  },
+  {
+    id: 'step_c3t03',
+    name: 'クラウン試適',
+    conditionCodes: ['C3処置'],
+    description: ''
+  },
+  {
+    id: 'step_c3t04',
+    name: 'クラウン装着・調整',
+    conditionCodes: ['C3処置'],
+    description: ''
+  },
+
   // クラスプデンチャー（RPD）・総義歯共通ステップ
   {
     id: 'step_rpd01',
