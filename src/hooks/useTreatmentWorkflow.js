@@ -180,7 +180,7 @@ export function useTreatmentWorkflow() {
         }));
     };
 
-    const generateTreatmentNodes = (groupingMode = 'individual') => {
+    const generateTreatmentNodes = (groupingMode = 'grouped') => {
         // 1. 現在のスケジュール配置をバックアップ
         // key: `${baseId}-${cardNumber}` -> value: dateString
         const scheduledNodesMap = new Map();

@@ -7,33 +7,35 @@ const teethNumbers = [
 
 export default function ToothChart({
     toothConditions,
-    selectedTooth,
+    selectedTeeth = [],
     onToothClick,
+    onToothPointerDown,
     getConditionInfo,
-    highlightedTeeth = []
 }) {
     const renderTooth = (toothNumber) => {
         const toothConditionsList = toothConditions[toothNumber] || [];
-        // 重複を排除
         const uniqueConditions = [...new Set(toothConditionsList)];
         const conditionInfos = uniqueConditions
             .map(code => getConditionInfo(code))
             .filter(Boolean);
-        const isSelected = selectedTooth === toothNumber;
-        const isHighlighted = highlightedTeeth.includes(toothNumber);
+        const isSelected = selectedTeeth.includes(toothNumber);
         const primaryCondition = conditionInfos[0];
 
         return (
             <div
                 key={toothNumber}
-                className={`w-12 h-16 border-2 rounded-sm cursor-pointer flex flex-col items-center justify-between text-xs font-bold transition-all relative
-                    ${isSelected ? 'border-blue-500 bg-blue-100 ring-2 ring-blue-300' : ''}
-                    ${isHighlighted ? 'border-green-500 bg-green-100 ring-2 ring-green-300' : ''}
-                    ${!isSelected && !isHighlighted ? 'border-gray-300 hover:border-gray-400' : ''}
-                    ${primaryCondition && !isHighlighted ? primaryCondition.color : ''}
-                    ${!primaryCondition && !isHighlighted && !isSelected ? 'bg-white hover:bg-gray-50' : ''}
+                data-tooth={toothNumber}
+                className={`w-12 h-16 border-2 rounded-sm cursor-pointer flex flex-col items-center justify-between text-xs font-bold transition-all relative select-none
+                    ${isSelected ? 'border-green-500 bg-green-100 ring-2 ring-green-400' : ''}
+                    ${!isSelected ? 'border-gray-300 hover:border-gray-400' : ''}
+                    ${primaryCondition && !isSelected ? primaryCondition.color : ''}
+                    ${!primaryCondition && !isSelected ? 'bg-white hover:bg-gray-50' : ''}
                 `}
                 onClick={() => onToothClick(toothNumber)}
+                onPointerDown={(e) => {
+                    e.preventDefault();
+                    onToothPointerDown?.(toothNumber);
+                }}
                 title={conditionInfos.length > 0 ?
                     `${toothNumber}: ${conditionInfos.map(c => c.name).join(', ')}` :
                     `歯番 ${toothNumber}`
@@ -58,7 +60,7 @@ export default function ToothChart({
                     ) : null}
                 </div>
 
-                {isHighlighted && (
+                {isSelected && (
                     <div className="absolute top-0 right-0 w-3 h-3 bg-green-500 rounded-full text-white text-[8px] flex items-center justify-center">
                         ✓
                     </div>

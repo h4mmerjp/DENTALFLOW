@@ -2,40 +2,36 @@ import React from 'react';
 
 export default function ConditionSelector({
     conditions,
-    selectedTooth,
-    bulkConditionMode,
+    selectedTeeth = [],
     toothConditions,
     onConditionSelect,
     onClearAll,
     onComplete
 }) {
-    if (!selectedTooth && !bulkConditionMode) return null;
+    if (selectedTeeth.length === 0) return null;
+
+    const teethLabel = selectedTeeth.length === 1
+        ? `歯番 ${selectedTeeth[0]}`
+        : `歯番 ${selectedTeeth.slice().sort((a, b) => a - b).join(', ')} (${selectedTeeth.length}本)`;
 
     return (
-        <div className="border-2 border-blue-200 rounded-lg p-4 bg-blue-50">
-            <h3 className="font-bold mb-2">
-                {bulkConditionMode
-                    ? '病名を追加（歯番号なし）'
-                    : `歯番 ${selectedTooth} の病名を選択`
-                }
+        <div className="border-2 border-green-300 rounded-lg p-4 bg-green-50">
+            <h3 className="font-bold mb-2 text-green-900">
+                {teethLabel} の病名を選択
             </h3>
             <div className="text-xs text-gray-600 mb-3">
-                {bulkConditionMode
-                    ? '選択した病名が一般的な病名として追加されます'
-                    : '複数選択可能（クリックで選択/解除）'
-                }
+                複数選択可能（クリックで選択/解除）
             </div>
             <div className="grid grid-cols-2 gap-2">
                 {conditions.map(condition => {
-                    const isSelected = bulkConditionMode
-                        ? false
-                        : (toothConditions[selectedTooth] || []).includes(condition.code);
+                    const isActive = selectedTeeth.length > 0 &&
+                        selectedTeeth.every(t => (toothConditions[t] || []).includes(condition.code));
                     return (
                         <button
                             key={condition.code}
                             onClick={() => onConditionSelect(condition.code)}
-                            className={`px-3 py-2 border rounded transition-all flex items-center justify-between ${isSelected
-                                    ? `${condition.color} ring-2 ring-blue-400`
+                            className={`px-3 py-2 border rounded transition-all flex items-center justify-between ${isActive
+                                    ? `${condition.color} ring-2 ring-green-500`
                                     : 'bg-white border-gray-300 hover:bg-gray-50'
                                 }`}
                         >
@@ -46,17 +42,15 @@ export default function ConditionSelector({
                 })}
             </div>
             <div className="flex gap-2 mt-3">
-                {!bulkConditionMode && (
-                    <button
-                        onClick={onClearAll}
-                        className="flex-1 px-3 py-2 bg-gray-200 border border-gray-400 rounded hover:bg-gray-300 transition-colors"
-                    >
-                        全てクリア
-                    </button>
-                )}
+                <button
+                    onClick={onClearAll}
+                    className="flex-1 px-3 py-2 bg-gray-200 border border-gray-400 rounded hover:bg-gray-300 transition-colors"
+                >
+                    全てクリア
+                </button>
                 <button
                     onClick={onComplete}
-                    className="flex-1 px-3 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 transition-colors"
+                    className="flex-1 px-3 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition-colors"
                 >
                     完了
                 </button>
