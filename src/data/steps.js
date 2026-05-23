@@ -110,5 +110,63 @@ export const defaultSteps = [
     name: '再評価',
     conditionCodes: ['P2'],
     description: ''
+  },
+
+  // クラスプデンチャー（RPD）・総義歯共通ステップ
+  {
+    id: 'step_rpd01',
+    name: '研究用印象',
+    conditionCodes: ['局部上', '局部下'],
+    description: ''
+  },
+  {
+    id: 'step_rpd02',
+    name: '精密印象',
+    conditionCodes: ['局部上', '局部下', '総義歯上', '総義歯下'],
+    description: ''
+  },
+  {
+    id: 'step_rpd03',
+    name: '咬合採得',
+    conditionCodes: ['局部上', '局部下', '総義歯上', '総義歯下'],
+    description: ''
+  },
+  {
+    id: 'step_rpd04',
+    name: 'フレームワーク試適',
+    conditionCodes: ['局部上', '局部下'],
+    description: ''
+  },
+  {
+    id: 'step_rpd05',
+    name: '蝋義歯試適',
+    conditionCodes: ['局部上', '局部下', '総義歯上', '総義歯下'],
+    description: ''
+  },
+  {
+    id: 'step_rpd06',
+    name: '義歯装着',
+    conditionCodes: ['局部上', '局部下', '総義歯上', '総義歯下'],
+    description: ''
+  },
+  {
+    id: 'step_rpd07',
+    name: '義歯調整',
+    conditionCodes: ['局部上', '局部下', '総義歯上', '総義歯下'],
+    description: ''
+  },
+
+  // 総義歯専用ステップ
+  {
+    id: 'step_cd01',
+    name: '予備印象',
+    conditionCodes: ['総義歯上', '総義歯下'],
+    description: ''
+  },
+  {
+    id: 'step_cd02',
+    name: '人工歯選択確認',
+    conditionCodes: ['総義歯上', '総義歯下'],
+    description: ''
   }
 ];
