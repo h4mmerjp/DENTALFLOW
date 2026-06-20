@@ -110,5 +110,89 @@ export const defaultSteps = [
     name: '再評価',
     conditionCodes: ['P2'],
     description: ''
+  },
+
+  // C3処置歯（根充後）ステップ
+  {
+    id: 'step_c3t01',
+    name: '支台築造（コア）',
+    conditionCodes: ['C3処置'],
+    description: ''
+  },
+  {
+    id: 'step_c3t02',
+    name: 'クラウン印象',
+    conditionCodes: ['C3処置'],
+    description: ''
+  },
+  {
+    id: 'step_c3t03',
+    name: 'クラウン試適',
+    conditionCodes: ['C3処置'],
+    description: ''
+  },
+  {
+    id: 'step_c3t04',
+    name: 'クラウン装着・調整',
+    conditionCodes: ['C3処置'],
+    description: ''
+  },
+
+  // クラスプデンチャー（RPD）・総義歯共通ステップ
+  {
+    id: 'step_rpd01',
+    name: '研究用印象',
+    conditionCodes: ['局部上', '局部下'],
+    description: ''
+  },
+  {
+    id: 'step_rpd02',
+    name: '精密印象',
+    conditionCodes: ['局部上', '局部下', '総義歯上', '総義歯下'],
+    description: ''
+  },
+  {
+    id: 'step_rpd03',
+    name: '咬合採得',
+    conditionCodes: ['局部上', '局部下', '総義歯上', '総義歯下'],
+    description: ''
+  },
+  {
+    id: 'step_rpd04',
+    name: 'フレームワーク試適',
+    conditionCodes: ['局部上', '局部下'],
+    description: ''
+  },
+  {
+    id: 'step_rpd05',
+    name: '蝋義歯試適',
+    conditionCodes: ['局部上', '局部下', '総義歯上', '総義歯下'],
+    description: ''
+  },
+  {
+    id: 'step_rpd06',
+    name: '義歯装着',
+    conditionCodes: ['局部上', '局部下', '総義歯上', '総義歯下'],
+    description: ''
+  },
+  {
+    id: 'step_rpd07',
+    name: '義歯調整',
+    conditionCodes: ['局部上', '局部下', '総義歯上', '総義歯下'],
+    description: ''
+  },
+
+  // 総義歯専用ステップ
+  {
+    id: 'step_cd01',
+    name: '予備印象',
+    conditionCodes: ['総義歯上', '総義歯下'],
+    description: ''
+  },
+  {
+    id: 'step_cd02',
+    name: '人工歯選択確認',
+    conditionCodes: ['総義歯上', '総義歯下'],
+    description: ''
   }
 ];
